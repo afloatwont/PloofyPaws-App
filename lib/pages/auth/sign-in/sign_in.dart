@@ -1,0 +1,215 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:restoe/components/button.dart';
+import 'package:restoe/components/input_label.dart';
+import 'package:restoe/config/icons/google.dart';
+import 'package:restoe/config/theme/theme.dart';
+import 'package:restoe/pages/auth/sign-in/sign_in_otp.dart';
+import 'package:restoe/pages/auth/sign-up/sign_up.dart';
+import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
+import 'package:restoe/services/networking/exceptions.dart';
+import 'package:restoe/services/repositories/auth/auth.dart';
+import 'package:restoe/services/repositories/auth/model.dart' as models;
+import 'package:shared_preferences/shared_preferences.dart';
+
+class SignInPage extends ConsumerStatefulWidget {
+  const SignInPage({super.key});
+
+  @override
+  ConsumerState createState() => _SignInPageState();
+}
+
+class _SignInPageState extends ConsumerState<SignInPage> {
+  final _formKey = GlobalKey<FormBuilderState>();
+  bool isSuffixIconVisible = false;
+  bool _loading = false;
+  bool _googleLoading = false;
+
+  void _handleLogin(String? email) {
+    setState(() {
+      _loading = true;
+    });
+    try {
+      ref.read(authRepositoryProvider);
+      showCupertinoModalBottomSheet(
+          useRootNavigator: true,
+          enableDrag: false,
+          context: context,
+          builder: (context) {
+            return SignInOtp(email: email);
+          });
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  void _handleGoogleLogin() async {
+    setState(() {
+      _googleLoading = true;
+    });
+    try {
+      final authRepository = ref.read(authRepositoryProvider);
+      final user = await authRepository.signInWithGoogle();
+
+      final storage = await SharedPreferences.getInstance();
+      storage.setString('auth', jsonEncode(user));
+
+      if (!mounted) return;
+
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialWithModalsPageRoute(builder: (context) => const PetOnboarding()), (route) => false);
+    } on APIError catch (e) {
+      print(e);
+    }
+    setState(() {
+      _googleLoading = false;
+    });
+  }
+
+  void _handleSubmit() {
+    if (_formKey.currentState!.saveAndValidate()) {
+      final data = _formKey.currentState!.value;
+      _handleLogin(data['email']);
+    }
+  }
+
+  void setSuffixIconVisibility(String value) {
+    if (value.isNotEmpty) {
+      setState(() {
+        isSuffixIconVisible = true;
+      });
+    } else {
+      setState(() {
+        isSuffixIconVisible = false;
+      });
+    }
+  }
+
+  models.UserData? userData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: SafeArea(
+      child: Column(
+        children: [
+          const SizedBox(height: 24),
+          FormBuilder(
+            key: _formKey,
+            child: Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  Text('Sign In', style: typography(context).title1),
+                  const SizedBox(height: 24),
+                  const InputLabel(label: 'Email'),
+                  FormBuilderTextField(
+                      autofocus: true,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (value) {
+                        setSuffixIconVisibility(value!);
+                      },
+                      decoration: InputDecoration(
+                          hintText: "Enter Email",
+                          suffixIcon: isSuffixIconVisible
+                              ? GestureDetector(
+                                  onTap: () {
+                                    _formKey.currentState!.fields['email']!.didChange('');
+                                  },
+                                  child: const Icon(
+                                    Iconsax.close_circle,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : null),
+                      autofillHints: const [AutofillHints.email, AutofillHints.telephoneNumber],
+                      name: 'email',
+                      validator: FormBuilderValidators.email(
+                        errorText: 'Please enter a valid email address',
+                      )),
+                  const SizedBox(height: 40),
+                  Button(
+                    loading: _loading,
+                    onPressed: _handleSubmit,
+                    variant: 'filled',
+                    label: 'Next',
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: Divider(color: colors(context).onSurface.s400),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text('OR', style: typography(context).body),
+                      ),
+                      Expanded(
+                        child: Divider(color: colors(context).onSurface.s400),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Button(
+                    loading: _googleLoading,
+                    onPressed: _handleGoogleLogin,
+                    variant: 'outlined',
+                    label: 'Continue with Google',
+                    iconAsset: const GoogleIcon(
+                      height: 24,
+                    ),
+                    buttonColor: Colors.black,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        textAlign: TextAlign.center,
+                        "Don't have an account?",
+                        style: typography(context).smallBody.copyWith(
+                              color: Colors.grey.shade600,
+                            ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpPage(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          'Sign up for free',
+                          style: typography(context).strong.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+          Image.asset(
+            'assets/images/auth/sign-in.png',
+            scale: 2.0,
+          ),
+        ],
+      ),
+    ));
+  }
+}
