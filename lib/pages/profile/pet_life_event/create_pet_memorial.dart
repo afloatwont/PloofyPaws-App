@@ -10,7 +10,7 @@ import 'package:restoe/components/button.dart';
 import 'package:restoe/helpers/date_format.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:restoe/pages/add_media.dart';
+import 'package:restoe/pages/profile/pet_life_event/add_media.dart';
 
 class PetMemorialScreen extends StatefulWidget {
   const PetMemorialScreen({super.key});
