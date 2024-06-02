@@ -42,6 +42,6 @@ class MyApp extends StatelessWidget {
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
           textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home: PetMemorialScreen());
+        home:const  PetMemorialScreen());
   }
 }
