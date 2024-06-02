@@ -113,8 +113,11 @@ class _TrackerPairingModeState extends State<TrackerPairingMode> {
                   Text("Tap power button on tracker you want to activate. You should hear a beep and see the led flash",
                       style: typography(context).smallBody),
                   const SizedBox(height: 16),
-                  Text("If not, press and hold power button until on.",
-                      style: typography(context).strongSmallBody.copyWith(color: colors(context).primary.s500)),
+                  Text(
+                    "If not, press and hold power button until on.",
+                    style: typography(context).strongSmallBody.copyWith(color: colors(context).primary.s500),
+                  ),
+                  Text('XTZ',style:typography(context).strong.copyWith(color:colors(context).primary.s500 ),)
                 ],
               ),
             )
