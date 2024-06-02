@@ -45,6 +45,9 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
             disabledColor: Colors.grey,
           ),
           body: [
+            SizedBox(
+              height: 30,
+            ),
             FormBuilderTextField(
               initialValue: title,
               name: 'event_title',

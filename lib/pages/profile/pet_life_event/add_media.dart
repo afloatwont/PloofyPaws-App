@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -13,28 +15,63 @@ class UploadPhotoScreen extends StatefulWidget {
 
 class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
   Future<void> _requestPermission(BuildContext context) async {
-    PermissionStatus status = await Permission.photos.request();
+    if (Platform.isAndroid) {
+      int version = int.parse(Platform.version.split(' ')[0].split('.')[0]);
+      if (version < 13) {
+        PermissionStatus status = await Permission.storage.request();
+        _openImagePicker(context, status);
+      } else {
+        PermissionStatus status = await Permission.photos.request();
+        _openImagePicker(context, status);
+      }
+    } else {
+      PermissionStatus status = await Permission.photos.request();
+      _openImagePicker(context, status);
+    }
+  }
+
+  void _showSettingsDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Permission required'),
+        content:const  Text('Please enable photo access in the app settings.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child:const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              openAppSettings();
+              Navigator.of(context).pop();
+            },
+            child:const  Text('Settings'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openImagePicker(BuildContext context, PermissionStatus status) async {
     if (status.isGranted) {
-      _openImagePicker(context);
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {}
     } else if (status.isDenied) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Permission Denied")),
       );
     } else if (status.isPermanentlyDenied) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              "Permission Permanently Denied. Please enable from settings."),
-        ),
-      );
-    }
-  }
-
-  void _openImagePicker(BuildContext context) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text(
+      //         "Permission Permanently Denied. Please enable from settings."),
+      // )
+      // );
+      _showSettingsDialog();
     }
   }
 
@@ -44,7 +81,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       previousPageTitle: 'create_pet_memorial',
       automaticallyImplyLeading: false,
       appBarTrailing: IconButton(
-        icon:const  Icon(Icons.clear_outlined),
+        icon: const Icon(Icons.clear_outlined),
         onPressed: () {
           Navigator.of(context).pop();
         },
