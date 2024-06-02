@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restoe/config/theme/theme.dart';
+import 'package:restoe/pages/doctors/about_doctor_page.dart';
 import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
 import 'package:restoe/pages/root/init_app.dart';
 import 'package:restoe/services/navigation/navigation.dart';
@@ -34,8 +35,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: themeData.copyWith(
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
-          textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
+          textTheme:
+              GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home: const PetOnboarding());
+        home: const AboutDoctorPage()
+        //PetOnboarding()
+        );
   }
 }

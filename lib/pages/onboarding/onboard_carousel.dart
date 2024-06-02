@@ -69,7 +69,8 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
 
   Future<void> _handleNextButton() async {
     if (_isLastPage) {
-      final SharedPreferences preferences = await SharedPreferences.getInstance();
+      final SharedPreferences preferences =
+          await SharedPreferences.getInstance();
 
       // If user has seen onboarding, then we set this to true
 
@@ -77,8 +78,9 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
 
       if (!mounted) return;
 
-      Navigator.of(context)
-          .pushAndRemoveUntil(MaterialWithModalsPageRoute(builder: (context) => const SignInPage()), (route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialWithModalsPageRoute(builder: (context) => const SignInPage()),
+          (route) => false);
     } else {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 500),
@@ -99,14 +101,14 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
         Positioned(
           bottom: 0,
           child: Padding(
-            padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 60.0, bottom: 20.0),
+            padding: const EdgeInsets.only(
+                left: 24.0, right: 24.0, top: 60.0, bottom: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: typography(context)
-                        .restoeTitle
-                        .copyWith(fontSize: 24, letterSpacing: 0.5, color: Colors.white)),
+                    style: typography(context).restoeTitle.copyWith(
+                        fontSize: 24, letterSpacing: 0.5, color: Colors.white)),
                 const SizedBox(height: 12.0),
                 Text(
                   description,
