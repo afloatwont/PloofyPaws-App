@@ -3,10 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:restoe/pages/Veterinarian.dart';
 import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/profile/pet_life_event/add_media.dart';
-import 'package:restoe/pages/profile/pet_life_event/create_pet_memorial.dart';
-import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
 import 'package:restoe/services/navigation/navigation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -42,6 +40,6 @@ class MyApp extends StatelessWidget {
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
           textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home:const  PetMemorialScreen());
+        home:DoctorListScreen());
   }
 }
