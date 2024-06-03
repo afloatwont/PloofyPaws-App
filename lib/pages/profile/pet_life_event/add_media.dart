@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,9 +16,12 @@ class UploadPhotoScreen extends StatefulWidget {
 
 class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
   Future<void> _requestPermission(BuildContext context) async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
-      int version = int.parse(Platform.version.split(' ')[0].split('.')[0]);
-      if (version < 13) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      var version = androidInfo.version.release;
+      final int majorVersion = int.parse(version.split('.')[0]);
+      if (majorVersion < 13) {
         PermissionStatus status = await Permission.storage.request();
         _openImagePicker(context, status);
       } else {
@@ -35,20 +39,21 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Permission required'),
-        content:const  Text('Please enable photo access in the app settings.'),
+        content: const Text('Please enable photo access in the app settings.'),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child:const Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               openAppSettings();
               Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
-            child:const  Text('Settings'),
+            child: const Text('Settings'),
           ),
         ],
       ),
@@ -62,7 +67,10 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       if (image != null) {}
     } else if (status.isDenied) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Permission Denied")),
+        const SnackBar(
+          content: Text("Permission Denied"),
+          duration: Duration(seconds: 3),
+        ),
       );
     } else if (status.isPermanentlyDenied) {
       // ScaffoldMessenger.of(context).showSnackBar(
