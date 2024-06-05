@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
 
 
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.8
   firebase_core:
   google_fonts: ^6.2.1
   modal_bottom_sheet: ^3.0.0
@@ -68,6 +68,8 @@ flutter:
     - assets/images/placeholders/
     - assets/images/services/
     - assets/lottie/
+    - assets/svg/
+
 
 
   fonts:
