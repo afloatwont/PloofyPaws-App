@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restoe/config/theme/theme.dart';
+import 'package:restoe/location.dart';
 import 'package:restoe/pages/home/services/Veterinarian.dart';
 import 'package:restoe/pet_walking.dart';
 import 'package:restoe/pets_card.dart';
@@ -42,6 +43,6 @@ class MyApp extends StatelessWidget {
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
           textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home:PetWalkingScreen());
+        home:AddressFormScreen());
   }
 }
