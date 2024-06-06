@@ -254,7 +254,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: const Color(0xffE0E0E0)),
         ),
-        child: CalendarModalSheet(),
+        child: const CalendarModalSheet(),
       ),
     );
   }
@@ -300,7 +300,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
 
   Widget _buildConfirmButton(BuildContext context, Size screenSize) {
     return Padding(
-      padding: EdgeInsets.only(top: 20, bottom: 20),
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: SizedBox(
         height: 50,
         width: screenSize.width,
@@ -329,7 +329,7 @@ class TimeTile extends StatelessWidget {
       width: 100,
       height: 35,
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xff2828FF)),
+        border: Border.all(color: const Color(0xff2828FF)),
         borderRadius: BorderRadius.circular(41.0),
       ),
       child: Text(

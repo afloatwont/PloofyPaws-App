@@ -3,10 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:restoe/components/walker_modal_sheet.dart';
 import 'package:restoe/config/theme/theme.dart';
 import 'package:restoe/pages/doctors/about_doctor_page.dart';
+import 'package:restoe/pages/home/services/pet_diet.dart';
+import 'package:restoe/pages/home/services/vet_video_consultation.dart';
 import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
 import 'package:restoe/pages/root/init_app.dart';
+import 'package:restoe/razorpay/payment_razorpay.dart';
 import 'package:restoe/services/navigation/navigation.dart';
 
 import 'config/theme/placebo_colors.dart';
@@ -38,8 +42,6 @@ class MyApp extends StatelessWidget {
           textTheme:
               GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home: const AboutDoctorPage()
-        //PetOnboarding()
-        );
+        home: const PetOnboarding());
   }
 }

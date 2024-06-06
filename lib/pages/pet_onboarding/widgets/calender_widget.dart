@@ -32,7 +32,7 @@ class CalendarModalSheet extends ConsumerWidget {
                     focusedDay;
               },
               calendarStyle: const CalendarStyle(
-                isTodayHighlighted: false,
+                isTodayHighlighted: true,
                 selectedDecoration: BoxDecoration(
                   color: Colors.blue, // Customize the selected day color
                   shape: BoxShape.circle,
