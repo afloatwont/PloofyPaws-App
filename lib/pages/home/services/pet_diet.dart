@@ -84,9 +84,7 @@ class PetsList extends StatelessWidget {
         itemCount: 6, // Static, to be fetched from database
         itemBuilder: (BuildContext context, int index) {
           return const Padding(
-            padding: EdgeInsets.only(
-              left: 16,
-            ),
+            padding: EdgeInsets.only(left: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -94,8 +92,8 @@ class PetsList extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors.grey,
                   radius: 26,
-                  backgroundImage:
-                      AssetImage('assets/images/placeholders/user_avatar.png'),
+                  backgroundImage: AssetImage(
+                      'assets/images/placeholders/user_avatar.png'),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 4.0, left: 8),
@@ -136,11 +134,13 @@ class CalorieCard extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text('Recommended calorie',
-                    style: typography(context).title3.copyWith(
-                          fontSize: 14,
-                          color: Colors.white,
-                        )),
+                child: Text(
+                  'Recommended calorie',
+                  style: typography(context).title3.copyWith(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                ),
               ),
               Row(
                 children: [
@@ -193,7 +193,7 @@ class CalorieCard extends StatelessWidget {
         ),
         Positioned(
           top: 20,
-          left: 200,
+          left: MediaQuery.of(context).size.width * 0.5,
           child: Image.asset(
               'assets/images/content/undraw_breakfast_psiw_2_-removebg-preview 1.png'),
         ),
@@ -215,8 +215,8 @@ class MyButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 48),
       child: Row(
         children: [
-          // have to add svg here
-          // SvgPicture.asset('assets/svg/veg_green.svg'),
+          SvgPicture.asset('assets/svg/veg_green.svg'),
+          const SizedBox(width: 8),
           Text(
             'Veg',
             style: typography(context).title3.copyWith(
@@ -264,7 +264,6 @@ class NutritionalEnhancementsCard extends StatelessWidget {
                   Text(
                     'Customized Nutritional Enhancements:',
                     style: typography(context).largeBody.copyWith(
-                          //fontWeight: FontWeight.bold,
                           fontSize: 11,
                         ),
                   ),
@@ -294,15 +293,16 @@ class FoodRecipesList extends StatelessWidget {
     return SizedBox(
       height: 400,
       child: ListView.builder(
-        itemCount: 8,
+        itemCount: 4,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: const Color(0xffD6D6D6)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
@@ -315,18 +315,7 @@ class FoodRecipesList extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      image: const DecorationImage(
-                        image: AssetImage(
-                            'assets/images/content/fish_bowl_art.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  Image.asset('assets/images/content/fish_bowl_art.png'),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -352,9 +341,6 @@ class FoodRecipesList extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // SvgPicture.asset(
-                  //   'assets/images/content/svg/veg_green.svg',
-                  // ),
                 ],
               ),
             ),
@@ -408,7 +394,7 @@ class SelectionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
         decoration: BoxDecoration(
           color: isSelected
               ? (label == 'Non-veg' ? Colors.red.shade50 : Colors.green.shade50)
@@ -422,25 +408,20 @@ class SelectionButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Have to add veg and non-veg icons here
-            // Icon(
-            //   isSelected
-            //       ? (label == 'Non-veg' ? Icons.warning : Icons.check_circle)
-            //       : Icons.close,
-            //   color: isSelected
-            //       ? (label == 'Non-veg' ? Colors.red : Colors.green)
-            //       : Colors.grey,
-            // ),
+            Icon(
+              isSelected
+                  ? (label == 'Non-veg' ? Icons.warning : Icons.check_circle)
+                  : Icons.close,
+              color: isSelected
+                  ? (label == 'Non-veg' ? Colors.red : Colors.green)
+                  : Colors.grey,
+            ),
+            const SizedBox(width: 8),
             Text(
               label,
               style: TextStyle(
                 color: isSelected ? Colors.black : Colors.grey,
               ),
-            ),
-            const Icon(
-              Icons.close,
-              color: Colors.black,
-              size: 16,
             ),
           ],
         ),
@@ -454,13 +435,13 @@ class ShowMoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {},
       child: Padding(
         padding: const EdgeInsets.only(bottom: 24.0),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: colors(context).primary.s500,
             borderRadius: BorderRadius.circular(36),
@@ -468,12 +449,14 @@ class ShowMoreButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Unlock More',
-                  textAlign: TextAlign.center,
-                  style: typography(context).smallBody.copyWith(
-                        color: Colors.white,
-                        fontSize: 12,
-                      )),
+              Text(
+                'Unlock More',
+                textAlign: TextAlign.center,
+                style: typography(context).smallBody.copyWith(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+              ),
               const Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: Icon(Icons.lock_open_rounded,

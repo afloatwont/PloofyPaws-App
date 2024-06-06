@@ -64,9 +64,6 @@ class RazorPayScreenState extends State<RazorPayScreen>
       'amount': int.parse(amount) * 100, // Convert to paise
       'name': 'Acme Corp.',
       'description': 'Fine T-Shirt',
-      'external': {
-        'wallets': ['paytm'] // Include Paytm as the external wallet
-      }
     };
 
     try {

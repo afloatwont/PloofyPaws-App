@@ -77,7 +77,7 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
               ),
             ],
           ),
-
+          buildConfusedCard(context),
           // Stack(
           //   children: [
           //     SizedBox(
@@ -210,61 +210,63 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
           // ),
 
           buildSwipeCards(context),
+        ],
+      ),
+    );
+  }
 
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Container(
-              height: 100,
-              width: double.infinity,
-              //padding: const EdgeInsets.only(top: 22, left: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
+  Padding buildConfusedCard(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
+      child: Container(
+        height: 100,
+        width: double.infinity,
+        //padding: const EdgeInsets.only(top: 22, left: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 20.0,
-                          ),
-                          child: Text(
-                            'Confused about Training',
-                            style: typography(context).strongSmallBody,
-                          ),
-                        ),
-                        Chip(
-                            padding: const EdgeInsets.only(
-                                top: 8, bottom: 8, left: 8, right: 8),
-                            backgroundColor: colors(context).primary.s500,
-                            labelStyle: typography(context)
-                                .strongSmallBody
-                                .copyWith(color: Colors.white),
-                            label: const Text("Chat with Us"))
-                      ],
+                    padding: const EdgeInsets.only(
+                      top: 20.0,
+                    ),
+                    child: Text(
+                      'Confused about Training',
+                      style: typography(context).strongSmallBody,
                     ),
                   ),
-                  Image.asset(
-                    'assets/images/content/doctor_and_dog.png',
-                    height: 55,
-                  )
+                  Chip(
+                      padding: const EdgeInsets.only(
+                          top: 8, bottom: 8, left: 8, right: 8),
+                      backgroundColor: colors(context).primary.s500,
+                      labelStyle: typography(context)
+                          .strongSmallBody
+                          .copyWith(color: Colors.white),
+                      label: const Text("Chat with Us"))
                 ],
               ),
             ),
-          ),
-        ],
+            Image.asset(
+              'assets/images/content/doctor_and_dog.png',
+              height: 55,
+            )
+          ],
+        ),
       ),
     );
   }

@@ -18,6 +18,8 @@ class AdaptivePageScaffold extends StatelessWidget {
   final IconThemeData? appBarIconTheme;
   final PreferredSize? appBarBottom;
   final Widget? appBarTrailing;
+  final Widget? drawer;
+  final bool? centertitle;
 
   const AdaptivePageScaffold({
     this.cupertinoSafeAreaBottom = false,
@@ -31,19 +33,22 @@ class AdaptivePageScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.appBarBottom,
     this.appBarTrailing,
+    this.drawer,
     this.previousPageTitle = 'Back',
     required this.body,
-    super.key,
+    super.key, this.centertitle,
   });
 
   @override
   Widget build(BuildContext context) {
-    assert(appBar == null || title == null, 'appBar and title cannot be specified together');
+    assert(appBar == null || title == null,
+        'appBar and title cannot be specified together');
 
     if (Platform.isIOS) {
       return Scaffold(
         bottomNavigationBar: bottomNavigationBar,
         floatingActionButton: floatingActionButton,
+        drawer: drawer,
         body: CupertinoPageScaffold(
           navigationBar: appBar?.getCupertinoBar() ??
               CupertinoNavigationBar(
@@ -71,12 +76,14 @@ class AdaptivePageScaffold extends StatelessWidget {
     }
 
     return Scaffold(
+      drawer: drawer,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       appBar: appBar?.getMaterialBar() ??
           AppBar(
             automaticallyImplyLeading: automaticallyImplyLeading,
             title: title,
+            centerTitle: centertitle,
             backgroundColor: appBarColor,
             iconTheme: appBarIconTheme,
             bottom: appBarBottom,
