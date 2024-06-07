@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:restoe/config/icons/pet_services/pet_services.dart';
 import 'package:restoe/config/theme/theme.dart';
+import 'package:restoe/pages/doctors/about_doctor_page.dart';
 import 'package:restoe/pages/home/core/data/services_data.dart';
+import 'package:restoe/pages/home/services/pet_diet.dart';
 
 class PetServices extends StatelessWidget {
   const PetServices({
@@ -9,6 +12,15 @@ class PetServices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> screens = [
+      const Placeholder(),
+      const Placeholder(),
+      const AboutDoctorPage(),
+      const DietPage(),
+      const Placeholder(),
+      const Placeholder(),
+    ];
+
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       shrinkWrap: true,
@@ -22,7 +34,12 @@ class PetServices extends StatelessWidget {
         final data = petServices[index];
         return Column(
           children: [
-            ClipRRect(borderRadius: BorderRadius.circular(50), child: data.image!),
+            GestureDetector(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => screens[index])),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: data.image!)),
             const SizedBox(height: 10),
             Text(
               data.title,
