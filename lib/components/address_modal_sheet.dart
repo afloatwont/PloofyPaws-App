@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:restoe/config/theme/theme.dart';
 
 class AddressFormBottomSheet extends StatefulWidget {
-  const AddressFormBottomSheet({super.key});
+  const AddressFormBottomSheet({Key? key}) : super(key: key);
 
   @override
   AddressFormBottomSheetState createState() => AddressFormBottomSheetState();
@@ -28,6 +29,7 @@ class AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
             'Enter complete address',
@@ -48,10 +50,12 @@ class AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              // Handle form submission here
               print('Address submitted: $address');
             },
-            child: const Text('Submit'),
+            child: const Text('Submit',style:TextStyle(
+              fontSize: 17,
+              color: Colors.white
+            ),),
           ),
         ],
       ),
