@@ -1,15 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 
-class AddressFormBottomSheet extends StatefulWidget {
-  const AddressFormBottomSheet({Key? key}) : super(key: key);
+class BottomsheetAddress extends StatefulWidget {
+  const BottomsheetAddress({super.key});
 
   @override
-  AddressFormBottomSheetState createState() => AddressFormBottomSheetState();
+  BottomsheetAddressState createState() => BottomsheetAddressState();
 }
 
-class AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
-  String address = '';
+class BottomsheetAddressState extends State<BottomsheetAddress> {
+  LatLng? currentLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    final location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    var locationData = await location.getLocation();
+    setState(() {
+      currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,31 +67,35 @@ class AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Enter complete address',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 19,
+          if (currentLocation != null) ...[
+            Text(
+              'Latitude: ${currentLocation!.latitude}, Longitude: ${currentLocation!.longitude}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 19,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          TextField(
-            decoration: const InputDecoration(labelText: 'Enter Address'),
-            onChanged: (value) {
-              setState(() {
-                address = value;
-              });
-            },
-          ),
+          ] else ...[
+            const Text(
+              'Fetching location...',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 19,
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              print('Address submitted: $address');
+              if (currentLocation != null) {
+                print(
+                    'Latitude: ${currentLocation!.latitude}, Longitude: ${currentLocation!.longitude}');
+              }
             },
-            child: const Text('Submit',style:TextStyle(
-              fontSize: 17,
-              color: Colors.white
-            ),),
+            child: const Text(
+              'Submit',
+              style: TextStyle(fontSize: 17, color: Colors.white),
+            ),
           ),
         ],
       ),
