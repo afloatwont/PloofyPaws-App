@@ -3,20 +3,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:restoe/components/walker_modal_sheet.dart';
 import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/doctors/about_doctor_page.dart';
-import 'package:restoe/pages/home/services/pet_diet.dart';
-import 'package:restoe/pages/home/services/vet_video_consultation.dart';
+import 'package:restoe/location/location.dart';
+import 'package:restoe/pages/home/services/Veterinarian.dart';
 import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
-import 'package:restoe/pages/root/init_app.dart';
-import 'package:restoe/razorpay/payment_razorpay.dart';
+import 'package:restoe/pages/profile/pet_life_event/create_pet_memorial.dart';
+import 'package:restoe/pet_walking.dart';
+import 'package:restoe/pets_card.dart';
 import 'package:restoe/services/navigation/navigation.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
+import 'location/locationPermission.dart';
+import 'location/map_location.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   GetIt getIt = GetIt.instance;
   getIt.registerLazySingleton<NavigationService>(() => NavigationService());
 
@@ -24,6 +27,9 @@ void main() {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
 
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -39,8 +45,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: themeData.copyWith(
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
-          textTheme:
-              GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
+          textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
         home: const PetOnboarding());
   }
