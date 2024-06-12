@@ -47,6 +47,6 @@ class MyApp extends StatelessWidget {
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
           textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home: const AddressFormScreen());
+        home: const PetOnboarding());
   }
 }
