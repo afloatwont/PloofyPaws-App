@@ -8,8 +8,11 @@ import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
 import 'package:restoe/services/navigation/navigation.dart';
 import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   GetIt getIt = GetIt.instance;
   getIt.registerLazySingleton<NavigationService>(() => NavigationService());
 
@@ -17,6 +20,9 @@ void main() {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
 
   runApp(const ProviderScope(child: MyApp()));
 }

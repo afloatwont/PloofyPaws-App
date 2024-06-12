@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
 import 'package:restoe/components/button.dart';
 import 'package:restoe/config/theme/theme.dart';
 import 'package:restoe/controllers/time_provider.dart';
 import 'package:restoe/pages/pet_onboarding/widgets/calender_widget.dart';
+import 'package:restoe/razorpay/payment_razorpay.dart';
 
 class AboutDoctorPage extends StatefulWidget {
   const AboutDoctorPage({super.key});
@@ -306,7 +305,12 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
         width: screenSize.width,
         child: Button(
           borderRadius: BorderRadius.circular(42),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const RazorPayScreen()));
+          },
           variant: 'filled',
           label: 'Confirm',
           buttonColor: colors(context).primary.s500,

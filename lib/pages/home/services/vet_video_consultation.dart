@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restoe/components/adaptive_app_bar.dart';
 import 'package:restoe/components/adaptive_page_scaffold.dart';
 import 'package:restoe/components/button.dart';
 import 'package:restoe/config/theme/theme.dart';
+import 'package:restoe/controllers/time_provider.dart';
+import 'package:restoe/pages/doctors/about_doctor_page.dart';
+import 'package:restoe/pages/home/services/Veternian.dart';
 import 'package:restoe/pages/home/services/pet_diet.dart';
+import 'package:restoe/pages/pet_onboarding/widgets/calender_widget.dart';
 import 'package:restoe/pages/profile/widgets/pet_card.dart';
 
 class VetVideoConsultation extends StatefulWidget {
@@ -37,6 +42,89 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
     }
   ];
 
+  void _showScrollableBottomSheet(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.6,
+          minChildSize: 0.6,
+          maxChildSize: 1.0,
+          builder: (context, scrollController) {
+            return Container(
+              padding: const EdgeInsets.all(16.0),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0),
+                ),
+              ),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Select walker',
+                          style: typography(context).title3.copyWith(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DoctorListScreen(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'View all',
+                            style: typography(context).body.copyWith(
+                                  color: const Color(0xff1A24DE),
+                                  fontSize: 12,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 12),
+                      child: SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              return const VetOption(label: 'Dr.Angad Singh');
+                            }),
+                      ),
+                    ),
+                    const Divider(
+                      height: 1,
+                      color: Color(0xffE0E0E0),
+                    ),
+                    buildCalenderPart(screenSize),
+                    buildtime(screenSize),
+                    buildbutton(context, screenSize)
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdaptivePageScaffold(
@@ -59,12 +147,13 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-          const SectionHeader(title: 'Vet Video Consultation'),
+          //const SectionHeader(title: 'Vet Video Consultation'),
+          const SectionHeader(title: 'Your Pets'),
           const PetsList(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SectionHeader(title: 'Your Pets'),
+              const SectionHeader(title: 'Training packages for XYZ'),
               GestureDetector(
                 onTap: () {},
                 child: Text(
@@ -78,136 +167,6 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
             ],
           ),
           buildConfusedCard(context),
-          // Stack(
-          //   children: [
-          //     SizedBox(
-          //       height: 680,
-          //       child: Column(
-          //         children: [
-          //           Padding(
-          //             padding: const EdgeInsets.only(top: 60.0),
-          //             child: Container(
-          //               height: 600,
-          //               width: double.infinity,
-          //               decoration: BoxDecoration(
-          //                 color: Colors.white,
-          //                 borderRadius: BorderRadius.circular(16),
-          //                 boxShadow: [
-          //                   BoxShadow(
-          //                     color: Colors.grey.withOpacity(0.3),
-          //                     spreadRadius: 2,
-          //                     blurRadius: 5,
-          //                     offset: const Offset(0, 3),
-          //                   ),
-          //                 ],
-          //               ),
-          //               child: Padding(
-          //                 padding:
-          //                     const EdgeInsets.only(left: 16.0, right: 16.0),
-          //                 child: Column(
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Center(
-          //                       child: Padding(
-          //                         padding: const EdgeInsets.only(top: 24.0),
-          //                         child: Image.asset(
-          //                           'assets/images/content/doctors.png',
-          //                           height: 90,
-          //                         ),
-          //                       ),
-          //                     ),
-          //                     Padding(
-          //                       padding: const EdgeInsets.only(top: 16.0),
-          //                       child: Text(
-          //                         'BASIC PLAN',
-          //                         style: typography(context).title3,
-          //                       ),
-          //                     ),
-          //                     Padding(
-          //                       padding: const EdgeInsets.only(top: 16.0),
-          //                       child: Row(
-          //                         children: [
-          //                           Text(
-          //                             'Rs.14999',
-          //                             style: typography(context).title1,
-          //                           ),
-          //                           Text(
-          //                             '/Only',
-          //                             style:
-          //                                 typography(context).strongSmallBody,
-          //                           ),
-          //                         ], //
-          //                       ),
-          //                     ),
-          //                     Padding(
-          //                       padding: const EdgeInsets.only(
-          //                           top: 12.0, bottom: 20),
-          //                       child: Text(
-          //                         ' Beautifully simple project planning',
-          //                         style: typography(context)
-          //                             .body
-          //                             .copyWith(color: const Color(0xff959595)),
-          //                       ),
-          //                     ),
-          //                     SizedBox(
-          //                       width: double.infinity,
-          //                       child: Button(
-          //                         padding: const EdgeInsets.only(
-          //                             top: 10, bottom: 10),
-          //                         borderRadius: BorderRadius.circular(6),
-          //                         onPressed: () {},
-          //                         variant: 'filled',
-          //                         label: 'Get Started Now',
-          //                         buttonColor: colors(context).primary.s500,
-          //                       ),
-          //                     ),
-          //                     Padding(
-          //                       padding: const EdgeInsets.only(
-          //                           top: 36.0, bottom: 20),
-          //                       child: Text(
-          //                         'Features',
-          //                         style: typography(context).title3,
-          //                       ),
-          //                     ),
-          //                     const CheckList(),
-          //                     const SizedBox(
-          //                       height: 12,
-          //                     ),
-          //                     const CheckList(),
-          //                     const SizedBox(
-          //                       height: 12,
-          //                     ),
-          //                     const CheckList(),
-          //                     const SizedBox(
-          //                       height: 12,
-          //                     ),
-          //                     const CheckList(),
-          //                     const SizedBox(
-          //                       height: 12,
-          //                     ),
-          //                     const CheckList()
-          //                   ],
-          //                 ),
-          //               ),
-          //             ),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Positioned(
-          //         left: 90,
-          //         top: 40,
-          //         child: Container(
-          //           padding: const EdgeInsets.only(
-          //               top: 10, bottom: 10, left: 22, right: 22),
-          //           decoration: BoxDecoration(
-          //             color: const Color(0xffF7C945),
-          //             borderRadius: BorderRadius.circular(34),
-          //           ),
-          //           child: const Text('Most Popular'),
-          //         ))
-          //   ],
-          // ),
 
           buildSwipeCards(context),
         ],
@@ -273,7 +232,7 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
 
   SizedBox buildSwipeCards(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: 600,
       child: PageView.builder(
         controller: _controller,
         itemCount: cardDAta.length + 1, // +1 for the 'Add a pet' card
@@ -302,132 +261,115 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
                         0.8,
                     child: Stack(
                       children: [
-                        SizedBox(
-                          height: 680,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 60.0),
-                                child: Container(
-                                  height: 600,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(16),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 3),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16.0, right: 16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 24.0),
+                                      child: Image.asset(
+                                        'assets/images/content/doctors.png',
+                                        height: 90,
                                       ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 16.0, right: 16.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 24.0),
-                                            child: Image.asset(
-                                              'assets/images/content/doctors.png',
-                                              height: 90,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 16.0),
-                                          child: Text(
-                                            'BASIC PLAN',
-                                            style: typography(context).title3,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 16.0),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                'Rs.14999',
-                                                style:
-                                                    typography(context).title1,
-                                              ),
-                                              Text(
-                                                '/Only',
-                                                style: typography(context)
-                                                    .strongSmallBody,
-                                              ),
-                                            ], //
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 12.0, bottom: 20),
-                                          child: Text(
-                                            ' Beautifully simple project planning',
-                                            style: typography(context)
-                                                .body
-                                                .copyWith(
-                                                    color: const Color(
-                                                        0xff959595)),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: Button(
-                                            padding: const EdgeInsets.only(
-                                                top: 10, bottom: 10),
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                            onPressed: () {},
-                                            variant: 'filled',
-                                            label: 'Get Started Now',
-                                            buttonColor:
-                                                colors(context).primary.s500,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 36.0, bottom: 20),
-                                          child: Text(
-                                            'Features',
-                                            style: typography(context).title3,
-                                          ),
-                                        ),
-                                        const CheckList(),
-                                        const SizedBox(
-                                          height: 12,
-                                        ),
-                                        const CheckList(),
-                                        const SizedBox(
-                                          height: 12,
-                                        ),
-                                        const CheckList(),
-                                        const SizedBox(
-                                          height: 12,
-                                        ),
-                                        const CheckList(),
-                                        const SizedBox(
-                                          height: 12,
-                                        ),
-                                        const CheckList()
-                                      ],
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    child: Text(
+                                      'BASIC PLAN',
+                                      style: typography(context).title3,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'Rs.14999',
+                                          style: typography(context).title1,
+                                        ),
+                                        Text(
+                                          '/Only',
+                                          style: typography(context)
+                                              .strongSmallBody,
+                                        ),
+                                      ], //
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 12.0, bottom: 20),
+                                    child: Text(
+                                      ' Beautifully simple project planning',
+                                      style: typography(context).body.copyWith(
+                                          color: const Color(0xff959595)),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: Button(
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 10),
+                                      borderRadius: BorderRadius.circular(6),
+                                      onPressed: () {
+                                        _showScrollableBottomSheet(context);
+                                      },
+                                      variant: 'filled',
+                                      label: 'Get Started Now',
+                                      buttonColor: colors(context).primary.s500,
+                                    ),
+                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(
+                                  //       top: 36.0, bottom: 36),
+                                  //   child: Text(
+                                  //     'Features',
+                                  //     style: typography(context).title3,
+                                  //   ),
+                                  // ),
+                                  // const CheckList(),
+                                  // const SizedBox(
+                                  //   height: 12,
+                                  // ),
+                                  // const CheckList(),
+                                  // const SizedBox(
+                                  //   height: 12,
+                                  // ),
+                                  // const CheckList(),
+                                  // const SizedBox(
+                                  //   height: 12,
+                                  // ),
+                                  // const CheckList(),
+                                  // const SizedBox(
+                                  //   height: 12,
+                                  // ),
+                                  // const CheckList()
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         Positioned(
-                            left: 90,
-                            top: 40,
+                            left: MediaQuery.of(context).size.width / 2 - 125,
                             child: Container(
                               padding: const EdgeInsets.only(
                                   top: 10, bottom: 10, left: 22, right: 22),
@@ -436,7 +378,7 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
                                 borderRadius: BorderRadius.circular(34),
                               ),
                               child: const Text('Most Popular'),
-                            ))
+                            )),
                       ],
                     ),
                   ),
@@ -471,11 +413,128 @@ class CheckList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8.0),
           child: Text(
             '01 Listing on  1 board for I month.',
-            style: typography(context).body,
+            style: typography(context).body.copyWith(fontSize: 12),
           ),
         ),
         //
       ],
     );
   }
+}
+
+class VetOption extends StatelessWidget {
+  final String label;
+
+  const VetOption({super.key, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 20),
+      child: Column(
+        children: [
+          Container(
+            height: 70,
+            width: 70,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                height: 20,
+                width: 20,
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 10,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Widget buildbutton(BuildContext context, Size screenSize) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 20, bottom: 20),
+    child: SizedBox(
+      height: 50,
+      width: screenSize.width,
+      child: Button(
+        borderRadius: BorderRadius.circular(42),
+        onPressed: () {},
+        variant: 'filled',
+        label: 'Confirm',
+        buttonColor: colors(context).primary.s500,
+        foregroundColor: Colors.white,
+      ),
+    ),
+  );
+}
+
+Widget buildCalenderPart(Size screenSize) {
+  return Padding(
+    padding: EdgeInsets.all(screenSize.width * 0.05),
+    child: Container(
+      decoration: BoxDecoration(
+        color: const Color(0xffFCFCFC),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xffE0E0E0)),
+      ),
+      child: const CalendarModalSheet(),
+    ),
+  );
+}
+
+Widget buildtime(Size screenSize) {
+  return Consumer(builder: (_, WidgetRef ref, __) {
+    final time = ref.watch(timeProvider);
+    return Padding(
+      padding: EdgeInsets.all(screenSize.width * 0.03),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+                3,
+                (_) => TimeTile(
+                      time: time,
+                    )),
+          ),
+          const SizedBox(height: 14.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+                3,
+                (_) => TimeTile(
+                      time: time,
+                    )),
+          ),
+          const SizedBox(height: 14.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+                3,
+                (_) => TimeTile(
+                      time: time,
+                    )),
+          ),
+        ],
+      ),
+    );
+  });
 }
