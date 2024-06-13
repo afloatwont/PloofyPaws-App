@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restoe/components/adaptive_page_scaffold.dart';
 import 'package:restoe/components/doctor_card.dart';
+import 'package:restoe/pages/doctors/about_doctor_page.dart';
 
 class DoctorListScreen extends StatelessWidget {
   final List<Map<String, dynamic>> doctorData = [
@@ -37,6 +38,8 @@ class DoctorListScreen extends StatelessWidget {
       'responseTime': '1 Hour',
     },
   ];
+
+   DoctorListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,13 +97,21 @@ class DoctorListScreen extends StatelessWidget {
               itemCount: doctorData.length,
               itemBuilder: (context, index) {
                 final doctor = doctorData[index];
-                return DoctorCard(
-                  name: doctor['name'],
-                  rating: doctor['rating'],
-                  reviews: doctor['reviews'],
-                  specialty: doctor['specialty'],
-                  experience: doctor['experience'],
-                  responseTime: doctor['responseTime'],
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AboutDoctorPage()));
+                  },
+                  child: DoctorCard(
+                    name: doctor['name'],
+                    rating: doctor['rating'],
+                    reviews: doctor['reviews'],
+                    specialty: doctor['specialty'],
+                    experience: doctor['experience'],
+                    responseTime: doctor['responseTime'],
+                  ),
                 );
               },
             ),

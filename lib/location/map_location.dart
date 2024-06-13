@@ -4,7 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
 class AddressFormScreen extends StatefulWidget {
-  const AddressFormScreen({Key? key}) : super(key: key);
+  const AddressFormScreen({super.key});
 
   @override
   _AddressFormScreenState createState() => _AddressFormScreenState();

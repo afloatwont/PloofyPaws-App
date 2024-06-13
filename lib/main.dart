@@ -5,7 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restoe/config/theme/theme.dart';
 import 'package:restoe/location/location.dart';
-import 'package:restoe/pages/home/services/Veterinarian.dart';
+import 'package:restoe/pages/home/services/Veternian.dart';
+import 'package:restoe/pages/home/services/add_diet.dart';
+import 'package:restoe/pages/home/services/pet_diet.dart';
 import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
 import 'package:restoe/pages/profile/pet_life_event/create_pet_memorial.dart';
 import 'package:restoe/pet_walking.dart';
@@ -47,6 +49,6 @@ class MyApp extends StatelessWidget {
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
           textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home: const PetOnboarding());
+        home:  const PetOnboarding());
   }
 }

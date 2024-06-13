@@ -77,6 +77,9 @@ flutter:
     - assets/images/services/
     - assets/lottie/
     - assets/svg/
+    - assets/svg/breakfastCard.png
+    - assets/images/placeholders/user_avatar.png
+    - assets/images/content/fish_bowl_art.png
 
 
 

@@ -4,122 +4,152 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:restoe/components/adaptive_page_scaffold.dart';
+import 'package:restoe/components/pet_list.dart';
+import 'package:restoe/components/section_header.dart';
 import 'package:restoe/config/theme/theme.dart';
 
-class PetWalkingScreen extends StatelessWidget {
-  PetWalkingScreen({super.key});
-  final selectedPlanProvider = StateProvider<String>((ref) => 'Trial Walk');
+import 'components/adaptive_app_bar.dart';
+
+class PetWalkingScreen extends ConsumerWidget {
+  const PetWalkingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return AdaptivePageScaffold(
-      centertitle: true,
-      //  previousPageTitle: 'My Pets',
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.grey,
-                child: Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                  size: 50,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedPlan = ref.watch(selectedPlanProvider);
+
+    return Scaffold(
+      body: AdaptivePageScaffold(
+        centertitle: true,
+        appBar: AdaptiveAppBar(
+          bottom: const Divider(color: Color(0xffD6D6D6)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Center(
+            child: Text('Pet Walking', style: typography(context).title3),
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.notifications_rounded),
+            onPressed: () {},
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: SectionHeader(title: 'My Pets'),
+                ),
+                const PetsList(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: SectionHeader(title: 'Packages Name'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: plans.length,
+                    itemBuilder: (context, index) {
+                      return PlanCard(
+                        plan: plans[index],
+                        isSelected: plans[index].title == selectedPlan,
+                        onTap: () {
+                          ref.read(selectedPlanProvider.notifier).state = plans[index].title;
+                        },
+                      );
+                    },
+                  ),
+                ),
+
+              GestureDetector(
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0,left: 16,right: 16),
+                  child: Container(
+
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      color: colors(context).primary.s500,
+                      borderRadius: BorderRadius.circular(36),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Continue',
+                          textAlign: TextAlign.center,
+                          style: typography(context).smallBody.copyWith(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.pets),
-              title: const Text('Pets'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
-      title: const Text('Pet walking'),
-      // -----------body---------------------------------
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: plans.length,
-                itemBuilder: (context, index) {
-                  return PlanCard(plan: plans[index]);
-                },
-              ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-              Text('Services for cats and dogs',
-                  style: typography(context).title3.copyWith(
-                        fontWeight: FontWeight.bold,
-                      )),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: ServiceCard(
-                      title: 'Dog',
-                      //---------------------------dog image---------------------------
 
-                      image: SvgPicture.asset(
-                        'assets/svg/dog1.svg',
-                        width: 45,
-                        height: 60,
-                      ), // Placeholder for dog image
-                      color: Colors.brown,
+
+                Text('Services for cats and dogs',
+                    style: typography(context).title3.copyWith(
+                      fontWeight: FontWeight.bold,
+                    )),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ServiceCard(
+                        title: 'Dog',
+                        image: SvgPicture.asset(
+                          'assets/svg/dog1.svg',
+                          width: 45,
+                          height: 60,
+                        ),
+                        color: Colors.brown,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: ServiceCard(
-                      title: 'Cat',
-                      //---------------------------cat image---------------------------
-                      image: SvgPicture.asset(
-                        'assets/svg/cat 1.svg',
-                        height: 50,
-                        width: 45,
-                      ), // Placeholder for cat image
-                      color: Colors.brown.shade200,
+                    Expanded(
+                      child: ServiceCard(
+                        title: 'Cat',
+                        image: SvgPicture.asset(
+                          'assets/svg/cat 1.svg',
+                          height: 50,
+                          width: 45,
+                        ),
+                        color: Colors.brown.shade200,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
-              Text('Testimonials',
-                  style: typography(context)
-                      .title3
-                      .copyWith(fontWeight: FontWeight.bold, fontSize: 18)),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-              const TestimonialCard(
-                name: 'Samaira Sharma',
-                rating: 5,
-                date: '5/05/2024',
-                feedback: 'Excellent support!',
-              ),
-              const TestimonialCard(
-                name: 'Samaira Sharma',
-                rating: 5,
-                date: '5/05/2024',
-                feedback: 'Excellent support!',
-              ),
-            ],
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                Text('Testimonials',
+                    style: typography(context)
+                        .title3
+                        .copyWith(fontWeight: FontWeight.bold, fontSize: 18)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                const TestimonialCard(
+                  name: 'Samaira Sharma',
+                  rating: 5,
+                  date: '5/05/2024',
+                  feedback: 'Excellent support!',
+                ),
+                const TestimonialCard(
+                  name: 'Samaira Sharma',
+                  rating: 5,
+                  date: '5/05/2024',
+                  feedback: 'Excellent support!',
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -127,68 +157,85 @@ class PetWalkingScreen extends StatelessWidget {
   }
 }
 
-// ----------------------------------plan offer cards----------------------------
+final selectedPlanProvider = StateProvider<String>((ref) => 'Trial Walk');
+
 class PlanCard extends StatelessWidget {
   final Plan plan;
+  final bool isSelected;
+  final VoidCallback onTap;
 
-  PlanCard({required this.plan});
+  const PlanCard({
+    super.key,
+    required this.plan,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     var edgeInsets = const EdgeInsets.all(3);
-    return Card(
-      // surfaceTintColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 2),
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        margin: edgeInsets,
+        margin: const EdgeInsets.symmetric(vertical: 2),
         decoration: BoxDecoration(
-          color: Colors.white,
-          gradient: plan.gradient,
           borderRadius: BorderRadius.circular(12),
         ),
-        // ------------------card-design---------------------------
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+          child: Container(
+            margin: edgeInsets,
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.black : Colors.white,
+              gradient: isSelected ? null : plan.gradient,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(plan.title,
-                      style: typography(context)
-                          .title2
-                          .copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 2)),
-                  Text(
-                    plan.description,
-                    style: typography(context).smallBody.copyWith(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(plan.title,
+                          style: typography(context).title2.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: isSelected ? Colors.white : Colors.black)),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 2)),
+                      Text(
+                        plan.description,
+                        style: typography(context).smallBody.copyWith(
                           fontSize: 12,
+                          color: isSelected ? Colors.white : Colors.black,
                         ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(plan.price,
+                          style: typography(context).strong.copyWith(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: isSelected ? Colors.white : Colors.black)),
+                      Text(
+                        plan.originalPrice,
+                        style: typography(context).smallBody.copyWith(
+                            decoration: TextDecoration.lineThrough,
+                            color: isSelected ? Colors.white : Colors.grey,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(plan.price,
-                      style: typography(context)
-                          .strong
-                          .copyWith(fontSize: 15, fontWeight: FontWeight.bold)),
-                  Text(
-                    plan.originalPrice,
-                    style: typography(context).smallBody.copyWith(
-                        decoration: TextDecoration.lineThrough,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -196,7 +243,6 @@ class PlanCard extends StatelessWidget {
   }
 }
 
-// -------------------------------plancard-model----------------------------------
 class Plan {
   final String title;
   final String price;
@@ -213,18 +259,12 @@ class Plan {
   });
 }
 
-// ---------------------------------------demo data-------------------------------
 final List<Plan> plans = [
   Plan(
     title: 'Trial Walk',
     price: 'Rs 99',
     originalPrice: 'Rs 199',
     description: '1 day, 1 time',
-    gradient: LinearGradient(
-      colors: [Colors.pink.shade100, Colors.pink.shade50],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    ),
   ),
   Plan(
     title: 'Monthly Plan',
@@ -252,75 +292,76 @@ final List<Plan> plans = [
   ),
 ];
 
-// --------------------------------servicecascrd------------------------------------------
 class ServiceCard extends StatelessWidget {
   final String title;
   final Widget image;
   final Color color;
 
-  const ServiceCard(
-      {super.key,
-      required this.title,
-      required this.image,
-      required this.color});
+  const ServiceCard({
+    super.key,
+    required this.title,
+    required this.image,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      color: color,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
-                Text(
-                  title,
-                  style: typography(context).title1.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                      ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
-                GestureDetector(
-                  child: Container(
-                    // width: 90,
-                    // height: 20,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.white),
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        child: Text(
-                          'Explore services',
-                          style: typography(context)
-                              .smallBody
-                              .copyWith(color: Colors.white, fontSize: 9),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-            image
-          ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
         ),
-      ),
+        color: color,
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+        Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+        const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
+    Text(
+    title,
+    style: typography(context).title1.copyWith(
+    color: Colors.white,
+    fontWeight: FontWeight.w800,
+    fontSize: 16,
+    ),
+    ),
+    const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+    GestureDetector(
+    onTap: () {
+    // Add your onTap action here!
+    },
+    child: Container(
+    decoration: BoxDecoration(
+    border: Border.all(color: Colors.white),
+    borderRadius: BorderRadius.circular(12),
+    ),
+    child: Center(
+    child: Padding(
+    padding: const EdgeInsets.symmetric(
+    horizontal: 8, vertical: 4),
+    child: Text(
+    'Explore services',
+    style: typography(context)
+        .smallBody
+        .copyWith(color: Colors.white, fontSize: 9),
+    ),
+    ),
+    ),
+    ),
+    ),
+    const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            ],
+        ),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                  image,
+                ],
+            ),
+        ),
     );
   }
 }
@@ -371,7 +412,7 @@ class TestimonialCard extends StatelessWidget {
                         Row(
                           children: List.generate(
                             rating,
-                            (index) => const Icon(Icons.star,
+                                (index) => const Icon(Icons.star,
                                 color: Colors.yellowAccent, size: 18),
                           ),
                         ),
@@ -394,3 +435,4 @@ class TestimonialCard extends StatelessWidget {
     );
   }
 }
+

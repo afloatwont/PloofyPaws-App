@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
 import 'package:restoe/components/button.dart';
 import 'package:restoe/config/theme/theme.dart';
 import 'package:restoe/controllers/time_provider.dart';
 import 'package:restoe/pages/pet_onboarding/widgets/calender_widget.dart';
+import 'package:restoe/razorpay/payment_razorpay.dart';
 
 class AboutDoctorPage extends StatefulWidget {
   const AboutDoctorPage({super.key});
@@ -34,7 +33,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
   }
 
   Widget _buildHeaderImage(Size screenSize) {
-    return Container(
+    return SizedBox(
       height: screenSize.height * 0.3, // Responsive height
       width: screenSize.width,
       child: Center(
@@ -122,9 +121,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
       child: Text(
         title,
         style: typography(context).title2.copyWith(
-              fontSize: 16,
-              color: const Color(0xff1E1C61),
-            ),
+          fontSize: 16,
+          color: const Color(0xff1E1C61),
+        ),
       ),
     );
   }
@@ -155,7 +154,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
               radius: 15,
               backgroundColor: Color(0xffDEE6F8),
               backgroundImage:
-                  AssetImage('assets/images/placeholders/user_avatar.png'),
+              AssetImage('assets/images/placeholders/user_avatar.png'),
             ),
           ),
           Positioned(
@@ -164,9 +163,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
             child: Text(
               'Dr. Samira Sharma',
               style: typography(context).title2.copyWith(
-                    fontSize: 14,
-                    color: const Color(0xff000000),
-                  ),
+                fontSize: 14,
+                color: const Color(0xff000000),
+              ),
             ),
           ),
           Positioned(
@@ -175,9 +174,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
             child: Text(
               'Veterinarian (Animal welfare)',
               style: typography(context).body.copyWith(
-                    fontSize: 10,
-                    color: const Color(0xff000000),
-                  ),
+                fontSize: 10,
+                color: const Color(0xff000000),
+              ),
             ),
           ),
           Positioned(
@@ -193,9 +192,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
                 Text(
                   '4.8',
                   style: typography(context).body.copyWith(
-                        fontSize: 10,
-                        color: const Color(0xff000000),
-                      ),
+                    fontSize: 10,
+                    color: const Color(0xff000000),
+                  ),
                 ),
               ],
             ),
@@ -218,9 +217,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
                   Text(
                     'Tues, 28 May 2024, 10:00 am IST',
                     style: typography(context).body.copyWith(
-                          fontSize: 10,
-                          color: Colors.white,
-                        ),
+                      fontSize: 10,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
@@ -238,7 +237,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
             top: 10,
             left: 230,
             child:
-                Image.asset('assets/images/placeholders/doctor_with_pet.png'),
+            Image.asset('assets/images/placeholders/doctor_with_pet.png'),
           ),
         ],
       ),
@@ -270,27 +269,27 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                   3,
-                  (_) => TimeTile(
-                        time: time,
-                      )),
+                      (_) => TimeTile(
+                    time: time,
+                  )),
             ),
             const SizedBox(height: 14.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                   3,
-                  (_) => TimeTile(
-                        time: time,
-                      )),
+                      (_) => TimeTile(
+                    time: time,
+                  )),
             ),
             const SizedBox(height: 14.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                   3,
-                  (_) => TimeTile(
-                        time: time,
-                      )),
+                      (_) => TimeTile(
+                    time: time,
+                  )),
             ),
           ],
         ),
@@ -306,7 +305,12 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
         width: screenSize.width,
         child: Button(
           borderRadius: BorderRadius.circular(42),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const RazorPayScreen()));
+          },
           variant: 'filled',
           label: 'Confirm',
           buttonColor: colors(context).primary.s500,

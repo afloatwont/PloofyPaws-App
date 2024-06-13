@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:restoe/components/adaptive_app_bar.dart';
 import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/user_avatar.dart';
+import 'package:restoe/components/pet_list.dart';
+import 'package:restoe/components/section_header.dart';
 import 'package:restoe/config/theme/theme.dart';
 import 'package:restoe/controllers/card_selection_provider.dart';
 
@@ -19,7 +20,7 @@ class _DietPageState extends State<DietPage> {
   Widget build(BuildContext context) {
     return AdaptivePageScaffold(
       appBar: AdaptiveAppBar(
-        bottom: const Divider(color: Color(0xffD6D6D6)),
+        bottom: const Divider(color: Color(0xffD6D6D6),),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_rounded),
           onPressed: () {
@@ -31,7 +32,9 @@ class _DietPageState extends State<DietPage> {
         ),
         trailing: IconButton(
           icon: const Icon(Icons.notifications_rounded),
-          onPressed: () {},
+          onPressed: () {
+
+          },
         ),
       ),
       body: ListView(
@@ -52,84 +55,32 @@ class _DietPageState extends State<DietPage> {
   }
 }
 
-class SectionHeader extends StatelessWidget {
-  final String title;
 
-  const SectionHeader({super.key, required this.title});
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
-      child: Text(
-        title,
-        style: typography(context).title3.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
-      ),
-    );
-  }
-}
 
-class PetsList extends StatelessWidget {
-  const PetsList({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 6, // Static, to be fetched from database
-        itemBuilder: (BuildContext context, int index) {
-          return const Padding(
-            padding: EdgeInsets.only(left: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  radius: 26,
-                  backgroundImage: AssetImage(
-                      'assets/images/placeholders/user_avatar.png'),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 4.0, left: 8),
-                  child: Text('Arlo'), // from backend
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
 
 class CalorieCard extends StatelessWidget {
   const CalorieCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(0, 4),
-                blurRadius: 10,
-              ),
-            ],
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 4),
+            blurRadius: 10,
           ),
-          child: Column(
+        ],
+      ),
+      child: Row(
+        children: [
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -190,14 +141,9 @@ class CalorieCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        Positioned(
-          top: 20,
-          left: MediaQuery.of(context).size.width * 0.5,
-          child: Image.asset(
-              'assets/images/content/undraw_breakfast_psiw_2_-removebg-preview 1.png'),
-        ),
-      ],
+          Expanded(child: Image.asset('assets/svg/breakfastCard.png'))
+        ],
+      ),
     );
   }
 }

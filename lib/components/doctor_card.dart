@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:restoe/config/theme/placebo_colors.dart';
 
 class DoctorCard extends StatelessWidget {
@@ -99,7 +97,7 @@ class DoctorCard extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(6))),
+                            const BorderRadius.all(Radius.circular(6))),
                         child: Row(
                           children: [
                             const Icon(Icons.star,
@@ -119,7 +117,7 @@ class DoctorCard extends StatelessWidget {
                       Text(
                         '$reviews reviews',
                         style:
-                            const TextStyle(fontSize: 12, color: primaryColor),
+                        const TextStyle(fontSize: 12, color: primaryColor),
                       ),
                     ],
                   ),

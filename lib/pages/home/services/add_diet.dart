@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restoe/components/adaptive_page_scaffold.dart';
 import 'package:restoe/components/body_with_action.dart';
@@ -7,12 +6,13 @@ import 'package:restoe/components/button.dart';
 import 'package:restoe/config/theme/placebo_colors.dart';
 
 class AddDietScreen extends ConsumerWidget {
+  const AddDietScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dietProvider = ref.watch(dietProviderNotifier);
     return AdaptivePageScaffold(
       automaticallyImplyLeading: true,
-      // previousPageTitle: 'Records',
       title: const Text("Add diet"),
       body: BodyWithAction(
           action: Button(

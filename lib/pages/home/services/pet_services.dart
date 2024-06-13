@@ -4,6 +4,8 @@ import 'package:restoe/config/theme/theme.dart';
 import 'package:restoe/pages/doctors/about_doctor_page.dart';
 import 'package:restoe/pages/home/core/data/services_data.dart';
 import 'package:restoe/pages/home/services/pet_diet.dart';
+import 'package:restoe/pages/home/services/vet_video_consultation.dart';
+import 'package:restoe/pet_walking.dart';
 
 class PetServices extends StatelessWidget {
   const PetServices({
@@ -13,9 +15,9 @@ class PetServices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
+      PetWalkingScreen(),
       const Placeholder(),
-      const Placeholder(),
-      const AboutDoctorPage(),
+      const VetVideoConsultation(),
       const DietPage(),
       const Placeholder(),
       const Placeholder(),
@@ -44,9 +46,9 @@ class PetServices extends StatelessWidget {
             Text(
               data.title,
               style: typography(context).smallBody.copyWith(
-                    color: colors(context).secondary.s500,
-                    fontWeight: FontWeight.bold,
-                  ),
+                color: colors(context).secondary.s500,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         );
