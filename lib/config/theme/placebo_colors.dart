@@ -287,5 +287,5 @@
   // );
   }
 
-  const primaryColor = Color(0xFF07332A);
+  const primaryColor = Colors.black;
 

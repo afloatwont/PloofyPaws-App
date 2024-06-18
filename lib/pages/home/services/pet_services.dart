@@ -15,7 +15,7 @@ class PetServices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
-      PetWalkingScreen(),
+      const PetWalkingScreen(),
       const Placeholder(),
       const VetVideoConsultation(),
       const DietPage(),

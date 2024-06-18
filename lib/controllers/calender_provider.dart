@@ -8,6 +8,6 @@ class CalendarProvider {
   });
 
   static final focusedDayProvider = StateProvider<DateTime>((ref) {
-    return DateTime.now(); 
+    return DateTime.now();
   });
 }
