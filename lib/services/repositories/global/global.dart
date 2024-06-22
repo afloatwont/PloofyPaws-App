@@ -1,3 +1,3 @@
-import 'package:restoe/services/repositories/auth/base_repository.dart';
+import 'package:ploofypaws/services/repositories/auth/base_repository.dart';
 
 class GlobalRepository extends BaseRepository {}

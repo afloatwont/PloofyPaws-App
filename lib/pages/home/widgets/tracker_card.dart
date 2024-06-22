@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class TrackerAdCard extends StatelessWidget {
   const TrackerAdCard({super.key});
@@ -37,7 +37,7 @@ class TrackerAdCard extends StatelessWidget {
                 const Spacer(),
                 Text(
                   "Restoe",
-                  style: typography(context).restoeTitle.copyWith(color: Colors.white, fontSize: 16),
+                  style: typography(context).ploofypawsTitle.copyWith(color: Colors.white, fontSize: 16),
                 )
               ])
             ],

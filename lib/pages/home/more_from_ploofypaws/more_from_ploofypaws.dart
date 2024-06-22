@@ -2,18 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restoe/components/dot_indicator.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/home/core/data/more_from_restoe_services.dart';
+import 'package:ploofypaws/components/dot_indicator.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/home/core/data/more_from_ploofypaws_services.dart';
+import 'package:ploofypaws/pages/home/core/data/more_from_restoe_services.dart';
 
-class MoreFromRestoe extends StatefulWidget {
-  const MoreFromRestoe({super.key});
+class MoreFromPloofyPaws extends StatefulWidget {
+  const MoreFromPloofyPaws({super.key});
 
   @override
-  State<MoreFromRestoe> createState() => _MoreFromRestoeState();
+  State<MoreFromPloofyPaws> createState() => _MoreFromPloofyPawsState();
 }
 
-class _MoreFromRestoeState extends State<MoreFromRestoe> {
+class _MoreFromPloofyPawsState extends State<MoreFromPloofyPaws> {
   int _currentPageIndex = 0;
   late Timer _timer;
   final PageController _pageController = PageController();

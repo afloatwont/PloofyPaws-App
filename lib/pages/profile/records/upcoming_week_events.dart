@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:restoe/components/tag.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/components/tag.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class UpcomingDaysEvents extends StatefulWidget {
   const UpcomingDaysEvents({super.key});

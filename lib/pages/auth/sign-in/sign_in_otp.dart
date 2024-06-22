@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/adaptive_app_bar.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/countdown_timer.dart';
-import 'package:restoe/components/input_label.dart';
-import 'package:restoe/components/otp_text_field.dart';
-import 'package:restoe/pages/auth/sign-in/sign_in_password.dart';
+import 'package:ploofypaws/components/adaptive_app_bar.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/countdown_timer.dart';
+import 'package:ploofypaws/components/input_label.dart';
+import 'package:ploofypaws/components/otp_text_field.dart';
+import 'package:ploofypaws/pages/auth/sign-in/sign_in_password.dart';
 
 class SignInOtp extends StatefulWidget {
   final String? email;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/no_data_available.dart';
-import 'package:restoe/config/icons/placeholders/medical_record_placeholder.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/profile/records/add_records/add_medical_record.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/no_data_available.dart';
+import 'package:ploofypaws/config/icons/placeholders/medical_record_placeholder.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/profile/records/add_records/add_medical_record.dart';
 
 class UpdateMedicalRecords extends StatefulWidget {
   const UpdateMedicalRecords({super.key});

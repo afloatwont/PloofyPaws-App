@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/input_label.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/input_label.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class DeviceFound extends StatefulWidget {
   final BarcodeCapture? barcodeCapture;

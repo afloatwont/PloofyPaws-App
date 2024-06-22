@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/controllers/calender_provider.dart';
+import 'package:ploofypaws/controllers/calender_provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

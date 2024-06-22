@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:restoe/pages/auth/sign-in/sign_in.dart';
-import 'package:restoe/pages/root/root_guard.dart';
+import 'package:ploofypaws/pages/auth/sign-in/sign_in.dart';
+import 'package:ploofypaws/pages/root/root_guard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthGuard extends StatefulWidget {

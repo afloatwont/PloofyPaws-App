@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
 
 class NotificationSettings extends StatefulWidget {
   const NotificationSettings({super.key});

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/gradient_header.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/profile/app_settings/app_settings.dart';
-import 'package:restoe/pages/profile/widgets/pet_card.dart';
+import 'package:ploofypaws/components/gradient_header.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/profile/app_settings/app_settings.dart';
+import 'package:ploofypaws/pages/profile/widgets/pet_card.dart';
 
 class ModalFit extends StatelessWidget {
   const ModalFit({super.key});
@@ -124,7 +124,7 @@ class _ProfileState extends ConsumerState<Profile> {
                                     const Icon(Iconsax.add_circle, size: 50, color: Colors.white),
                                     const SizedBox(height: 16),
                                     Text('Add a pet',
-                                        style: typography(context).restoeTitle.copyWith(color: Colors.amber)),
+                                        style: typography(context).ploofypawsTitle.copyWith(color: Colors.amber)),
                                   ],
                                 ),
                               ),

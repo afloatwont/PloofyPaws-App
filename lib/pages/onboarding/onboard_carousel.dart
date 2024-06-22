@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/auth/sign-in/sign_in.dart';
-import 'package:restoe/pages/onboarding/onboarding.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/auth/sign-in/sign_in.dart';
+import 'package:ploofypaws/pages/onboarding/onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingCarousel extends StatefulWidget {
@@ -33,7 +33,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
           children: [
             _buildPage(
               'Your home page',
-              'The go-to-place for all your major updates on \nrestoe. husahduasd ',
+              'The go-to-place for all your major updates on \nploofypaws. husahduasd ',
               1,
             ),
             _buildPage(
@@ -107,7 +107,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: typography(context).restoeTitle.copyWith(
+                    style: typography(context).ploofypawsTitle.copyWith(
                         fontSize: 24, letterSpacing: 0.5, color: Colors.white)),
                 const SizedBox(height: 12.0),
                 Text(

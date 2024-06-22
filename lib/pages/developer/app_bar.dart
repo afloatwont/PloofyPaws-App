@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:restoe/pages/root/platform_app_bar.dart';
+import 'package:ploofypaws/pages/root/platform_app_bar.dart';
 
 const title = Text('Developers', style: TextStyle(letterSpacing: -1));
 

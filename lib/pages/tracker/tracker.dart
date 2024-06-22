@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/gradient_header.dart';
-import 'package:restoe/components/gradient_text_icon.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/tracker/pairing.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/gradient_header.dart';
+import 'package:ploofypaws/components/gradient_text_icon.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/tracker/pairing.dart';
 
 class Tracker extends StatefulWidget {
   const Tracker({super.key});

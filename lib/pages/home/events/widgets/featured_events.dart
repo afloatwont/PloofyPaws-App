@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/pages/home/events/widgets/event_card.dart';
+import 'package:ploofypaws/pages/home/events/widgets/event_card.dart';
 
 class FeaturedEvents extends StatelessWidget {
   final List<PetEventItem> items;

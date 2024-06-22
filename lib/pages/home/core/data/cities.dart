@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/config/icons/cities/cities.dart';
+import 'package:ploofypaws/config/icons/cities/cities.dart';
 
 class Cities {
   final int id;

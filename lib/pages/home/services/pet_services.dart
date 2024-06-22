@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/config/icons/pet_services/pet_services.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/doctors/about_doctor_page.dart';
-import 'package:restoe/pages/home/core/data/services_data.dart';
-import 'package:restoe/pages/home/services/pet_diet.dart';
-import 'package:restoe/pages/home/services/vet_video_consultation.dart';
-import 'package:restoe/pet_walking.dart';
+import 'package:ploofypaws/config/icons/pet_services/pet_services.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/doctors/about_doctor_page.dart';
+import 'package:ploofypaws/pages/home/core/data/services_data.dart';
+import 'package:ploofypaws/pages/home/services/pet_diet.dart';
+import 'package:ploofypaws/pages/home/services/vet_video_consultation.dart';
+import 'package:ploofypaws/pet_walking.dart';
 
 class PetServices extends StatelessWidget {
   const PetServices({

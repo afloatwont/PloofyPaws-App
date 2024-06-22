@@ -1,4 +1,4 @@
-import 'package:restoe/services/networking/api_provider.dart';
+import 'package:ploofypaws/services/networking/api_provider.dart';
 
 abstract class BaseRepository {
   final ApiProvider provider = ApiProvider();

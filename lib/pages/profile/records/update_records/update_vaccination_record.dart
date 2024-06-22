@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/no_data_available.dart';
-import 'package:restoe/config/icons/placeholders/vaccination_record_placeholder.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/helpers/date_format.dart';
-import 'package:restoe/pages/profile/records/add_records/add_vaccination_record.dart';
-import 'package:restoe/pages/profile/records/update_records/vaccination_details.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/no_data_available.dart';
+import 'package:ploofypaws/config/icons/placeholders/vaccination_record_placeholder.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/helpers/date_format.dart';
+import 'package:ploofypaws/pages/profile/records/add_records/add_vaccination_record.dart';
+import 'package:ploofypaws/pages/profile/records/update_records/vaccination_details.dart';
 
 class UpdateVaccinationRecords extends StatefulWidget {
   const UpdateVaccinationRecords({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/components/gradient_border.dart';
-import 'package:restoe/config/icons/ai.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/components/gradient_border.dart';
+import 'package:ploofypaws/config/icons/ai.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class AICard extends StatelessWidget {
   final VoidCallback onTap;

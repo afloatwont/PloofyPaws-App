@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:restoe/pages/home/services/pet_diet.dart';
+import 'package:ploofypaws/pages/home/services/pet_diet.dart';
 
 final selectionProvider =
     StateNotifierProvider<SelectionNotifier, SelectionState>((ref) {

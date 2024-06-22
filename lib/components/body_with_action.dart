@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:restoe/components/button.dart';
+import 'package:ploofypaws/components/button.dart';
 
 class BodyWithAction extends StatelessWidget {
   final Widget action;

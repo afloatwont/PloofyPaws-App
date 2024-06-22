@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/profile/app_settings/account_settings/accounts.dart';
-import 'package:restoe/pages/profile/app_settings/notification/notifications.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/profile/app_settings/account_settings/accounts.dart';
+import 'package:ploofypaws/pages/profile/app_settings/notification/notifications.dart';
 
 class AppSettings extends ConsumerStatefulWidget {
   const AppSettings({super.key});
@@ -134,7 +134,7 @@ class _ProfileState extends ConsumerState<AppSettings> {
       children: [
         Text(
           'Restoe',
-          style: typography(context).restoeTitle.copyWith(color: colors(context).primary.s100, fontSize: 14),
+          style: typography(context).ploofypawsTitle.copyWith(color: colors(context).primary.s100, fontSize: 14),
         ),
         Text(
           'Version 1.0.0',

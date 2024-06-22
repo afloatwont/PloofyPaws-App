@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:restoe/components/input_label.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/home/core/data/services_data.dart';
-import 'package:restoe/pages/home/events/pet_events.dart';
-import 'package:restoe/pages/home/more_from_restoe/more_from_restoe.dart';
-import 'package:restoe/pages/home/services/pet_services.dart';
-import 'package:restoe/pages/home/skelton.dart';
-import 'package:restoe/pages/home/widgets/ai_card.dart';
-import 'package:restoe/pages/home/widgets/footer.dart';
-import 'package:restoe/pages/home/widgets/stacked_cards.dart';
-import 'package:restoe/pages/home/widgets/tracker_card.dart';
+import 'package:ploofypaws/components/input_label.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/home/core/data/services_data.dart';
+import 'package:ploofypaws/pages/home/events/pet_events.dart';
+import 'package:ploofypaws/pages/home/more_from_ploofypaws/more_from_ploofypaws.dart';
+import 'package:ploofypaws/pages/home/services/pet_services.dart';
+import 'package:ploofypaws/pages/home/skelton.dart';
+import 'package:ploofypaws/pages/home/widgets/ai_card.dart';
+import 'package:ploofypaws/pages/home/widgets/footer.dart';
+import 'package:ploofypaws/pages/home/widgets/stacked_cards.dart';
+import 'package:ploofypaws/pages/home/widgets/tracker_card.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({super.key});
@@ -66,7 +66,7 @@ class _HomeState extends ConsumerState<Home> {
         const SizedBox(height: 16),
         _buildLabel(context, "More from Restoe", false, null),
         const SizedBox(height: 16),
-        const MoreFromRestoe(),
+        const MoreFromPloofyPaws(),
         const SizedBox(height: 24),
         const TrackerAdCard(),
         const Footer(),

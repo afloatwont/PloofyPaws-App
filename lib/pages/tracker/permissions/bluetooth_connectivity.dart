@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class BluetoothIosInstruction extends StatelessWidget {
   const BluetoothIosInstruction({super.key});

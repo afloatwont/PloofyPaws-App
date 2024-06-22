@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class PlaceboTypography extends ThemeExtension<PlaceboTypography> {
   const PlaceboTypography({
     required this.largeTitle,
-    required this.restoeTitle,
+    required this.ploofypawsTitle,
     required this.title1,
     required this.title2,
     required this.title3,
@@ -19,7 +19,7 @@ class PlaceboTypography extends ThemeExtension<PlaceboTypography> {
   });
 
   final TextStyle largeTitle;
-  final TextStyle restoeTitle;
+  final TextStyle ploofypawsTitle;
   final TextStyle title1;
   final TextStyle title2;
   final TextStyle title3;
@@ -35,7 +35,7 @@ class PlaceboTypography extends ThemeExtension<PlaceboTypography> {
   @override
   PlaceboTypography copyWith({
     TextStyle? largeTitle,
-    TextStyle? restoeTitle,
+    TextStyle? ploofypawsTitle,
     TextStyle? title1,
     TextStyle? title2,
     TextStyle? title3,
@@ -50,7 +50,7 @@ class PlaceboTypography extends ThemeExtension<PlaceboTypography> {
   }) {
     return PlaceboTypography(
       largeTitle: largeTitle ?? this.largeTitle,
-      restoeTitle: restoeTitle ?? this.restoeTitle,
+      ploofypawsTitle: ploofypawsTitle ?? this.ploofypawsTitle,
       title1: title1 ?? this.title1,
       title2: title2 ?? this.title2,
       title3: title3 ?? this.title3,
@@ -80,7 +80,7 @@ class PlaceboTypography extends ThemeExtension<PlaceboTypography> {
 
 // the light theme
 const textTheme = PlaceboTypography(
-  restoeTitle: TextStyle(
+  ploofypawsTitle: TextStyle(
     fontFamily: 'Black-Mango',
     color: Colors.black,
     fontSize: 34,

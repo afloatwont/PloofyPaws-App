@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:restoe/pages/tracker/permissions/bluetooth_connectivity_android.dart';
+import 'package:ploofypaws/pages/tracker/permissions/bluetooth_connectivity_android.dart';
 
 class DeveloperMode extends StatefulWidget {
   const DeveloperMode({super.key});

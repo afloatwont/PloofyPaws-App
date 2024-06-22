@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:restoe/components/adaptive_app_bar.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/components/adaptive_app_bar.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class SelectType {
   final String uuid;

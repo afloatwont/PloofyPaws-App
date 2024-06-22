@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 enum SnackBarType {
   success,

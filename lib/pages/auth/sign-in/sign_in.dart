@@ -6,16 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/input_label.dart';
-import 'package:restoe/config/icons/google.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/auth/sign-in/sign_in_otp.dart';
-import 'package:restoe/pages/auth/sign-up/sign_up.dart';
-import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
-import 'package:restoe/services/networking/exceptions.dart';
-import 'package:restoe/services/repositories/auth/auth.dart';
-import 'package:restoe/services/repositories/auth/model.dart' as models;
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/input_label.dart';
+import 'package:ploofypaws/config/icons/google.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/auth/sign-in/sign_in_otp.dart';
+import 'package:ploofypaws/pages/auth/sign-up/sign_up.dart';
+import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
+import 'package:ploofypaws/services/networking/exceptions.dart';
+import 'package:ploofypaws/services/repositories/auth/auth.dart';
+import 'package:ploofypaws/services/repositories/auth/model.dart' as models;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends ConsumerStatefulWidget {

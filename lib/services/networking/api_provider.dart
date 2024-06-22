@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:restoe/services/networking/exceptions.dart';
+import 'package:ploofypaws/services/networking/exceptions.dart';
 
 const _baseUrl = "";
 

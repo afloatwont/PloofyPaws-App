@@ -1,4 +1,4 @@
-name: restoe
+name: ploofypaws
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -15,7 +15,6 @@ dependencies:
 
 
   cupertino_icons: ^1.0.8
-  firebase_core:
   google_fonts: ^6.2.1
   modal_bottom_sheet: ^3.0.0
   flutter_native_splash: ^2.4.0

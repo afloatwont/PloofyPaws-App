@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/components/adaptive_loading.dart';
-import 'package:restoe/pages/pet_onboarding/pet_onboard.dart';
-import 'package:restoe/pages/root/root.dart';
+import 'package:ploofypaws/components/adaptive_loading.dart';
+import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
+import 'package:ploofypaws/pages/root/root.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RootGuard extends StatefulWidget {

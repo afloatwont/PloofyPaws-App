@@ -3,17 +3,17 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/keep_alive.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/pet_onboarding/add_update_extra_details.dart';
-import 'package:restoe/pages/pet_onboarding/add_update_pet_dob.dart';
-import 'package:restoe/pages/pet_onboarding/add_update_pet_gender.dart';
-import 'package:restoe/pages/pet_onboarding/add_update_pet_name.dart';
-import 'package:restoe/pages/pet_onboarding/add_update_pet_size.dart';
-import 'package:restoe/pages/pet_onboarding/add_update_pet_type_and_breed.dart';
-import 'package:restoe/pages/pet_onboarding/data/breed.dart';
-import 'package:restoe/pages/root/root.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/keep_alive.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/pet_onboarding/add_update_extra_details.dart';
+import 'package:ploofypaws/pages/pet_onboarding/add_update_pet_dob.dart';
+import 'package:ploofypaws/pages/pet_onboarding/add_update_pet_gender.dart';
+import 'package:ploofypaws/pages/pet_onboarding/add_update_pet_name.dart';
+import 'package:ploofypaws/pages/pet_onboarding/add_update_pet_size.dart';
+import 'package:ploofypaws/pages/pet_onboarding/add_update_pet_type_and_breed.dart';
+import 'package:ploofypaws/pages/pet_onboarding/data/breed.dart';
+import 'package:ploofypaws/pages/root/root.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PetOnboarding extends StatefulWidget {
@@ -104,8 +104,8 @@ class _PetOnboardingState extends State<PetOnboarding> with SingleTickerProvider
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Lets setup your \npet for restoe life. \nshall we?',
-              style: typography(context).restoeTitle.copyWith(fontSize: 26),
+              'Lets setup your \npet for ploofypaws life. \nshall we?',
+              style: typography(context).ploofypawsTitle.copyWith(fontSize: 26),
             ),
           ),
         ],

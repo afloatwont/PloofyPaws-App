@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restoe/components/adaptive_loading.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/avatar_modal_sheet.dart';
-import 'package:restoe/components/user_avatar.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/profile/app_settings/profile_settings.dart';
-import 'package:restoe/pages/root/init_app.dart';
-import 'package:restoe/pages/root/provider.dart';
-import 'package:restoe/services/repositories/auth/auth.dart';
-import 'package:restoe/services/repositories/auth/model.dart' as models;
+import 'package:ploofypaws/components/adaptive_loading.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/avatar_modal_sheet.dart';
+import 'package:ploofypaws/components/user_avatar.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/profile/app_settings/profile_settings.dart';
+import 'package:ploofypaws/pages/root/init_app.dart';
+import 'package:ploofypaws/pages/root/provider.dart';
+import 'package:ploofypaws/services/repositories/auth/auth.dart';
+import 'package:ploofypaws/services/repositories/auth/model.dart' as models;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSettings extends ConsumerStatefulWidget {

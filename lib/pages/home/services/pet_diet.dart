@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:restoe/components/adaptive_app_bar.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/pet_list.dart';
-import 'package:restoe/components/section_header.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/controllers/card_selection_provider.dart';
+import 'package:ploofypaws/components/adaptive_app_bar.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/pet_list.dart';
+import 'package:ploofypaws/components/section_header.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/controllers/card_selection_provider.dart';
 
 class DietPage extends StatefulWidget {
   const DietPage({super.key});

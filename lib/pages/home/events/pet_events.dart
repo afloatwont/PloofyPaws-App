@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restoe/components/adaptive_modal_bottom_sheet.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/input_label.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/home/core/data/cities.dart';
-import 'package:restoe/pages/home/events/event_details.dart';
-import 'package:restoe/pages/home/events/widgets/event_card.dart';
-import 'package:restoe/pages/home/events/widgets/featured_events.dart';
+import 'package:ploofypaws/components/adaptive_modal_bottom_sheet.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/input_label.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/home/core/data/cities.dart';
+import 'package:ploofypaws/pages/home/events/event_details.dart';
+import 'package:ploofypaws/pages/home/events/widgets/event_card.dart';
+import 'package:ploofypaws/pages/home/events/widgets/featured_events.dart';
 
 class PetEvents extends StatefulWidget {
   const PetEvents({super.key});
@@ -117,7 +117,7 @@ class _PetEventsState extends State<PetEvents> {
               children: [
                 Text('Restoe',
                     style: typography(context)
-                        .restoeTitle
+                        .ploofypawsTitle
                         .copyWith(color: Colors.grey, fontSize: 26, fontWeight: FontWeight.bold)),
                 Row(
                   children: [

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restoe/components/adaptive_date_picker.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/body_with_action.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/helpers/date_format.dart';
+import 'package:ploofypaws/components/adaptive_date_picker.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/body_with_action.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/helpers/date_format.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:restoe/pages/profile/pet_life_event/add_media.dart';
+import 'package:ploofypaws/pages/profile/pet_life_event/add_media.dart';
 
 class PetMemorialScreen extends StatefulWidget {
   const PetMemorialScreen({super.key});

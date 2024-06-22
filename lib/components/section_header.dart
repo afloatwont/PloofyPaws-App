@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 /// A widget to display section headers.
 class SectionHeader extends StatelessWidget {

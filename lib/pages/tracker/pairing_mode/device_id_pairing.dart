@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/body_with_action.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/otp_text_field.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/tracker/pairing_mode/qr_code_pairing.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/body_with_action.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/otp_text_field.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/tracker/pairing_mode/qr_code_pairing.dart';
 
 class DeviceIDPairing extends StatefulWidget {
   const DeviceIDPairing({super.key});

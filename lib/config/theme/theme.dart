@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:restoe/config/theme/placebo_colors.dart';
-import 'package:restoe/config/theme/placebo_typography.dart';
+import 'package:ploofypaws/config/theme/placebo_colors.dart';
+import 'package:ploofypaws/config/theme/placebo_typography.dart';
 
 PlaceboColors colors(BuildContext context) {
   if (Platform.isIOS) {

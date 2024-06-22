@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/pages/profile/profile.dart';
-import 'package:restoe/pages/root/platform_app_bar.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/pages/profile/profile.dart';
+import 'package:ploofypaws/pages/root/platform_app_bar.dart';
 
 const title = Text('Your Pets');
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/doctor_card.dart';
-import 'package:restoe/pages/doctors/about_doctor_page.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/doctor_card.dart';
+import 'package:ploofypaws/pages/doctors/about_doctor_page.dart';
 
 class DoctorListScreen extends StatelessWidget {
   final List<Map<String, dynamic>> doctorData = [

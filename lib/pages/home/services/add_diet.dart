@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/body_with_action.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/config/theme/placebo_colors.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/body_with_action.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/config/theme/placebo_colors.dart';
 
 class AddDietScreen extends ConsumerWidget {
   const AddDietScreen({super.key});

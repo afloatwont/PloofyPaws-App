@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:restoe/services/repositories/auth/base_repository.dart';
-import 'package:restoe/services/repositories/auth/model.dart' as models;
+import 'package:ploofypaws/services/repositories/auth/base_repository.dart';
+import 'package:ploofypaws/services/repositories/auth/model.dart' as models;
 
 final authRepositoryProvider = Provider((ref) => AuthRepository());
 

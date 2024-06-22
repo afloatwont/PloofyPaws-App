@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/pages/auth/auth_guard/auth_guard.dart';
-import 'package:restoe/pages/onboarding/onboard_carousel.dart';
+import 'package:ploofypaws/pages/auth/auth_guard/auth_guard.dart';
+import 'package:ploofypaws/pages/onboarding/onboard_carousel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InitApp extends StatefulWidget {

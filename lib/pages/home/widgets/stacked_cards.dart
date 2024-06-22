@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/pages/home/widgets/dot_background.dart';
-import 'package:restoe/pages/home/widgets/swipeable_cards/swiper.dart';
+import 'package:ploofypaws/pages/home/widgets/dot_background.dart';
+import 'package:ploofypaws/pages/home/widgets/swipeable_cards/swiper.dart';
 
 class EventStackedCards extends StatefulWidget {
   final VoidCallback onTap;

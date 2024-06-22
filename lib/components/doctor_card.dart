@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/config/theme/placebo_colors.dart';
+import 'package:ploofypaws/config/theme/placebo_colors.dart';
 
 class DoctorCard extends StatelessWidget {
   final String name;

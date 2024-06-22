@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:restoe/config/theme/placebo_colors.dart';
+import 'package:ploofypaws/config/theme/placebo_colors.dart';
 
 class Button extends StatelessWidget {
   final void Function()? onPressed;

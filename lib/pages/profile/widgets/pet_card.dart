@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/profile/records/pet_records.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/profile/records/pet_records.dart';
 
 class PetCard extends StatelessWidget {
   final Map<String, dynamic> pet;
@@ -47,7 +47,7 @@ class PetCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Text(pet['name'], style: typography(context).restoeTitle.copyWith(color: Colors.amber)),
+                Text(pet['name'], style: typography(context).ploofypawsTitle.copyWith(color: Colors.amber)),
                 Button(
                   padding: EdgeInsets.zero,
                   onPressed: () {

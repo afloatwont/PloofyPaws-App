@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/controllers/time_provider.dart';
-import 'package:restoe/pages/pet_onboarding/widgets/calender_widget.dart';
-import 'package:restoe/razorpay/payment_razorpay.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/pages/pet_onboarding/widgets/calender_widget.dart';
+import 'package:ploofypaws/razorpay/payment_razorpay.dart';
 
 class AboutDoctorPage extends StatefulWidget {
   const AboutDoctorPage({super.key});

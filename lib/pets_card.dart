@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:restoe/components/gradient_text_icon.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/components/gradient_text_icon.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class PetScreen extends ConsumerWidget {
   const PetScreen({super.key});

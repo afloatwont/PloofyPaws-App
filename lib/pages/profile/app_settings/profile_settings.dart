@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:restoe/components/body_with_action.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/input_label.dart';
+import 'package:ploofypaws/components/body_with_action.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/input_label.dart';
 
 class ProfileSettings extends StatefulWidget {
   const ProfileSettings({super.key});

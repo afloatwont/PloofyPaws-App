@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/tracker/device_found.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/tracker/device_found.dart';
 
 class DeviceQRParing extends StatefulWidget {
   const DeviceQRParing({super.key});

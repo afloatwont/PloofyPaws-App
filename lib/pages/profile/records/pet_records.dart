@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/gradient_header.dart';
-import 'package:restoe/components/gradient_text_icon.dart';
-import 'package:restoe/config/icons/verified.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/profile/records/add_records/add_diet.dart';
-import 'package:restoe/pages/profile/records/add_records/add_medical_record.dart';
-import 'package:restoe/pages/profile/records/add_records/add_vaccination_record.dart';
-import 'package:restoe/pages/profile/records/upcoming_week_events.dart';
-import 'package:restoe/pages/profile/records/update_records/update_medical_record.dart';
-import 'package:restoe/pages/profile/records/update_records/update_vaccination_record.dart';
-import 'package:restoe/pages/profile/records/widgets/pet_record_card.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/gradient_header.dart';
+import 'package:ploofypaws/components/gradient_text_icon.dart';
+import 'package:ploofypaws/config/icons/verified.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/profile/records/add_records/add_diet.dart';
+import 'package:ploofypaws/pages/profile/records/add_records/add_medical_record.dart';
+import 'package:ploofypaws/pages/profile/records/add_records/add_vaccination_record.dart';
+import 'package:ploofypaws/pages/profile/records/upcoming_week_events.dart';
+import 'package:ploofypaws/pages/profile/records/update_records/update_medical_record.dart';
+import 'package:ploofypaws/pages/profile/records/update_records/update_vaccination_record.dart';
+import 'package:ploofypaws/pages/profile/records/widgets/pet_record_card.dart';
 
 class PetRecords extends StatefulWidget {
   const PetRecords({super.key});

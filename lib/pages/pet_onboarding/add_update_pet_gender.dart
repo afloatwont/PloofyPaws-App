@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:restoe/components/input_label.dart';
+import 'package:ploofypaws/components/input_label.dart';
 
 class AddUpdatePetGender extends StatefulWidget {
   final GlobalKey<FormBuilderState> formKey;

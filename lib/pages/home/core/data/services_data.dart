@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restoe/config/icons/pet_services/pet_services.dart';
+import 'package:ploofypaws/config/icons/pet_services/pet_services.dart';
 
 class PetService {
   final int id;

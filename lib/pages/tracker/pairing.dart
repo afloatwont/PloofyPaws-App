@@ -2,16 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restoe/components/adaptive_modal_bottom_sheet.dart';
-import 'package:restoe/components/adaptive_page_scaffold.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/components/input_label.dart';
-import 'package:restoe/config/theme/theme.dart';
-import 'package:restoe/pages/tracker/pairing_mode/device_id_pairing.dart';
-import 'package:restoe/pages/tracker/pairing_mode/nearby_pairing.dart';
-import 'package:restoe/pages/tracker/pairing_mode/qr_code_pairing.dart';
-import 'package:restoe/pages/tracker/permissions/bluetooth_connectivity.dart';
-import 'package:restoe/pages/tracker/permissions/bluetooth_connectivity_android.dart';
+import 'package:ploofypaws/components/adaptive_modal_bottom_sheet.dart';
+import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/components/input_label.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/tracker/pairing_mode/device_id_pairing.dart';
+import 'package:ploofypaws/pages/tracker/pairing_mode/nearby_pairing.dart';
+import 'package:ploofypaws/pages/tracker/pairing_mode/qr_code_pairing.dart';
+import 'package:ploofypaws/pages/tracker/permissions/bluetooth_connectivity.dart';
+import 'package:ploofypaws/pages/tracker/permissions/bluetooth_connectivity_android.dart';
 
 class TrackerPairingMode extends StatefulWidget {
   const TrackerPairingMode({super.key});
@@ -47,7 +47,7 @@ class _TrackerPairingModeState extends State<TrackerPairingMode> {
   @override
   Widget build(BuildContext context) {
     return AdaptivePageScaffold(
-        title: const Text(' Pair your restoe device'),
+        title: const Text(' Pair your ploofypaws device'),
         appBarTrailing: Button(
             variant: 'text',
             onPressed: () {
@@ -108,7 +108,7 @@ class _TrackerPairingModeState extends State<TrackerPairingMode> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text("Make Sure your restoe tracker is on", style: typography(context).strongSmallBody),
+                  Text("Make Sure your ploofypaws tracker is on", style: typography(context).strongSmallBody),
                   const SizedBox(height: 8),
                   Text("Tap power button on tracker you want to activate. You should hear a beep and see the led flash",
                       style: typography(context).smallBody),
@@ -145,7 +145,7 @@ class SelectPairingMode extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 InputLabel(
-                  label: "Please select the pairing mode to pair your restoe device",
+                  label: "Please select the pairing mode to pair your ploofypaws device",
                   size: 16,
                 ),
               ],
@@ -154,7 +154,7 @@ class SelectPairingMode extends StatelessWidget {
           ListTile(
             contentPadding: const EdgeInsets.all(16.0),
             title: Text("Scan QR Code", style: typography(context).strong),
-            subtitle: Text("Scan the QR code on the back of your restoe device", style: typography(context).smallBody),
+            subtitle: Text("Scan the QR code on the back of your ploofypaws device", style: typography(context).smallBody),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const DeviceQRParing()));
             },
@@ -171,7 +171,7 @@ class SelectPairingMode extends StatelessWidget {
             contentPadding: const EdgeInsets.all(16.0),
             title: Text("Enter Device ID", style: typography(context).strong),
             subtitle:
-                Text("Enter the device ID manually to pair your restoe device", style: typography(context).smallBody),
+                Text("Enter the device ID manually to pair your ploofypaws device", style: typography(context).smallBody),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const DeviceIDPairing()));
             },

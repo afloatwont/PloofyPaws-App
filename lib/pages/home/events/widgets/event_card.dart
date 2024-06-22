@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restoe/components/button.dart';
-import 'package:restoe/config/theme/theme.dart';
+import 'package:ploofypaws/components/button.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class PetEventItem {
   final String imageAsset;
