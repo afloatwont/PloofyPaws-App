@@ -47,7 +47,7 @@ dependencies:
   location: ^6.0.2
   geolocator: ^10.0.0
   http: ^1.2.1
-
+  carousel_slider: ^4.2.1
 
 
 
