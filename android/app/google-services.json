@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "624021272321",
-    "project_id": "ploofypaws-9254e",
-    "storage_bucket": "ploofypaws-9254e.appspot.com"
+    "project_number": "270797583600",
+    "project_id": "ploofypaws-67fcb",
+    "storage_bucket": "ploofypaws-67fcb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:624021272321:android:ae9272bee6fd9119eb0d00",
+        "mobilesdk_app_id": "1:270797583600:android:cbb52e24ede0bc7e5a7e35",
         "android_client_info": {
           "package_name": "com.ploofypaws"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCX-RHt_skvkaMAAtQszy2W7I4PG_Cgw_c"
+          "current_key": "AIzaSyATOJPCcsOClghO_ieTg86Kc6ouGO-Qwj0"
         }
       ],
       "services": {

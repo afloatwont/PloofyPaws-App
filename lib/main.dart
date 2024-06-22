@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,9 +8,9 @@ import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
+import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pets_card.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
-
 import 'firebase_options.dart';
 import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
@@ -24,6 +25,9 @@ Future<void> main() async {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform
+  );
 
   runApp(const ProviderScope(child: MyApp()));
 }

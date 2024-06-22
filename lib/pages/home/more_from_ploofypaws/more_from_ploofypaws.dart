@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/dot_indicator.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/home/core/data/more_from_ploofypaws_services.dart';
-import 'package:ploofypaws/pages/home/core/data/more_from_restoe_services.dart';
+import 'package:ploofypaws/pages/home/core/data/more_from_ploofypaws_services.dart';
 
 class MoreFromPloofyPaws extends StatefulWidget {
   const MoreFromPloofyPaws({super.key});
