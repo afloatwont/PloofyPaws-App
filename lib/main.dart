@@ -4,8 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ploofypaws/chat/ChatScreen.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/developer/test.dart';
+import 'package:ploofypaws/pages/home/home.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
@@ -45,6 +48,6 @@ class MyApp extends StatelessWidget {
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
           textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home:    const PetOnboarding());
+        home:ChatScreen());
   }
 }

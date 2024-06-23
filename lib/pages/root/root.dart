@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +19,7 @@ import 'package:ploofypaws/pages/root/platform_app_bar.dart';
 import 'package:ploofypaws/pages/root/provider.dart';
 import 'package:ploofypaws/pages/tracker/app_bar.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
+import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 
 class Root extends ConsumerStatefulWidget {
   const Root({super.key});
@@ -33,7 +33,7 @@ class _RootState extends ConsumerState<Root> {
 
   final List<Widget> _pages = const [
     Home(),
-    Care(),
+    PetAdoptionPage(),
     Tracker(),
     Profile(),
     if (kDeveloperMode) DeveloperMode(),
@@ -49,7 +49,7 @@ class _RootState extends ConsumerState<Root> {
 
   final List<Map<String, dynamic>> _navigationItems = [
     {'iconBefore': Iconsax.home_1, 'label': 'Home', 'iconAfter': Iconsax.home_25},
-    {'iconBefore': Iconsax.pet4, 'label': 'Care', 'iconAfter': Iconsax.pet5},
+    {'iconBefore': Iconsax.pet4, 'label': 'Adoption', 'iconAfter': Iconsax.pet5},
     {'iconBefore': Iconsax.location, 'label': 'Track', 'iconAfter': Iconsax.location5},
     {'iconBefore': Iconsax.profile_2user, 'label': 'Profile', 'iconAfter': Iconsax.profile_2user5},
     if (kDeveloperMode)

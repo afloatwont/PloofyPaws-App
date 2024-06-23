@@ -64,7 +64,7 @@ class _HomeState extends ConsumerState<Home> {
               popularEvents[0],
             ]),
         const SizedBox(height: 16),
-        _buildLabel(context, "More from Restoe", false, null),
+        _buildLabel(context, "More from PloofyPaws", false, null),
         const SizedBox(height: 16),
         const MoreFromPloofyPaws(),
         const SizedBox(height: 24),

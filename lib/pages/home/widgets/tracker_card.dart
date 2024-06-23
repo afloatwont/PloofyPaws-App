@@ -36,7 +36,7 @@ class TrackerAdCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  "Restoe",
+                  "PloofyPaws",
                   style: typography(context).ploofypawsTitle.copyWith(color: Colors.white, fontSize: 16),
                 )
               ])

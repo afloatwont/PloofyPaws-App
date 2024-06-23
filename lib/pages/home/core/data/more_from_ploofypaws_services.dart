@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ploofypaws/components/dot_indicator.dart' as components;
+import 'package:ploofypaws/pages/home/core/data/more_from_ploofypaws_services.dart';
 
+// Define the MoreServices class
 class MoreServices {
   final int id;
   final String? title;
@@ -16,6 +20,7 @@ class MoreServices {
   });
 }
 
+// Create the list of MoreServices
 final List<MoreServices> moreServices = [
   MoreServices(
     id: 1,
@@ -42,3 +47,48 @@ final List<MoreServices> moreServices = [
     image: "assets/images/placeholders/ai_pets_card.png",
   ),
 ];
+
+class MoreFromPloofyPaws extends StatefulWidget {
+  @override
+  _MoreFromPloofyPawsState createState() => _MoreFromPloofyPawsState();
+}
+
+class _MoreFromPloofyPawsState extends State<MoreFromPloofyPaws> {
+  int _currentPageIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              itemCount: moreServices.length,
+              onPageChanged: (int index) {
+                setState(() {
+                  _currentPageIndex = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                final data = moreServices[index];
+                return Card(
+                  child: Column(
+                    children: [
+                      Image.asset(data.image ?? 'assets/images/default.png'),
+                      Text(data.title ?? 'No title'),
+                      Text(data.description ?? 'No description'),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          components.AnimatedDotIndicator(
+            count: moreServices.length,
+            currentIndex: _currentPageIndex,
+          ),
+        ],
+      ),
+    );
+  }
+}

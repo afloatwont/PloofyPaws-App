@@ -41,7 +41,7 @@ class Footer extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      "about Restoe",
+                      "about PloofyPaws",
                       style: typography(context).smallBody.copyWith(),
                     ),
                     const SizedBox(height: 16),
@@ -100,7 +100,7 @@ class Footer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                "Restoe ",
+                " PloofyPaws ",
                 style: typography(context).body.copyWith(color: Colors.grey.shade400),
               ),
             ),
