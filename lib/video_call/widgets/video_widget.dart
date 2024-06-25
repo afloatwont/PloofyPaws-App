@@ -77,16 +77,23 @@ class _VideoWidgetState extends State<VideoWidget> {
     super.dispose();
   }
 
-  Widget buildVideoView(Participant participant, bool isLocal) {
-    final videoStream = participant.streams.values
-        .firstWhere((stream) => stream.kind == 'video', );
-    if (videoStream == null) {
-      return Container(
-        color: Colors.black,
-        child: Center(child: Text('No video')),
-      );
-    }
-    return RTCVideoView(videoStream.renderer!);
+  Widget buildVideoPlaceholder(bool isLocal) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isLocal ? Colors.green : Colors.blue,
+          width: 3,
+        ),
+        color: Colors.black.withOpacity(0.7),
+      ),
+      child: Center(
+        child: Text(
+          isLocal ? 'Local User' : 'Remote Participant',
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+    );
   }
 
   @override
@@ -100,48 +107,82 @@ class _VideoWidgetState extends State<VideoWidget> {
               child: Container(
                 width: double.infinity,
                 height: double.infinity,
-                child: buildVideoView(_remoteParticipants.first, false),
+                child: buildVideoPlaceholder(false),
               ),
             ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Container(
+              height: MediaQuery.sizeOf(context).height * 0.77,
+              width: MediaQuery.sizeOf(context).width * 0.95,
+              alignment: Alignment.centerRight,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(93, 255, 193, 7),
+                border: Border.all(color: Colors.black, width: 2),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Center(child: Text("Remote User")),
+            ),
+          ),
           if (_isJoined)
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
                 width: 120,
                 height: 160,
-                child: buildVideoView(_room.localParticipant, true),
+                child: buildVideoPlaceholder(true),
               ),
             ),
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.switch_camera),
-                  onPressed: () {
-                    // _room.localParticipant.switchCamera();
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.call_end),
-                  onPressed: () {
-                    _room.leave();
-                    Navigator.pop(context);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.mic_off),
-                  onPressed: () {
-                    _room.localParticipant.muteMic();
-                  },
-                ),
-              ],
-            ),
-          ),
+          // Positioned(
+          //   bottom: 20,
+          //   left: 0,
+          //   right: 0,
+          // ),
         ],
+      ),
+      bottomNavigationBar: Container(
+        height: 65,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          border: Border.all(color: Colors.black, width: 0),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.switch_camera_outlined,
+                color: Colors.black,
+                size: 32,
+              ),
+              onPressed: () {
+                // _room.localParticipant.switchCamera();
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.call_end_outlined,
+                color: Colors.black,
+                size: 32,
+              ),
+              onPressed: () {
+                _room.leave();
+                Navigator.pop(context);
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.mic_off_outlined,
+                color: Colors.black,
+                size: 32,
+              ),
+              onPressed: () {
+                _room.localParticipant.muteMic();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

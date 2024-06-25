@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId "com.ploofypaws" // Ensure this matches the package name in google-services.json
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
