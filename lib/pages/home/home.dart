@@ -50,19 +50,22 @@ class _HomeState extends ConsumerState<Home> {
         _buildLabel(context, "What are you looking for", false, null),
         const SizedBox(height: 16),
         const PetServices(),
+        const SizedBox(height: 16),
         _buildLabel(context, "Popular Events", true, () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const PetEvents()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const PetEvents()));
         }),
         const SizedBox(height: 16),
         EventStackedCards(
-            color1: const Color(0xff90706C), //will come from backend
-            color2: const Color(0xffE2B99B), //will come from backend
-            onTap: () {},
-            image: [
-              popularEvents[0],
-              popularEvents[1],
-              popularEvents[0],
-            ]),
+          color1: const Color(0xff90706C), //will come from backend
+          color2: const Color(0xffE2B99B), //will come from backend
+          onTap: () {},
+          image: [
+            popularEvents[0],
+            popularEvents[1],
+            popularEvents[0],
+          ],
+        ),
         const SizedBox(height: 16),
         _buildLabel(context, "More from PloofyPaws", false, null),
         const SizedBox(height: 16),
@@ -75,7 +78,8 @@ class _HomeState extends ConsumerState<Home> {
   }
 }
 
-Padding _buildLabel(BuildContext context, String? title, bool isViewAll, void Function()? onTap) {
+Padding _buildLabel(BuildContext context, String? title, bool isViewAll,
+    void Function()? onTap) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16.0),
     child: Row(
@@ -90,7 +94,9 @@ Padding _buildLabel(BuildContext context, String? title, bool isViewAll, void Fu
             onTap: onTap,
             child: Text(
               "View All",
-              style: typography(context).smallBody.copyWith(color: colors(context).primary.s500),
+              style: typography(context)
+                  .smallBody
+                  .copyWith(color: colors(context).primary.s500),
             ),
           )
       ],

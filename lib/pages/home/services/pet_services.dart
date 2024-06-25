@@ -42,7 +42,7 @@ class PetServices extends StatelessWidget {
           ),
           child: Container(
             padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
-            height: MediaQuery.sizeOf(context).height * 0.09,
+            height: 120,
             margin: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
