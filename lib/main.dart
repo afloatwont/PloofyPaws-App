@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ploofypaws/chat/ChatScreen.dart';
+import 'package:ploofypaws/chat/services/database_service.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/developer/test.dart';
@@ -23,14 +24,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GetIt getIt = GetIt.instance;
   getIt.registerLazySingleton<NavigationService>(() => NavigationService());
-  
+  getIt.registerLazySingleton<DatabaseService>(() => DatabaseService());
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -46,8 +46,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: themeData.copyWith(
           extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
-          textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
+          textTheme:
+              GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home:const ChatScreen());
+        home: const ChatScreen());
   }
 }
