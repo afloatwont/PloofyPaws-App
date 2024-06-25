@@ -1,3 +1,6 @@
+// CURRENTLY THE VIDEO CALL FEATURE IS UTILISING VIDEOSDK SERVER API FOR CREATING ROOMS. 
+// THIS CAN BE UTILISED FOR OUR REST API LATER
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
