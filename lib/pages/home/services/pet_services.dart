@@ -46,16 +46,15 @@ class PetServices extends StatelessWidget {
             margin: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: colors(context)
-                  .primary
-                  .s200, // Assuming a background color from theme
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                ),
-              ],
+              color: const Color.fromARGB(
+                  255, 234, 235, 255), // Assuming a background color from theme
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.grey.withOpacity(0.2),
+              //     spreadRadius: 1,
+              //     blurRadius: 5,
+              //   ),
+              // ],
             ),
             child: Row(
               children: [
