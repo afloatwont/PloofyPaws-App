@@ -29,28 +29,54 @@ class PetServices extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: petServices.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1.0,
+        crossAxisCount: 2,
+        childAspectRatio:
+            3.0, // Adjusted to make space for icon and text horizontally
       ),
       itemBuilder: (context, index) {
         final data = petServices[index];
-        return Column(
-          children: [
-            GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => screens[index])),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: data.image!)),
-            const SizedBox(height: 10),
-            Text(
-              data.title,
-              style: typography(context).smallBody.copyWith(
-                color: colors(context).secondary.s500,
-                fontWeight: FontWeight.bold,
-              ),
+        return GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => screens[index]),
+          ),
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
+            height: MediaQuery.sizeOf(context).height * 0.09,
+            margin: const EdgeInsets.all(4.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: colors(context)
+                  .primary
+                  .s200, // Assuming a background color from theme
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                ),
+              ],
             ),
-          ],
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    data.title,
+                    style: typography(context).smallBody.copyWith(
+                          color: colors(context).primary.s500,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: data.image!,
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

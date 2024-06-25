@@ -49,6 +49,6 @@ class MyApp extends StatelessWidget {
           textTheme:
               GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
         ),
-        home: const ChatScreen());
+        home: const PetOnboarding());
   }
 }
