@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:../screens/meeting_controls.dart';
-import 'package:../widgets/participant_tile.dart';
+import 'package:ploofypaws/video_call/screens/meeting_controls.dart';
+import 'package:ploofypaws/video_call/widgets/participant_tile.dart';
 import 'package:videosdk/videosdk.dart';
 
 class MeetingScreen extends StatefulWidget {

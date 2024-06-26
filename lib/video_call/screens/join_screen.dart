@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:../providers/api_call.dart';
+import 'package:ploofypaws/video_call/providers/api_call.dart';
 import 'meeting_screen.dart';
 
 class JoinScreen extends StatelessWidget {

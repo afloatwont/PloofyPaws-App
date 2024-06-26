@@ -62,7 +62,12 @@ class _SignInPageState extends ConsumerState<SignUpPage> {
 
       if (!mounted) return;
 
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const Root()), (route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const Root(),
+        ),
+        (route) => false,
+      );
     } on APIError catch (e) {
       if (kDebugMode) {
         print(e);
@@ -114,7 +119,8 @@ class _SignInPageState extends ConsumerState<SignUpPage> {
             key: _formKey,
             child: Expanded(
               child: ListView(
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 4),
+                padding: const EdgeInsets.only(
+                    left: 16, right: 16, bottom: 16, top: 4),
                 children: [
                   const InputLabel(label: 'First Name'),
                   FormBuilderTextField(
