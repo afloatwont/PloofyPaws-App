@@ -22,6 +22,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
           ),
         ),
         centerTitle: true,
+        elevation: 5,
+        surfaceTintColor: Colors.grey,
       ),
       body: const Center(
         child: Text("Privacy policy here"),
