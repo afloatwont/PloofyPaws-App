@@ -17,6 +17,7 @@ import 'package:ploofypaws/pages/profile/app_bar.dart';
 import 'package:ploofypaws/pages/profile/profile.dart';
 import 'package:ploofypaws/pages/root/platform_app_bar.dart';
 import 'package:ploofypaws/pages/root/provider.dart';
+import 'package:ploofypaws/pages/root/sidebar.dart';
 import 'package:ploofypaws/pages/tracker/app_bar.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
@@ -48,12 +49,32 @@ class _RootState extends ConsumerState<Root> {
   ];
 
   final List<Map<String, dynamic>> _navigationItems = [
-    {'iconBefore': Iconsax.home_1, 'label': 'Home', 'iconAfter': Iconsax.home_25},
-    {'iconBefore': Iconsax.pet4, 'label': 'Adoption', 'iconAfter': Iconsax.pet5},
-    {'iconBefore': Iconsax.location, 'label': 'Track', 'iconAfter': Iconsax.location5},
-    {'iconBefore': Iconsax.profile_2user, 'label': 'Profile', 'iconAfter': Iconsax.profile_2user5},
+    {
+      'iconBefore': Iconsax.home_1,
+      'label': 'Home',
+      'iconAfter': Iconsax.home_25
+    },
+    {
+      'iconBefore': Iconsax.pet4,
+      'label': 'Adoption',
+      'iconAfter': Iconsax.pet5
+    },
+    {
+      'iconBefore': Iconsax.location,
+      'label': 'Track',
+      'iconAfter': Iconsax.location5
+    },
+    {
+      'iconBefore': Iconsax.profile_2user,
+      'label': 'Profile',
+      'iconAfter': Iconsax.profile_2user5
+    },
     if (kDeveloperMode)
-      {'iconBefore': Iconsax.device_message, 'label': 'Developer', 'iconAfter': Iconsax.device_message5},
+      {
+        'iconBefore': Iconsax.device_message,
+        'label': 'Developer',
+        'iconAfter': Iconsax.device_message5
+      },
   ];
 
   void _onItemTapped(int index) {
@@ -77,13 +98,15 @@ class _RootState extends ConsumerState<Root> {
   @override
   Widget build(BuildContext context) {
     final List<ItemNavigationView> tabs = _navigationItems
-        .map((item) => _buildNavigationItem(item['iconBefore'], item['label'], item['iconAfter']))
+        .map((item) => _buildNavigationItem(
+            item['iconBefore'], item['label'], item['iconAfter']))
         .toList();
 
     final PlatformAppBar appBar = _appBars[_selectedIndex];
 
     return CupertinoScaffold(
         body: Scaffold(
+            drawer: const Sidebar(),
             appBar: Platform.isAndroid ? appBar.android(context) : null,
             bottomNavigationBar: Padding(
               padding: EdgeInsets.only(bottom: Platform.isIOS ? 16.0 : 0.0),
@@ -96,7 +119,8 @@ class _RootState extends ConsumerState<Root> {
             body: Consumer(builder: (context, ref, child) {
               if (Platform.isIOS) {
                 return NestedScrollView(
-                  headerSliverBuilder: (context, isScrolled) => [appBar.ios(context)],
+                  headerSliverBuilder: (context, isScrolled) =>
+                      [appBar.ios(context)],
                   body: _pages[_selectedIndex],
                 );
               }
@@ -104,17 +128,21 @@ class _RootState extends ConsumerState<Root> {
             })));
   }
 
-  ItemNavigationView _buildNavigationItem(IconData iconBefore, String label, IconData iconAfter) {
+  ItemNavigationView _buildNavigationItem(
+      IconData iconBefore, String label, IconData iconAfter) {
     return ItemNavigationView(
       childBefore: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(iconBefore, color: Colors.black, size: 20),
           const SizedBox(height: 4),
-          Text(label, style: typography(context).smallBody.copyWith(fontSize: 12)),
+          Text(label,
+              style: typography(context).smallBody.copyWith(fontSize: 12)),
         ],
       ),
       childAfter: Icon(iconAfter, color: Colors.black),
     );
   }
+
+ 
 }

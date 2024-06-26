@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -8,8 +10,11 @@ import 'package:ploofypaws/components/body_with_action.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/components/input_label.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
-import 'package:ploofypaws/services/repositories/auth/auth.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
 
 class SignUpPassword extends StatefulWidget {
   final String? displayName;
@@ -26,19 +31,27 @@ class _SignUpPasswordState extends State<SignUpPassword> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _loading = false;
 
+  final AuthServices _authServices = GetIt.instance<AuthServices>();
+
   _signup() async {
     setState(() {
       _loading = true;
     });
-    final AuthRepository resource = AuthRepository();
     try {
-      await resource.signUp(data: {});
+      final email = _formKey.currentState!.fields['email']!.value;
+      final password = _formKey.currentState!.fields['password']!.value;
+
+      UserModel? user = await _authServices.signUp(email: email, password: password);
+
+      // Navigate to the root page or any other page
       // final storage = await SharedPreferences.getInstance();
       // storage.setString('auth', jsonEncode(signupResponse));
       // if (!mounted) return;
-      // Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(builder: (context) => const Root()),
-      //     (Route<dynamic> route) => false);
+      if(user != null) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const Root()),
+          (Route<dynamic> route) => false);
+      }
     } on APIError catch (e) {
       print(e);
     }
@@ -82,7 +95,7 @@ class _SignUpPasswordState extends State<SignUpPassword> {
         formKey: _formKey,
         body: [
           Text(
-            "Ahoy, ${widget.displayName}\nYou are an amazing paw parent. \nNow, lets setup your email and password.",
+            "Ahoy, ${widget.displayName}\nYou are an amazing paw parent. \nNow, let's set up your email and password.",
             style: typography(context).title3,
           ),
           const SizedBox(height: 40),

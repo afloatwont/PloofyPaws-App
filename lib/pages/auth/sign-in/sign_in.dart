@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get_it/get_it.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/button.dart';
@@ -13,8 +14,10 @@ import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/auth/sign-in/sign_in_otp.dart';
 import 'package:ploofypaws/pages/auth/sign-up/sign_up.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
+import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
 import 'package:ploofypaws/services/repositories/auth/auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/model.dart' as models;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,6 +33,21 @@ class _SignInPageState extends ConsumerState<SignInPage> {
   bool isSuffixIconVisible = false;
   bool _loading = false;
   bool _googleLoading = false;
+
+  final GetIt _getIt = GetIt.instance;
+  late AuthServices _authServices;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  String? email;
+  String? password;
+
+  @override
+  void initState() {
+    super.initState();
+    _authServices = _getIt.get<AuthServices>();
+  }
 
   void _handleLogin(String? email) {
     setState(() {
@@ -66,7 +84,9 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       if (!mounted) return;
 
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialWithModalsPageRoute(builder: (context) => const PetOnboarding()), (route) => false);
+          MaterialWithModalsPageRoute(
+              builder: (context) => const PetOnboarding()),
+          (route) => false);
     } on APIError catch (e) {
       print(e);
     }
@@ -94,8 +114,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
     }
   }
 
-  models.UserData? userData;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,34 +131,87 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                   const SizedBox(height: 24),
                   const InputLabel(label: 'Email'),
                   FormBuilderTextField(
-                      autofocus: true,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.emailAddress,
-                      onChanged: (value) {
-                        setSuffixIconVisibility(value!);
-                      },
-                      decoration: InputDecoration(
-                          hintText: "Enter Email",
-                          suffixIcon: isSuffixIconVisible
-                              ? GestureDetector(
-                                  onTap: () {
-                                    _formKey.currentState!.fields['email']!.didChange('');
-                                  },
-                                  child: const Icon(
-                                    Iconsax.close_circle,
-                                    color: Colors.black,
-                                  ),
-                                )
-                              : null),
-                      autofillHints: const [AutofillHints.email, AutofillHints.telephoneNumber],
-                      name: 'email',
-                      validator: FormBuilderValidators.email(
-                        errorText: 'Please enter a valid email address',
-                      )),
+                    autofocus: true,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (value) {
+                      setSuffixIconVisibility(value!);
+                      email = value;
+                    },
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                        hintText: "Enter Email",
+                        suffixIcon: isSuffixIconVisible
+                            ? GestureDetector(
+                                onTap: () {
+                                  _formKey.currentState!.fields['email']!
+                                      .didChange('');
+                                  _emailController.clear();
+                                },
+                                child: const Icon(
+                                  Iconsax.close_circle,
+                                  color: Colors.black,
+                                ),
+                              )
+                            : null),
+                    autofillHints: const [
+                      AutofillHints.email,
+                      AutofillHints.telephoneNumber
+                    ],
+                    name: 'email',
+                    validator: FormBuilderValidators.email(
+                      errorText: 'Please enter a valid email address',
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  const InputLabel(label: 'Password'),
+                  FormBuilderTextField(
+                    autofocus: true,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.visiblePassword,
+                    onChanged: (value) {
+                      password = value;
+                    },
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                        hintText: "Enter Password",
+                        suffixIcon: isSuffixIconVisible
+                            ? GestureDetector(
+                                onTap: () {
+                                  _formKey.currentState!.fields['password']!
+                                      .didChange('');
+                                  _passwordController.clear();
+                                },
+                                child: const Icon(
+                                  Iconsax.close_circle,
+                                  color: Colors.black,
+                                ),
+                              )
+                            : null),
+                    autofillHints: const [
+                      AutofillHints.password,
+                    ],
+                    name: 'password',
+                    validator: FormBuilderValidators.required(
+                      errorText: 'Please enter your password',
+                    ),
+                  ),
                   const SizedBox(height: 40),
                   Button(
                     loading: _loading,
-                    onPressed: _handleSubmit,
+                    onPressed: () async {
+                      if (_formKey.currentState!.saveAndValidate()) {
+                        await _authServices.login(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Root(),
+                            ));
+                      }
+                    },
                     variant: 'filled',
                     label: 'Next',
                   ),
@@ -163,7 +234,9 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                   const SizedBox(height: 24),
                   Button(
                     loading: _googleLoading,
-                    onPressed: _handleGoogleLogin,
+                    onPressed: () async {
+                      await _authServices.signInWithGoogle();
+                    },
                     variant: 'outlined',
                     label: 'Continue with Google',
                     iconAsset: const GoogleIcon(

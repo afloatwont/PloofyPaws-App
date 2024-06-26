@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ploofypaws/services/repositories/auth/base_repository.dart';
@@ -7,6 +8,7 @@ final authRepositoryProvider = Provider((ref) => AuthRepository());
 
 class AuthRepository extends BaseRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   models.UserData? _userData;
 
   models.UserData? get userData => _userData;
@@ -14,13 +16,19 @@ class AuthRepository extends BaseRepository {
   Future<models.UserData> login({required PostData data}) async {
     try {
       final response = await provider.post('/v1/auth/login', data: data);
+      final user = response.data;
 
-      return models.UserData.fromJson(response.data);
+      // Firebase login
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: user['email'],
+        password: data['password'],
+      );
+
+      return models.UserData.fromJson(user);
     } catch (e) {
       return Future.error(e);
     }
   }
-
 
   Future<models.UserData?> signInWithGoogle() async {
     if (_userData != null) {
@@ -28,20 +36,32 @@ class AuthRepository extends BaseRepository {
     }
 
     try {
-      final user = await _googleSignIn.signIn  ();
+      final googleUser = await _googleSignIn.signIn();
 
-      if (user == null) {
+      if (googleUser == null) {
         return Future.error('Google sign in failed');
       }
 
-      print(user);
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
+      final firebaseUser = userCredential.user;
+
+      if (firebaseUser == null) {
+        return Future.error('Firebase sign in failed');
+      }
 
       _userData = models.UserData(
-        id: user.id,
-        email: user.email,
-        displayName: user.displayName ?? '',
-        photoUrl: user.photoUrl ?? '',
-        serverAuthCode: user.serverAuthCode ?? '',
+        id: firebaseUser.uid,
+        email: firebaseUser.email ?? '',
+        displayName: firebaseUser.displayName ?? '',
+        photoUrl: firebaseUser.photoURL ?? '',
+        serverAuthCode: googleUser.serverAuthCode ?? '',
       );
 
       return _userData;
@@ -52,8 +72,17 @@ class AuthRepository extends BaseRepository {
 
   Future<models.UserData> signUp({required PostData data}) async {
     try {
-      final response = await provider.post('/v1/auth/signup', data: data);
-      return models.UserData.fromJson(response.data);
+      // final response = await provider.post('/v1/auth/signup', data: data);
+      // final user = response.data;
+
+      // Firebase signup
+      print(data);
+      await _firebaseAuth.createUserWithEmailAndPassword(
+        email: data['email'],
+        password: data['password'],
+      );
+
+      return models.UserData.fromJson({"email": "jjl"});
     } catch (e) {
       return Future.error(e);
     }
@@ -63,6 +92,7 @@ class AuthRepository extends BaseRepository {
     try {
       await _googleSignIn.signOut();
       await _googleSignIn.disconnect();
+      await _firebaseAuth.signOut();
 
       _userData = null;
     } catch (e) {

@@ -10,22 +10,23 @@ class HomeAppBar implements PlatformAppBar {
     return AppBar(
       leading: Padding(
         padding: const EdgeInsets.all(7),
-        child: Container(
-          width: 25,
-          height: 25,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: Colors.black, // Border color
-              width: 0.3, // Border width
+        child: Builder(
+          builder: (context) => Container(
+            width: 25,
+            height: 25,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.black, // Border color
+                width: 0.3, // Border width
+              ),
             ),
-          ),
-          child: IconButton(
-            onPressed: () {
-              // Scaffold.of(context).openDrawer();
-            },
-            icon:
-                const Icon(Icons.menu), // Ensuring the icon size is appropriate
+            child: IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: const Icon(Icons.menu),
+            ),
           ),
         ),
       ),
@@ -46,9 +47,10 @@ class HomeAppBar implements PlatformAppBar {
               ),
             ),
             child: const CircleAvatar(
-                backgroundColor: Colors.transparent,
-                foregroundColor: Colors.black,
-                child: Icon(Icons.notifications_outlined)),
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.black,
+              child: Icon(Icons.notifications_outlined),
+            ),
           ),
         ),
       ],

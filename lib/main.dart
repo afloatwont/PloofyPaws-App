@@ -12,9 +12,11 @@ import 'package:ploofypaws/pages/developer/test.dart';
 import 'package:ploofypaws/pages/home/home.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
+import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pets_card.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'firebase_options.dart';
 import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
@@ -25,6 +27,7 @@ Future<void> main() async {
   GetIt getIt = GetIt.instance;
   getIt.registerLazySingleton<NavigationService>(() => NavigationService());
   getIt.registerLazySingleton<DatabaseService>(() => DatabaseService());
+  getIt.registerLazySingleton<AuthServices>(() => AuthServices());
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -35,20 +38,36 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final GetIt _getIt = GetIt.instance;
+  late AuthServices _authServices;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _authServices = _getIt.get<AuthServices>();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'PloofyPaws',
-        navigatorKey: GetIt.instance<NavigationService>().navigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: themeData.copyWith(
-          extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
-          textTheme:
-              GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
-        ),
-        home: const InitApp());
+      title: 'PloofyPaws',
+      navigatorKey: GetIt.instance<NavigationService>().navigatorKey,
+      debugShowCheckedModeBanner: false,
+      theme: themeData.copyWith(
+        extensions: <ThemeExtension<dynamic>>[PlaceboColors.light, textTheme],
+        textTheme:
+            GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
+      ),
+      home: _authServices.user != null ? const InitApp() : const Root(),
+    );
   }
 }
