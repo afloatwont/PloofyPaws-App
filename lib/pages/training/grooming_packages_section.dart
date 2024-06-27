@@ -1,7 +1,63 @@
 import 'package:flutter/material.dart';
 
-class GroomingPackagesSection extends StatelessWidget {
+class GroomingPackagesSection extends StatefulWidget {
   const GroomingPackagesSection({super.key});
+
+  @override
+  _GroomingPackagesSectionState createState() =>
+      _GroomingPackagesSectionState();
+}
+
+class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
+  int selectedIndex = 1; // Initially select the recommended package
+  final ScrollController _scrollController = ScrollController();
+
+  final List<Map<String, dynamic>> packages = [
+    {
+      'title': 'Grooming',
+      'description': 'Save 45%',
+      'price': 'Rs. 1899',
+      'originalPrice': 'Rs. 2299',
+      'isRecommended': false,
+      'headerText': 'Best Value',
+    },
+    {
+      'title': 'Training',
+      'description': 'Save 30%',
+      'price': 'Rs. 1399',
+      'originalPrice': 'Rs. 1999',
+      'isRecommended': true,
+      'headerText': 'Recommended',
+    },
+    {
+      'title': 'Grooming',
+      'description': 'Save 25%',
+      'price': 'Rs. 1129',
+      'originalPrice': 'Rs. 1499',
+      'isRecommended': false,
+      'headerText': 'Best Value',
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _centerSelectedPackage();
+    });
+  }
+
+  void _centerSelectedPackage() {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double itemWidth = screenWidth * 0.40; // Increased the item width
+    double scrollPosition =
+        (itemWidth + 8) * selectedIndex - (screenWidth / 2 - itemWidth / 2);
+    _scrollController.animateTo(
+      scrollPosition,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,49 +83,40 @@ class GroomingPackagesSection extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const SingleChildScrollView(
+              SingleChildScrollView(
+                controller: _scrollController,
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: [
-                    GroomingPackageCard(
-                      title: 'Grooming',
-                      description: 'Save 45%',
-                      price: 'Rs. 1899',
-                      originalPrice: 'Rs. 2299',
-                      isRecommended: false,
-                      headerText: 'Best Value',
-                    ),
-                    GroomingPackageCard(
-                      title: 'Training',
-                      description: 'Save 30%',
-                      price: 'Rs. 1399',
-                      originalPrice: 'Rs. 1999',
-                      isRecommended: true,
-                      headerText: 'Recommended',
-                    ),
-                    GroomingPackageCard(
-                      title: 'Grooming',
-                      description: 'Save 25%',
-                      price: 'Rs. 1129',
-                      originalPrice: 'Rs. 1499',
-                      isRecommended: false,
-                      headerText: 'Best Value',
-                    ),
-                  ],
+                  children: List.generate(packages.length, (index) {
+                    return GroomingPackageCard(
+                      title: packages[index]['title'],
+                      description: packages[index]['description'],
+                      price: packages[index]['price'],
+                      originalPrice: packages[index]['originalPrice'],
+                      isRecommended: selectedIndex == index,
+                      headerText: packages[index]['headerText'],
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                        _centerSelectedPackage();
+                      },
+                      isSelected: selectedIndex == index,
+                    );
+                  }),
                 ),
               ),
-              const SizedBox(height: 20),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black, // background color
                     foregroundColor: Colors.white, // text color
                     fixedSize: Size(double.maxFinite,
-                        MediaQuery.sizeOf(context).height * 0.065)),
+                        MediaQuery.sizeOf(context).height * 0.06)),
                 child: const Text("Select Package"),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -85,6 +132,8 @@ class GroomingPackageCard extends StatelessWidget {
   final String originalPrice;
   final bool isRecommended;
   final String headerText;
+  final VoidCallback onTap;
+  final bool isSelected;
 
   const GroomingPackageCard({
     super.key,
@@ -94,18 +143,23 @@ class GroomingPackageCard extends StatelessWidget {
     required this.originalPrice,
     required this.isRecommended,
     required this.headerText,
+    required this.onTap,
+    required this.isSelected,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Handle card tap
-      },
-      child: Container(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
         margin: const EdgeInsets.only(right: 8),
-        width: MediaQuery.sizeOf(context).width * 0.36,
-        height: MediaQuery.sizeOf(context).height * 0.36,
+        width: isSelected
+            ? MediaQuery.sizeOf(context).width * 0.46 // Increased selected width
+            : MediaQuery.sizeOf(context).width * 0.36,
+        height: isSelected
+            ? MediaQuery.sizeOf(context).height * 0.40 // Increased selected height
+            : MediaQuery.sizeOf(context).height * 0.32,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
@@ -113,6 +167,7 @@ class GroomingPackageCard extends StatelessWidget {
           ),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -149,7 +204,10 @@ class GroomingPackageCard extends StatelessWidget {
                     width: double.infinity,
                     child: Text(
                       title,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: isSelected ? Colors.black : Colors.grey,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -158,7 +216,7 @@ class GroomingPackageCard extends StatelessWidget {
                     width: double.infinity,
                     child: Text(
                       description,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.purple,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -187,20 +245,27 @@ class GroomingPackageCard extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0,left:20),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Explore  ",
+                    style: TextStyle(
+                      fontSize: isSelected ? 16 : 14, // Set font size based on isSelected
+                      color: isSelected ? Colors.black : Colors.grey,
+                    ),
                   ),
-                  const Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Explore  "),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      ),
-                    ],
-                  )
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 15,
+                    color: isSelected ? Colors.black : Colors.grey,
+                  ),
                 ],
               ),
             ),

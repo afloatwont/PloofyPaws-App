@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'my_pets_section.dart';
 import 'grooming_packages_section.dart';
 import 'expert_consultation_section.dart';
+import 'package:ploofypaws/components/pet_list.dart';
 import 'reviews_section.dart';
 
 class TrainingScreen extends StatelessWidget {
@@ -32,11 +33,11 @@ class TrainingScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyPetsSection(),
+            const PetsList(),
             const SizedBox(height: 16),
-            GroomingPackagesSection(),
+            const GroomingPackagesSection(),
             const SizedBox(height: 16),
-            ExpertConsultationsSection(),
+            const ExpertConsultationsSection(),
             const SizedBox(height: 16),
             ReviewsSection(),
           ],

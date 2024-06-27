@@ -5,6 +5,8 @@ import 'package:ploofypaws/pages/doctors/about_doctor_page.dart';
 import 'package:ploofypaws/pages/home/core/data/services_data.dart';
 import 'package:ploofypaws/pages/home/services/pet_diet.dart';
 import 'package:ploofypaws/pages/home/services/vet_video_consultation.dart';
+import 'package:ploofypaws/pages/training/training.dart';
+import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pet_walking.dart';
 
 class PetServices extends StatelessWidget {
@@ -16,11 +18,11 @@ class PetServices extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       const PetWalkingScreen(),
-      const Placeholder(),
+      const TrainingScreen(),
       const VetVideoConsultation(),
       const DietPage(),
-      const Placeholder(),
-      const Placeholder(),
+      const PetAdoptionPage(),
+      const TrainingScreen(),
     ];
 
     return GridView.builder(
