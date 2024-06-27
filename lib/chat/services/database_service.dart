@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/chat_model.dart';
 import '../models/message.dart';
 
-class DatabaseService {
+class ChatDatabaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   CollectionReference? _chatsCollection;
 
-  DatabaseService() {
+  ChatDatabaseService() {
     setupCollectionReferences();
   }
 

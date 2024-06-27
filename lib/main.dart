@@ -13,6 +13,7 @@ import 'package:ploofypaws/pages/home/home.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
+import 'package:ploofypaws/pages/training/training.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pets_card.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
@@ -26,7 +27,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GetIt getIt = GetIt.instance;
   getIt.registerLazySingleton<NavigationService>(() => NavigationService());
-  getIt.registerLazySingleton<DatabaseService>(() => DatabaseService());
+  getIt.registerLazySingleton<ChatDatabaseService>(() => ChatDatabaseService());
   getIt.registerLazySingleton<AuthServices>(() => AuthServices());
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -67,7 +68,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null ? const InitApp() : const Root(),
+      home: _authServices.user != null ? const InitApp() :  TrainingScreen(),
     );
   }
 }

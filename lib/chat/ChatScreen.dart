@@ -16,7 +16,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
   final GetIt _getIt = GetIt.instance;
-  late DatabaseService _databaseService;
+  late ChatDatabaseService _databaseService;
   late String chatId;
 
   UserModel user1 = UserModel(
@@ -27,7 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    _databaseService = _getIt.get<DatabaseService>();
+    _databaseService = _getIt.get<ChatDatabaseService>();
     _databaseService.checkChatExists(user1.userId, user2.userId).then(
       (value) {
         if (!value) {

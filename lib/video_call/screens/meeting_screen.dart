@@ -87,46 +87,83 @@ class _MeetingScreenState extends State<MeetingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('VideoSDK QuickStart'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            _room.leave();
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Meeting'),
+        actions: [
+          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Text(widget.meetingId),
-            //render all participant
+            // Display the meeting ID
+            Text(
+              widget.meetingId,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            // Render all participants
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     mainAxisExtent: 300,
                   ),
                   itemBuilder: (context, index) {
-                    return ParticipantTile(
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: ParticipantTile(
                         key: Key(participants.values.elementAt(index).id),
-                        participant: participants.values.elementAt(index));
+                        participant: participants.values.elementAt(index),
+                      ),
+                    );
                   },
                   itemCount: participants.length,
                 ),
               ),
             ),
-            MeetingControls(
-              onToggleMicButtonPressed: () {
-                micEnabled ? _room.muteMic() : _room.unmuteMic();
-                micEnabled = !micEnabled;
-              },
-              onToggleCameraButtonPressed: () {
-                camEnabled ? _room.disableCam() : _room.enableCam();
-                camEnabled = !camEnabled;
-              },
-              onLeaveButtonPressed: () {
-                _room.leave();
-              },
+            // Meeting controls
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Icon(micEnabled ? Icons.mic : Icons.mic_off),
+                    onPressed: () {
+                      micEnabled ? _room.muteMic() : _room.unmuteMic();
+                      setState(() {
+                        micEnabled = !micEnabled;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(camEnabled ? Icons.videocam : Icons.videocam_off),
+                    onPressed: () {
+                      camEnabled ? _room.disableCam() : _room.enableCam();
+                      setState(() {
+                        camEnabled = !camEnabled;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.call_end, color: Colors.red),
+                    onPressed: () {
+                      _room.leave();
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),
