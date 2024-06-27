@@ -46,7 +46,7 @@ class ReviewCard extends StatelessWidget {
   final String reviewDate;
   final String reviewText;
 
-  ReviewCard({
+  const ReviewCard({super.key, 
     required this.userName,
     required this.reviewDate,
     required this.reviewText,
