@@ -51,7 +51,7 @@ class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
     double screenWidth = MediaQuery.of(context).size.width;
     double itemWidth = screenWidth * 0.40; // Increased the item width
     double scrollPosition =
-        (itemWidth + 8) * selectedIndex - (screenWidth / 2 - itemWidth / 2);
+        (itemWidth + 34) * selectedIndex - (screenWidth / 2 - itemWidth / 2);
     _scrollController.animateTo(
       scrollPosition,
       duration: const Duration(milliseconds: 500),
@@ -155,11 +155,13 @@ class GroomingPackageCard extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         margin: const EdgeInsets.only(right: 8),
         width: isSelected
-            ? MediaQuery.sizeOf(context).width * 0.46 // Increased selected width
+            ? MediaQuery.sizeOf(context).width *
+                0.46 // Increased selected width
             : MediaQuery.sizeOf(context).width * 0.36,
         height: isSelected
-            ? MediaQuery.sizeOf(context).height * 0.40 // Increased selected height
-            : MediaQuery.sizeOf(context).height * 0.32,
+            ? MediaQuery.sizeOf(context).height *
+                0.40 // Increased selected height
+            : MediaQuery.sizeOf(context).height * 0.36,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
@@ -216,7 +218,7 @@ class GroomingPackageCard extends StatelessWidget {
                     width: double.infinity,
                     child: Text(
                       description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.purple,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -249,7 +251,7 @@ class GroomingPackageCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 8.0,left:20),
+              padding: const EdgeInsets.only(bottom: 8.0, left: 20),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -257,7 +259,9 @@ class GroomingPackageCard extends StatelessWidget {
                   Text(
                     "Explore  ",
                     style: TextStyle(
-                      fontSize: isSelected ? 16 : 14, // Set font size based on isSelected
+                      fontSize: isSelected
+                          ? 16
+                          : 14, // Set font size based on isSelected
                       color: isSelected ? Colors.black : Colors.grey,
                     ),
                   ),
