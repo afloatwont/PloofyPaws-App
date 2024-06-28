@@ -34,9 +34,9 @@ class VetVideoConsultationScreen extends StatelessWidget {
             children: [
               MyPetsSection(),
               const SizedBox(height: 16),
-              UpcomingAppointmentsSection(),
+              const UpcomingAppointmentsSection(),
               const SizedBox(height: 16),
-              ConsultationSection(),
+              const ConsultationSection(),
             ],
           ),
         ),

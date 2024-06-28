@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null ? const InitApp() : const Root(),
+      home: _authServices.user != null ? const InitApp() : const VetVideoConsultationScreen(),
     );
   }
 }
