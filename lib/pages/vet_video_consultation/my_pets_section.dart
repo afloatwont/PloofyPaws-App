@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyPetsSection extends StatelessWidget {
-  final List<String> petNames = ['Arlo', 'shiro', 'chomu', 'x-hamster'];
+  final List<String> petNames = ['Arlo', 'shiro', 'chomu', 'hamster'];
   final List<String> petImages = [
     'assets/arlo.jpg',
     'assets/shiro.jpg',
@@ -18,31 +18,46 @@ class MyPetsSection extends StatelessWidget {
       children: [
         const Text('My Pets', style: TextStyle()),
         const SizedBox(height: 8),
-        Row(
-          children: [
-            ...List.generate(petNames.length, (index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      // backgroundImage: AssetImage(petImages[index]),
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.12,
+          width: MediaQuery.sizeOf(context).width *
+              MediaQuery.sizeOf(context).width,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...List.generate(petNames.length, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.grey.shade300,
+                          radius: 30,
+                          // backgroundImage: AssetImage(petImages[index]),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(petNames[index]),
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(petNames[index]),
-                  ],
+                  );
+                }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey.shade100,
+                    radius: 30,
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
-              );
-            }),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.0),
-              child: CircleAvatar(
-                radius: 30,
-                child: Icon(Icons.add),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ],
     );
