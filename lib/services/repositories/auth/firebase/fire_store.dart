@@ -11,7 +11,7 @@ class UserDatabaseService {
 
   CollectionReference? _usersCollection;
 
-  DatabaseService() {
+  UserDatabaseService() {
     setupCollectionReferences();
     _authService = _getIt.get<AuthServices>();
   }

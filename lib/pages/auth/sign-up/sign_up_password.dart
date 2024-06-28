@@ -14,12 +14,13 @@ import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
 
 class SignUpPassword extends StatefulWidget {
-  final String? displayName;
+  final String displayName;
 
-  const SignUpPassword({super.key, this.displayName});
+  const SignUpPassword({super.key, required this.displayName});
 
   @override
   State<SignUpPassword> createState() => _SignUpPasswordState();
@@ -30,8 +31,17 @@ class _SignUpPasswordState extends State<SignUpPassword> {
   bool _isHiddenConfirmPassword = true;
   final _formKey = GlobalKey<FormBuilderState>();
   bool _loading = false;
+  final GetIt _getIt = GetIt.instance;
 
-  final AuthServices _authServices = GetIt.instance<AuthServices>();
+  late AuthServices _authServices;
+  late UserDatabaseService _userDatabaseService;
+
+  @override
+  void initState() {
+    super.initState();
+    _authServices = _getIt.get<AuthServices>();
+    _userDatabaseService = _getIt.get<UserDatabaseService>();
+  }
 
   _signup() async {
     setState(() {
@@ -41,16 +51,27 @@ class _SignUpPasswordState extends State<SignUpPassword> {
       final email = _formKey.currentState!.fields['email']!.value;
       final password = _formKey.currentState!.fields['password']!.value;
 
-      UserModel? user = await _authServices.signUp(email: email, password: password);
+      UserModel? user =
+          await _authServices.signUp(email: email, password: password);
+      if (user != null) {
+        _userDatabaseService.createUserProfile(
+          userProfile: UserModel(
+            id: user.id,
+            displayName: widget.displayName!,
+            email: email,
+            photoUrl: user.photoUrl,
+          ),
+        );
+      }
 
       // Navigate to the root page or any other page
       // final storage = await SharedPreferences.getInstance();
       // storage.setString('auth', jsonEncode(signupResponse));
       // if (!mounted) return;
-      if(user != null) {
+      if (user != null) {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const Root()),
-          (Route<dynamic> route) => false);
+            MaterialPageRoute(builder: (context) => const Root()),
+            (Route<dynamic> route) => false);
       }
     } on APIError catch (e) {
       print(e);

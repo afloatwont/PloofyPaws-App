@@ -24,6 +24,7 @@ import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pets_card.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'firebase_options.dart';
 import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
@@ -34,6 +35,7 @@ Future<void> main() async {
   GetIt getIt = GetIt.instance;
   getIt.registerLazySingleton<NavigationService>(() => NavigationService());
   getIt.registerLazySingleton<ChatDatabaseService>(() => ChatDatabaseService());
+  getIt.registerLazySingleton<UserDatabaseService>(() => UserDatabaseService());
   getIt.registerLazySingleton<AuthServices>(() => AuthServices());
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
