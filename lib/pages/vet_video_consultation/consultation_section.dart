@@ -17,12 +17,12 @@ class ConsultationSection extends StatelessWidget {
           Stack(
             children: [
               Positioned(
-                top: 170,
+                top: 140,
                 bottom:
                     0, // Adjust this value as necessary to align the cat with the button
-                right: 70,
+                right: 40,
                 child: Opacity(
-                  opacity: 0.5,
+                  opacity: 1,
                   child: Image.asset(
                     'assets/images/content/doodle_cat.png',
                     // width: 500,
