@@ -17,14 +17,16 @@ class ConsultationSection extends StatelessWidget {
           Stack(
             children: [
               Positioned(
-                bottom: 60,
-                right: 0,
+                top: 170,
+                bottom:
+                    0, // Adjust this value as necessary to align the cat with the button
+                right: 70,
                 child: Opacity(
                   opacity: 0.5,
                   child: Image.asset(
                     'assets/images/content/doodle_cat.png',
-                    width: 250,
-                    // color: Colors.black,
+                    // width: 500,
+                    height: 500,
                   ),
                 ),
               ),
@@ -61,7 +63,7 @@ class ConsultationSection extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(187, 30, 69, 160),
+                        backgroundColor: const Color.fromARGB(255, 30, 69, 160),
                         foregroundColor: Colors.white,
                         fixedSize: const Size(double.maxFinite, 50)),
                     child: const Text("Make Appointment"),
