@@ -43,7 +43,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
             ),
             _buildPage(
               'All-in-one learning centre',
-              'Mra naam bhavuk hai, aur main aapko kuch sikhane \nwala hoona. hueheue',
+              'Mra naam Angad hai, aur main aapko kuch sikhane \nwala hoona. hueheue',
               3,
             ),
           ],
