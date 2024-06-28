@@ -32,7 +32,7 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
     return AdaptivePageScaffold(
         automaticallyImplyLeading: true,
         // previousPageTitle: 'Records',
-        title: const Text("pet's life events"),
+        title: const Text("Pet's Life Events"),
         body: BodyWithAction(
           formKey: _formKey,
           action: Button(
@@ -45,7 +45,7 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
             disabledColor: Colors.grey,
           ),
           body: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             FormBuilderTextField(
@@ -132,6 +132,7 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
           ],
         ));
   }
+
   Future<void> _checkPermissionAndOpenPicker(BuildContext context) async {
     PermissionStatus status = await Permission.photos.status;
     if (status.isGranted) {
@@ -140,18 +141,19 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>const  UploadPhotoScreen(),
+          builder: (context) => const UploadPhotoScreen(),
         ),
       );
     }
   }
-    void _openImagePicker(BuildContext context) async {
+
+  void _openImagePicker(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-     setState(() {
-       imageFileList.add(File(image.path));
-     });
+      setState(() {
+        imageFileList.add(File(image.path));
+      });
     }
   }
 }

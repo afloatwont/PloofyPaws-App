@@ -12,6 +12,10 @@ import 'package:ploofypaws/pages/developer/test.dart';
 import 'package:ploofypaws/pages/home/home.dart';
 import 'package:ploofypaws/pages/home/services/vet_video_consultation.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
+import 'package:ploofypaws/pages/profile/pet_life_event/add_media.dart';
+import 'package:ploofypaws/pages/profile/pet_life_event/create_pet_memorial.dart';
+import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
+import 'package:ploofypaws/pages/profile/profile.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/pages/training/training.dart';
@@ -70,8 +74,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home:
-          _authServices.user != null ? const InitApp() : const TrainingScreen(),
+      home: _authServices.user != null ? const InitApp() : const Root(),
     );
   }
 }

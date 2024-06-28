@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
+import 'package:ploofypaws/pages/root/init_app.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({super.key});
@@ -18,6 +22,20 @@ class _SidebarState extends State<Sidebar> {
     {'title': 'About Us', 'icon': Icons.info_outline},
   ];
 
+  final List<Widget> pages = [
+    const Memories(),
+  ];
+
+  final GetIt _getIt = GetIt.instance;
+  late AuthServices _authServices;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _authServices = _getIt.get<AuthServices>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -25,28 +43,37 @@ class _SidebarState extends State<Sidebar> {
         children: [
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Container(
-              margin: EdgeInsets.fromLTRB(
-                  0, MediaQuery.sizeOf(context).height * 0.07, 0, 0),
-              height: MediaQuery.sizeOf(context).height * 0.10,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(154, 229, 229, 229),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "Name",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => pages[0],
+                    ));
+              },
+              child: Container(
+                margin: EdgeInsets.fromLTRB(
+                    0, MediaQuery.sizeOf(context).height * 0.07, 0, 0),
+                height: MediaQuery.sizeOf(context).height * 0.10,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(154, 229, 229, 229),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      "Name",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    color: Colors.black,
-                  ),
-                ],
+                    Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -85,7 +112,16 @@ class _SidebarState extends State<Sidebar> {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                bool res = await _authServices.signOut();
+                if (res) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const InitApp(),
+                      ));
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
                 shape: RoundedRectangleBorder(

@@ -104,17 +104,20 @@ class AuthServices {
         // return Future.error('Sign up failed');
       }
     } catch (e) {
-        print(e);
-        return null;
+      print(e);
+      return null;
     }
   }
 
-  Future<void> googleSignOut() async {
+  Future<bool> signOut() async {
     try {
       await _googleSignIn.signOut();
       await _firebaseAuth.signOut();
+      return true;
     } catch (e) {
-      return Future.error(e);
+      print(e);
+      return false;
+      // return Future.error(e);
     }
   }
 }
