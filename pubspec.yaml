@@ -53,6 +53,7 @@ dependencies:
   videosdk: ^1.1.12
   provider: ^6.1.2
   firebase_auth: ^5.1.1
+  delightful_toast: ^1.1.0
 
 
 

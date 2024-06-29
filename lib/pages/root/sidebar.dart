@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({super.key});
@@ -28,12 +30,24 @@ class _SidebarState extends State<Sidebar> {
 
   final GetIt _getIt = GetIt.instance;
   late AuthServices _authServices;
+  late UserDatabaseService _userDatabaseService;
+  UserModel user = UserModel(id: "", displayName: "", email: "", photoUrl: "");
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _authServices = _getIt.get<AuthServices>();
+    _userDatabaseService = _getIt.get<UserDatabaseService>();
+    print(_authServices.user);
+    _userDatabaseService.getUserProfileByUID(_authServices.user!.uid).then(
+      (value) {
+        print(value);
+        setState(() {
+          user = value!;
+        });
+      },
+    );
   }
 
   @override
@@ -59,16 +73,17 @@ class _SidebarState extends State<Sidebar> {
                   color: const Color.fromARGB(154, 229, 229, 229),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      "Name",
-                      style: TextStyle(
+                      // "gh",
+                      user.displayName ?? "",
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward_ios_outlined,
                       color: Colors.black,
                     ),
