@@ -9,7 +9,7 @@ import 'package:ploofypaws/components/section_header.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/pages/doctors/about_doctor_page.dart';
-import 'package:ploofypaws/pages/home/services/Veternian.dart';
+import 'package:ploofypaws/pages/vet_video_consultation/Veternian.dart';
 import 'package:ploofypaws/pages/home/services/pet_diet.dart';
 import 'package:ploofypaws/pages/pet_onboarding/widgets/calender_widget.dart';
 import 'package:ploofypaws/pages/profile/widgets/pet_card.dart';
