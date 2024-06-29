@@ -8,6 +8,7 @@ import 'package:ploofypaws/chat/services/database_service.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
+import 'package:ploofypaws/pages/vet_video_consultation/vet_video_consultation.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
@@ -30,11 +31,11 @@ Future<void> main() async {
 
 void registerServices() {
   GetIt getIt = GetIt.instance;
-  getIt.registerLazySingleton<AuthServices>(() => AuthServices());
   getIt.registerLazySingleton<NavigationService>(() => NavigationService());
+  getIt.registerSingleton<AlertService>(AlertService());
+  getIt.registerLazySingleton<AuthServices>(() => AuthServices());
   getIt.registerSingleton<ChatDatabaseService>(ChatDatabaseService());
   getIt.registerSingleton<UserDatabaseService>(UserDatabaseService());
-  getIt.registerSingleton<AlertService>(AlertService());
 }
 
 class MyApp extends StatefulWidget {
@@ -67,7 +68,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null ? const InitApp() : const VetVideoConsultationScreen(),
+      home: _authServices.user != null ? const Root() : const InitApp(),
     );
   }
 }

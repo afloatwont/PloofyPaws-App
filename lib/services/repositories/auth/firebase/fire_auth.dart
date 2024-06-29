@@ -7,6 +7,7 @@ import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
 class AuthServices {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  
   final _getIt = GetIt.instance;
   late AlertService _alertService;
 
