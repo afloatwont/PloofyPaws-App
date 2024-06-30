@@ -11,6 +11,7 @@ import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/developer/test.dart';
 import 'package:ploofypaws/pages/home/home.dart';
 import 'package:ploofypaws/pages/home/services/vet_video_consultation.dart';
+import 'package:ploofypaws/pages/onboarding/onboard_carousel.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/add_media.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/create_pet_memorial.dart';
