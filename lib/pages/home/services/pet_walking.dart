@@ -8,7 +8,7 @@ import 'package:ploofypaws/components/pet_list.dart';
 import 'package:ploofypaws/components/section_header.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 
-import 'components/adaptive_app_bar.dart';
+import '../../../components/adaptive_app_bar.dart';
 
 class PetWalkingScreen extends ConsumerWidget {
   const PetWalkingScreen({super.key});

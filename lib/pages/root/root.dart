@@ -14,7 +14,7 @@ import 'package:ploofypaws/pages/developer/developer.dart';
 import 'package:ploofypaws/pages/home/app_bar.dart';
 import 'package:ploofypaws/pages/home/home.dart';
 import 'package:ploofypaws/pages/profile/app_bar.dart';
-import 'package:ploofypaws/pages/profile/profile.dart';
+import 'package:ploofypaws/pages/profile/pet_profile/profile.dart';
 import 'package:ploofypaws/pages/root/platform_app_bar.dart';
 import 'package:ploofypaws/pages/root/provider.dart';
 import 'package:ploofypaws/pages/root/sidebar.dart';

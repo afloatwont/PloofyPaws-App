@@ -127,7 +127,7 @@ class _SignInPageState extends ConsumerState<SignUpPage> {
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
-                      hintText: "e.g. Bhavuk",
+                      hintText: "e.g. Angad",
                     ),
                     autofillHints: const [
                       AutofillHints.namePrefix,
@@ -143,7 +143,7 @@ class _SignInPageState extends ConsumerState<SignUpPage> {
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
-                      hintText: "e.g. Arora",
+                      hintText: "e.g. Singh",
                     ),
                     autofillHints: const [
                       AutofillHints.namePrefix,
