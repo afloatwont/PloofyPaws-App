@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/chat/models/chat_model.dart';
 import 'package:ploofypaws/chat/models/message.dart';
-import 'package:ploofypaws/chat/models/user_model.dart';
-import 'package:ploofypaws/chat/services/database_service.dart';
+import 'package:ploofypaws/chat/services/chat_database_service.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -20,22 +20,22 @@ class _ChatScreenState extends State<ChatScreen> {
   late String chatId;
 
   UserModel user1 = UserModel(
-      userId: "id1", userName: "First", email: "first@g.com", pfpUrl: ".");
+      id: "id1", displayName: "First", email: "first@g.com", photoUrl: ".");
   UserModel user2 = UserModel(
-      userId: "id2", userName: "second", email: "second@g.com", pfpUrl: ".");
+      id: "id2", displayName: "second", email: "second@g.com", photoUrl: ".");
 
   @override
   void initState() {
     super.initState();
     _databaseService = _getIt.get<ChatDatabaseService>();
-    _databaseService.checkChatExists(user1.userId, user2.userId).then(
+    _databaseService.checkChatExists(user1.id!, user2.id!).then(
       (value) {
         if (!value) {
-          _databaseService.createNewChat(user1.userId, user2.userId);
+          _databaseService.createNewChat(user1.id!, user2.id!);
         }
       },
     );
-    chatId = generateChatId(user1.userId, user2.userId);
+    chatId = generateChatId(user1.id!, user2.id!);
     
   }
 
@@ -45,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
         _controller.clear();
       });
       await _databaseService.sendChatMessage(
-          user1.userId, user2.userId, Message(text: text, id: user1.userId));
+          user1.id!, user2.id!, Message(text: text, id: user1.id!));
     }
   }
 
@@ -57,18 +57,18 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: Colors.white,
         leading: IconButton(
             onPressed: () {}, icon: const Icon(Icons.arrow_back_outlined)),
-        title: const Row(
+        title: Row(
           children: [
-            CircleAvatar(
+            const CircleAvatar(
                 // backgroundImage:
                 // AssetImage('assets/avatar.png'), // Add your avatar image here
                 ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('User name'),
-                Text(
+                Text(user2.displayName!),
+                const Text(
                   'Online',
                   style: TextStyle(
                     fontSize: 12,
@@ -111,17 +111,17 @@ class _ChatScreenState extends State<ChatScreen> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
-                        alignment: messageMains[index].id == user1.userId
+                        alignment: messageMains[index].id == user1.id!
                             ? Alignment.centerRight
                             : Alignment.centerLeft,
                         child: Container(
-                          margin: messageMains[index].id == user1.userId
+                          margin: messageMains[index].id == user1.id!
                               ? const EdgeInsets.only(left: 30)
                               : const EdgeInsets.only(right: 30),
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 15),
                           decoration: BoxDecoration(
-                            color: messageMains[index].id == user1.userId
+                            color: messageMains[index].id == user1.id!
                                 ? Colors.grey.shade300
                                 : Colors.blue,
                             borderRadius: BorderRadius.circular(20),
@@ -129,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Text(
                             messageMains[index].text!,
                             style: TextStyle(
-                              color: messageMains[index].id == user1.userId
+                              color: messageMains[index].id == user1.id!
                                   ? Colors.black
                                   : Colors.white,
                             ),

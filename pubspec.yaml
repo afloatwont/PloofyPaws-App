@@ -54,6 +54,8 @@ dependencies:
   provider: ^6.1.2
   firebase_auth: ^5.1.1
   delightful_toast: ^1.1.0
+  google_generative_ai: ^0.4.3
+  flutter_dotenv: ^5.1.0
 
 
 
@@ -89,6 +91,9 @@ flutter:
     - assets/images/content/doctor_and_dog.png
     - assets/images/content/puppy.jpeg
     - assets/images/content/doodle_cat.png
+    - assets/images/content/dog_with_coat.jpeg
+    - assets/images/content/ai_bg.png
+    - .env
 
 
 

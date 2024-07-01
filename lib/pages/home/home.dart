@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ploofypaws/components/input_label.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/ai/ai_chat.dart';
 import 'package:ploofypaws/pages/home/core/data/services_data.dart';
 import 'package:ploofypaws/pages/home/events/pet_events.dart';
 import 'package:ploofypaws/pages/home/more_from_ploofypaws/more_from_ploofypaws.dart';
@@ -45,7 +46,13 @@ class _HomeState extends ConsumerState<Home> {
     }
     return ListView(
       children: [
-        AICard(onTap: () {}),
+        AICard(onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AiScreen(),
+              ));
+        }),
         const SizedBox(height: 16),
         _buildLabel(context, "What are you looking for", false, null),
         const SizedBox(height: 16),
