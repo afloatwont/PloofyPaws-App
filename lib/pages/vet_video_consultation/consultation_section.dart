@@ -161,26 +161,29 @@ void _showScrollableBottomSheet(BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Select walker',
+                        'Select Doctor',
                         style: typography(context).title3.copyWith(
                           color: Colors.black,
                           fontSize: 20,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DoctorListScreen(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DoctorListScreen(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'View all',
+                            style: typography(context).body.copyWith(
+                              color: const Color(0xff1A24DE),
+                              fontSize: 12,
                             ),
-                          );
-                        },
-                        child: Text(
-                          'View all',
-                          style: typography(context).body.copyWith(
-                            color: const Color(0xff1A24DE),
-                            fontSize: 12,
                           ),
                         ),
                       ),

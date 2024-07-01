@@ -133,7 +133,7 @@ class _ProfileState extends ConsumerState<AppSettings> {
     return Column(
       children: [
         Text(
-          'Restoe',
+          'PloofyPaws',
           style: typography(context).ploofypawsTitle.copyWith(color: colors(context).primary.s100, fontSize: 14),
         ),
         Text(

@@ -6,8 +6,9 @@ import 'package:ploofypaws/pages/home/core/data/services_data.dart';
 import 'package:ploofypaws/pages/home/services/pet_diet.dart';
 import 'package:ploofypaws/pages/home/services/vet_video_consultation.dart';
 import 'package:ploofypaws/pages/training/training.dart';
+import 'package:ploofypaws/pages/vet_video_consultation/vet_video_consultation.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
-import 'package:ploofypaws/pet_walking.dart';
+import 'package:ploofypaws/pages/home/services/pet_walking.dart';
 
 class PetServices extends StatelessWidget {
   const PetServices({
@@ -19,7 +20,7 @@ class PetServices extends StatelessWidget {
     final List<Widget> screens = [
       const PetWalkingScreen(),
       const TrainingScreen(),
-      const VetVideoConsultation(),
+      const VetVideoConsultationScreen(),
       const DietPage(),
       const PetAdoptionPage(),
       const TrainingScreen(),

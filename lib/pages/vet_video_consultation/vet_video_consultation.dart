@@ -14,7 +14,7 @@ class VetVideoConsultationScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Handle back button action
+           Navigator.pop(context);
           },
         ),
         actions: [

@@ -35,16 +35,13 @@ class _SidebarState extends State<Sidebar> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _userDatabaseService = _getIt.get<UserDatabaseService>();
-    print(_authServices.user);
     _userDatabaseService.getUserProfileByUID(_authServices.user!.uid).then(
-      (value) {
-        print(value);
+          (value) {
         setState(() {
-          user = value!;
+          user = value ?? UserModel(id: "", displayName: "", email: "", photoUrl: "");
         });
       },
     );
@@ -55,43 +52,7 @@ class _SidebarState extends State<Sidebar> {
     return Drawer(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => pages[0],
-                    ));
-              },
-              child: Container(
-                margin: EdgeInsets.fromLTRB(
-                    0, MediaQuery.sizeOf(context).height * 0.07, 0, 0),
-                height: MediaQuery.sizeOf(context).height * 0.10,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(154, 229, 229, 229),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      // "gh",
-                      user.displayName ?? "",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          _buildUserHeader(context),
           const Divider(
             color: Colors.black,
             thickness: 0.5,
@@ -102,54 +63,110 @@ class _SidebarState extends State<Sidebar> {
             child: ListView.builder(
               itemCount: sidebarItems.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0, 0, 12, 12),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(121, 237, 237, 237),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: ListTile(
-                      leading: Icon(sidebarItems[index]['icon']),
-                      title: Text(
-                        sidebarItems[index]['title'],
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      onTap: () {
-                        // Handle item tap
-                      },
-                    ),
-                  ),
-                );
+                return _buildSidebarItem(index);
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                bool res = await _authServices.signOut();
-                if (res) {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const InitApp(),
-                      ));
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                foregroundColor: Colors.white,
-                fixedSize: Size(
-                    double.maxFinite, MediaQuery.sizeOf(context).height * 0.07),
-              ),
-              child: const Text("Sign Out"),
-            ),
-          ),
+          _buildSignOutButton(context),
         ],
+      ),
+    );
+  }
+
+  Widget _buildUserHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => pages[0],
+              ));
+        },
+        child: Container(
+          margin: EdgeInsets.fromLTRB(
+              0, MediaQuery.sizeOf(context).height * 0.07, 0, 0),
+          height: MediaQuery.sizeOf(context).height * 0.10,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(154, 229, 229, 229),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              CircleAvatar(
+                radius: 24,
+                backgroundImage: (user.photoUrl?.isNotEmpty ?? false)
+                    ? NetworkImage(user.photoUrl!)
+                    : null,
+                child: (user.photoUrl?.isEmpty ?? true)
+                    ? const Icon(Icons.person, size: 32)
+                    : null,
+              ),
+              Text(
+                user.displayName ?? "",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Colors.black,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSidebarItem(int index) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12.0, 0, 12, 12),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(121, 237, 237, 237),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: ListTile(
+          leading: Icon(sidebarItems[index]['icon']),
+          title: Text(
+            sidebarItems[index]['title'],
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          onTap: () {
+            // Handle item tap
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignOutButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: ElevatedButton(
+        onPressed: () async {
+          bool res = await _authServices.signOut();
+          if (res) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const InitApp(),
+                ));
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          foregroundColor: Colors.white,
+          fixedSize: Size(
+              double.maxFinite, MediaQuery.sizeOf(context).height * 0.07),
+        ),
+        child: const Text("Sign Out"),
       ),
     );
   }

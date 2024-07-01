@@ -30,7 +30,7 @@ class _PetEventsState extends State<PetEvents> {
     ),
     PetEventItem(
       imageAsset: 'assets/images/placeholders/pet_event_placeholder.png',
-      title: 'Bhavuk ka fest',
+      title: ' Pet fest',
       dateTime: '24 May  | 10:00 AM - 12:00 PM',
       location: 'Lodhi Garden, New Delhi',
       price: 'Rs. 500 onwards',
@@ -115,7 +115,7 @@ class _PetEventsState extends State<PetEvents> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Text('Restoe',
+                Text('PloofyPaws',
                     style: typography(context)
                         .ploofypawsTitle
                         .copyWith(color: Colors.grey, fontSize: 26, fontWeight: FontWeight.bold)),
