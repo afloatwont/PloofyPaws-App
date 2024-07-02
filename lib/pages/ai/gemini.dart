@@ -15,7 +15,7 @@ class GenModel {
     _alertService = getIt.get<AlertService>();
     String key = dotenv.env['PLOOFYBOT_KEY'] ?? "key";
     _model = GenerativeModel(
-        model: "gemini-1.5-pro",
+        model: "gemini-1.5-flash",
         apiKey: key,
         systemInstruction: Content("system", <Part>[TextPart(instructions)]));
   }

@@ -10,11 +10,16 @@ import 'package:ploofypaws/pages/vet_video_consultation/vet_video_consultation.d
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking.dart';
 
-class PetServices extends StatelessWidget {
+class PetServices extends StatefulWidget {
   const PetServices({
     super.key,
   });
 
+  @override
+  State<PetServices> createState() => _PetServicesState();
+}
+
+class _PetServicesState extends State<PetServices> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
@@ -49,8 +54,7 @@ class PetServices extends StatelessWidget {
             margin: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: const Color.fromARGB(
-                  255, 234, 235, 255), // Assuming a background color from theme
+              color: const Color(0xffee3e4f3), // Assuming a background color from theme
               // boxShadow: [
               //   BoxShadow(
               //     color: Colors.grey.withOpacity(0.2),

@@ -46,7 +46,7 @@ dependencies:
   table_calendar: ^3.1.1
   flutter_map: ^7.0.0
   latlong2: ^0.9.1
-  location: ^6.0.2
+  location: ^7.0.0
   geolocator: ^12.0.0
   http: ^1.2.1
   carousel_slider: ^4.2.1
@@ -93,7 +93,7 @@ flutter:
     - assets/images/content/doodle_cat.png
     - assets/images/content/dog_with_coat.jpeg
     - assets/images/content/ai_bg.png
-    - .env
+    - assets/.env
 
 
 
