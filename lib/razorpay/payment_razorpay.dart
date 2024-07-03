@@ -19,6 +19,9 @@ class RazorPayScreenState extends State<RazorPayScreen>
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _amountController.text = "300.00";
+    });
     _razorpay = Razorpay();
     _razorpay?.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay?.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -77,7 +80,14 @@ class RazorPayScreenState extends State<RazorPayScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
         title: const Text('Razorpay Payment'),
+        centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -87,9 +97,21 @@ class RazorPayScreenState extends State<RazorPayScreen>
             children: [
               TextField(
                 controller: _amountController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Enter Amount',
-                  border: OutlineInputBorder(),
+                  labelStyle: const TextStyle(color: Colors.black),
+                  contentPadding: const EdgeInsets.all(20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -105,6 +127,10 @@ class RazorPayScreenState extends State<RazorPayScreen>
                     _animationController.forward();
                   }
                 },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    fixedSize: Size(double.maxFinite,
+                        MediaQuery.sizeOf(context).height * 0.06)),
                 child: const Text(
                   'Pay Now',
                   style: TextStyle(color: Colors.white),
