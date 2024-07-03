@@ -5,6 +5,7 @@ import 'package:ploofypaws/pages/doctors/about_doctor_page.dart';
 import 'package:ploofypaws/pages/home/core/data/services_data.dart';
 import 'package:ploofypaws/pages/home/services/pet_diet.dart';
 import 'package:ploofypaws/pages/home/services/vet_video_consultation.dart';
+import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/pages/training/training.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/vet_video_consultation.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
@@ -27,7 +28,7 @@ class _PetServicesState extends State<PetServices> {
       const TrainingScreen(),
       const VetVideoConsultationScreen(),
       const DietPage(),
-      const PetAdoptionPage(),
+      const Tracker(),
       const TrainingScreen(),
     ];
 
