@@ -19,12 +19,12 @@ class _MeetingScreenState extends State<MeetingScreen> {
   late Room _room;
   var micEnabled = true;
   var camEnabled = true;
+  int currCamIndex = 1;
 
   Map<String, Participant> participants = {};
 
   @override
   void initState() {
-
     // create room
     _room = VideoSDK.createRoom(
       roomId: widget.meetingId,
@@ -134,15 +134,22 @@ class _MeetingScreenState extends State<MeetingScreen> {
             MeetingControls(
               onToggleMicButtonPressed: () {
                 micEnabled ? _room.muteMic() : _room.unmuteMic();
+                print("toggled mute");
                 setState(() {
                   micEnabled = !micEnabled;
                 });
               },
               onToggleCameraButtonPressed: () {
-                // camEnabled ? _room.changeCam() : _room.enableCam();
-                setState(() {
-                  camEnabled = !camEnabled;
-                });
+                if (_room.camEnabled) {
+                  final cams = _room.getCameras();
+                  print("cams: $cams");
+                  currCamIndex == 1
+                      ? _room.changeCam(cams[0].deviceId)
+                      : _room.changeCam(cams[1].deviceId);
+                  setState(() {
+                    currCamIndex == 1 ? currCamIndex = 0 : currCamIndex = 1;
+                  });
+                }
               },
               onLeaveButtonPressed: () {
                 _room.leave();
