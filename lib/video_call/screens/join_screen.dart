@@ -11,7 +11,7 @@ class JoinScreen extends StatelessWidget {
     // call api to create meeting and then navigate to MeetingScreen with meetingId,token
     await createMeeting().then((meetingId) {
       // if (!context.mounted) return;
-      print("object");
+      // print();
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -19,7 +19,7 @@ class JoinScreen extends StatelessWidget {
               MeetingScreen(meetingId: meetingId, token: token),
         ),
       );
-      print("object");
+      // print("object");
     });
   }
 

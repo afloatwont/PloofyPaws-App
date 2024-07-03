@@ -19,6 +19,7 @@ import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:ploofypaws/video_call/screens/join_screen.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'config/theme/placebo_colors.dart';
@@ -75,7 +76,9 @@ class _MyAppState extends State<MyApp> {
     _userDatabaseService = _getIt.get<UserDatabaseService>();
 
     if (_authServices.user != null) {
-      _userDatabaseService.getUserProfileByUID(_authServices.user!.uid).then((value) {
+      _userDatabaseService
+          .getUserProfileByUID(_authServices.user!.uid)
+          .then((value) {
         setState(() {
           currUser = value!;
         });
@@ -96,7 +99,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: const RazorPayScreen(),
+      home: JoinScreen(),
     );
   }
 }

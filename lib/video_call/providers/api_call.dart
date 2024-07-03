@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 //Auth token we will use to generate a meeting and connect to it
-String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI4MjAzYWM0Ni0yNWIyLTQ2ZjktOWE1OS0yYjEyYWQ1OTBhYWYiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcxOTMzNzU3NSwiZXhwIjoxNzIxOTI5NTc1fQ._qzkpjsu--MI47vQw4OvGmc_uNo5SqAbpsEjFUKb5GA";
+String token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI1YjJjNjllNy01OGFjLTQ1NGMtYTdmNC02ZTY0Y2U4OGM1MWIiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcyMDAwNjM4MCwiZXhwIjoxNzIyNTk4MzgwfQ.svA2G6z3t80rZZRFYfVoh22K-YUGkq0pIxRl9syN5_E";
 
 // API call to create meeting
 Future<String> createMeeting() async {
