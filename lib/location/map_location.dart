@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 
 class AddressFormScreen extends StatefulWidget {
@@ -67,7 +67,8 @@ class AddressFormScreenState extends State<AddressFormScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          LocationPicker(currentLocation: currentLocation, mapController: mapController),
+          LocationPicker(
+              currentLocation: currentLocation, mapController: mapController),
           Positioned(
             bottom: 0,
             left: 0,
@@ -90,7 +91,8 @@ class LocationPicker extends StatelessWidget {
   final LatLng? currentLocation;
   final MapController mapController;
 
-  const LocationPicker({super.key, this.currentLocation, required this.mapController});
+  const LocationPicker(
+      {super.key, this.currentLocation, required this.mapController});
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +128,7 @@ class LocationPicker extends StatelessWidget {
   }
 }
 
-class AddressFormBottomSheet extends ConsumerWidget {
+class AddressFormBottomSheet extends StatelessWidget {
   final LatLng? currentLocation;
   final ValueChanged<LatLng> updateLocation;
 
@@ -136,7 +138,7 @@ class AddressFormBottomSheet extends ConsumerWidget {
     required this.updateLocation,
   });
 
-  Future<void> _getCurrentLocation(WidgetRef ref) async {
+  Future<void> _getCurrentLocation(BuildContext context) async {
     final location = Location();
 
     bool serviceEnabled;
@@ -163,7 +165,9 @@ class AddressFormBottomSheet extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final address = context.watch<AddressModel>();
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: const BoxDecoration(
@@ -182,13 +186,13 @@ class AddressFormBottomSheet extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-
           if (currentLocation != null) ...[
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Latitude: ${currentLocation!.latitude}, Longitude: ${currentLocation!.longitude}',
-                style:  typography(context).largeBody.copyWith(color: Colors.black)
+                style:
+                    typography(context).largeBody.copyWith(color: Colors.black),
               ),
             ),
           ] else ...[
@@ -200,15 +204,15 @@ class AddressFormBottomSheet extends ConsumerWidget {
               ),
             ),
           ],
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              style:ElevatedButton.styleFrom(
+              style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
               ),
-              onPressed: () => _showAddressFormBottomSheet(context, ref),
-              child: const Text('Enter Address Details', style: TextStyle(color: Colors.white)),
+              onPressed: () => _showAddressFormBottomSheet(context),
+              child: const Text('Enter Address Details',
+                  style: TextStyle(color: Colors.white)),
             ),
           ),
         ],
@@ -217,7 +221,7 @@ class AddressFormBottomSheet extends ConsumerWidget {
   }
 }
 
-void _showAddressFormBottomSheet(BuildContext context, WidgetRef ref) {
+void _showAddressFormBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -239,23 +243,23 @@ void _showAddressFormBottomSheet(BuildContext context, WidgetRef ref) {
   );
 }
 
-class AddressFormContent extends ConsumerWidget {
+class AddressFormContent extends StatelessWidget {
   const AddressFormContent({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final address = ref.watch(addressProvider);
+  Widget build(BuildContext context) {
+    final address = context.watch<AddressModel>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(context),
         const SizedBox(height: 8),
-        _buildRadioButtons(context, ref, address),
+        _buildRadioButtons(context, address),
         const SizedBox(height: 8),
-        _buildAddressTypeChips(context, ref, address),
+        _buildAddressTypeChips(context, address),
         const SizedBox(height: 16),
-        _buildTextFields(context, ref, address),
+        _buildTextFields(context, address),
         const SizedBox(height: 16),
         _buildSaveButton(context, address),
       ],
@@ -286,14 +290,14 @@ class AddressFormContent extends ConsumerWidget {
     );
   }
 
-  Widget _buildRadioButtons(BuildContext context, WidgetRef ref, Address address) {
+  Widget _buildRadioButtons(BuildContext context, AddressModel address) {
     return Row(
       children: [
         Radio<bool>(
           value: true,
           groupValue: address.isForMyself,
           onChanged: (value) {
-            ref.read(addressProvider.notifier).update((state) => state.copyWith(isForMyself: value!));
+            address.updateIsForMyself(value!);
           },
         ),
         const Text(
@@ -307,7 +311,7 @@ class AddressFormContent extends ConsumerWidget {
           value: false,
           groupValue: address.isForMyself,
           onChanged: (value) {
-            ref.read(addressProvider.notifier).update((state) => state.copyWith(isForMyself: value!));
+            address.updateIsForMyself(value!);
           },
         ),
         const Text(
@@ -321,7 +325,7 @@ class AddressFormContent extends ConsumerWidget {
     );
   }
 
-  Widget _buildAddressTypeChips(BuildContext context, WidgetRef ref, Address address) {
+  Widget _buildAddressTypeChips(BuildContext context, AddressModel address) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -348,7 +352,7 @@ class AddressFormContent extends ConsumerWidget {
               selected: address.saveAs == label,
               onSelected: (selected) {
                 if (selected) {
-                  ref.read(addressProvider.notifier).update((state) => state.copyWith(saveAs: label));
+                  address.updateSaveAs(label);
                 }
               },
               selectedColor: Colors.grey[200],
@@ -364,14 +368,14 @@ class AddressFormContent extends ConsumerWidget {
     );
   }
 
-  Widget _buildTextFields(BuildContext context, WidgetRef ref, Address address) {
+  Widget _buildTextFields(BuildContext context, AddressModel address) {
     return Column(
       children: [
         _buildTextField(
           context,
           labelText: 'Flat / House no / Floor / Building *',
           onChanged: (value) {
-            ref.read(addressProvider.notifier).update((state) => state.copyWith(flatNo: value));
+            address.updateFlatNo(value);
           },
         ),
         const SizedBox(height: 8),
@@ -379,7 +383,7 @@ class AddressFormContent extends ConsumerWidget {
           context,
           labelText: 'Area / Sector / Locality',
           onChanged: (value) {
-            ref.read(addressProvider.notifier).update((state) => state.copyWith(area: value));
+            address.updateArea(value);
           },
         ),
         const SizedBox(height: 8),
@@ -387,14 +391,15 @@ class AddressFormContent extends ConsumerWidget {
           context,
           labelText: 'Nearby landmark (optional)',
           onChanged: (value) {
-            ref.read(addressProvider.notifier).update((state) => state.copyWith(landmark: value));
+            address.updateLandmark(value);
           },
         ),
       ],
     );
   }
 
-  Widget _buildTextField(BuildContext context, {required String labelText, required Function(String) onChanged}) {
+  Widget _buildTextField(BuildContext context,
+      {required String labelText, required Function(String) onChanged}) {
     return TextField(
       decoration: InputDecoration(
         labelText: labelText,
@@ -412,14 +417,15 @@ class AddressFormContent extends ConsumerWidget {
     );
   }
 
-  Widget _buildSaveButton(BuildContext context, Address address) {
+  Widget _buildSaveButton(BuildContext context, AddressModel address) {
     return Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
         ),
         onPressed: () {
-          print('Address saved: ${address.flatNo}, ${address.area}, ${address.landmark}');
+          print(
+              'Address saved: ${address.flatNo}, ${address.area}, ${address.landmark}');
         },
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 65),
@@ -437,14 +443,14 @@ class AddressFormContent extends ConsumerWidget {
   }
 }
 
-class Address {
-  final String flatNo;
-  final String area;
-  final String landmark;
-  final bool isForMyself;
-  final String saveAs;
+class AddressModel with ChangeNotifier {
+  String flatNo;
+  String area;
+  String landmark;
+  bool isForMyself;
+  String saveAs;
 
-  Address({
+  AddressModel({
     this.flatNo = '',
     this.area = '',
     this.landmark = '',
@@ -452,23 +458,50 @@ class Address {
     this.saveAs = 'Home',
   });
 
-  Address copyWith({
-    String? flatNo,
-    String? area,
-    String? landmark,
-    bool? isForMyself,
-    String? saveAs,
-  }) {
-    return Address(
-      flatNo: flatNo ?? this.flatNo,
-      area: area ?? this.area,
-      landmark: landmark ?? this.landmark,
-      isForMyself: isForMyself ?? this.isForMyself,
-      saveAs: saveAs ?? this.saveAs,
+  // Converts a JSON map to an AddressModel instance
+  factory AddressModel.fromJson(Map<String, dynamic> json) {
+    return AddressModel(
+      flatNo: json['flatNo'] as String? ?? '',
+      area: json['area'] as String? ?? '',
+      landmark: json['landmark'] as String? ?? '',
+      isForMyself: json['isForMyself'] as bool? ?? true,
+      saveAs: json['saveAs'] as String? ?? 'Home',
     );
   }
-}
 
-final addressProvider = StateProvider<Address>((ref) {
-  return Address();
-});
+  // Converts an AddressModel instance to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'flatNo': flatNo,
+      'area': area,
+      'landmark': landmark,
+      'isForMyself': isForMyself,
+      'saveAs': saveAs,
+    };
+  }
+
+  void updateFlatNo(String value) {
+    flatNo = value;
+    notifyListeners();
+  }
+
+  void updateArea(String value) {
+    area = value;
+    notifyListeners();
+  }
+
+  void updateLandmark(String value) {
+    landmark = value;
+    notifyListeners();
+  }
+
+  void updateIsForMyself(bool value) {
+    isForMyself = value;
+    notifyListeners();
+  }
+
+  void updateSaveAs(String value) {
+    saveAs = value;
+    notifyListeners();
+  }
+}

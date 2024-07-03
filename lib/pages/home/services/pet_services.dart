@@ -9,7 +9,7 @@ import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/pages/training/training.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/vet_video_consultation.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
-import 'package:ploofypaws/pages/home/services/pet_walking.dart';
+import 'package:ploofypaws/pages/home/services/pet_walking/pet_walking.dart';
 
 class PetServices extends StatefulWidget {
   const PetServices({

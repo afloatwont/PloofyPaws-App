@@ -1,13 +1,20 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class CalendarProvider {
- 
-  static final selectedDateProvider = StateProvider<DateTime?>((ref) {
-    return null; 
-  });
+class CalendarProvider with ChangeNotifier {
+  DateTime? _selectedDate;
+  DateTime _focusedDay = DateTime.now();
 
-  static final focusedDayProvider = StateProvider<DateTime>((ref) {
-    return DateTime.now();
-  });
+  DateTime? get selectedDate => _selectedDate;
+  DateTime get focusedDay => _focusedDay;
+
+  void setSelectedDate(DateTime? date) {
+    _selectedDate = date;
+    notifyListeners();
+  }
+
+  void setFocusedDay(DateTime date) {
+    _focusedDay = date;
+    notifyListeners();
+  }
 }

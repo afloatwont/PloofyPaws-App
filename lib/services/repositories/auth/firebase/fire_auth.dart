@@ -65,6 +65,7 @@ class AuthServices {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
+        _alertService.showToast(text: "Failed");
         return Future.error('Google sign in failed');
       }
 

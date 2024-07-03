@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/adaptive_modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
-import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/pages/doctors/about_doctor_page.dart';
 import 'package:ploofypaws/pages/pet_onboarding/widgets/calender_widget.dart';
+
 
 class ModalSheet extends StatefulWidget {
   const ModalSheet({super.key});
@@ -185,8 +186,8 @@ Widget buildCalenderPart(Size screenSize) {
 }
 
 Widget buildtime(Size screenSize) {
-  return Consumer(builder: (_, WidgetRef ref, __) {
-    final time = ref.watch(timeProvider);
+  return Consumer<TimeProvider>(builder: (context, timeProvider, child) {
+    final time = timeProvider.time;
     return Padding(
       padding: EdgeInsets.all(screenSize.width * 0.03),
       child: Column(

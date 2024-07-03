@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
-import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/pages/pet_onboarding/widgets/calender_widget.dart';
 import 'package:ploofypaws/razorpay/payment_razorpay.dart';
+
 
 class AboutDoctorPage extends StatefulWidget {
   const AboutDoctorPage({super.key});
@@ -67,7 +68,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
             const SizedBox(height: 20),
             _buildUpcomingSchedule(context, screenSize),
             const SizedBox(height: 20),
-            _buildSectionTitle(context, 'Select Data and Time'),
+            _buildSectionTitle(context, 'Select Date and Time'),
             const SizedBox(height: 20),
             _buildCalendarSection(screenSize),
             _buildTimeSelection(screenSize),
@@ -154,7 +155,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
               radius: 15,
               backgroundColor: Color(0xffDEE6F8),
               backgroundImage:
-              AssetImage('assets/images/placeholders/user_avatar.png'),
+                  AssetImage('assets/images/placeholders/user_avatar.png'),
             ),
           ),
           Positioned(
@@ -237,7 +238,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
             top: 10,
             left: 230,
             child:
-            Image.asset('assets/images/placeholders/doctor_with_pet.png'),
+                Image.asset('assets/images/placeholders/doctor_with_pet.png'),
           ),
         ],
       ),
@@ -259,8 +260,8 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
   }
 
   Widget _buildTimeSelection(Size screenSize) {
-    return Consumer(builder: (_, WidgetRef ref, __) {
-      final time = ref.watch(timeProvider);
+    return Consumer<TimeProvider>(builder: (context, timeProvider, child) {
+      final time = timeProvider.time;
       return Padding(
         padding: EdgeInsets.all(screenSize.width * 0.03),
         child: Column(
@@ -269,27 +270,27 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                   3,
-                      (_) => TimeTile(
-                    time: time,
-                  )),
+                  (_) => TimeTile(
+                        time: time,
+                      )),
             ),
             const SizedBox(height: 14.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                   3,
-                      (_) => TimeTile(
-                    time: time,
-                  )),
+                  (_) => TimeTile(
+                        time: time,
+                      )),
             ),
             const SizedBox(height: 14.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                   3,
-                      (_) => TimeTile(
-                    time: time,
-                  )),
+                  (_) => TimeTile(
+                        time: time,
+                      )),
             ),
           ],
         ),

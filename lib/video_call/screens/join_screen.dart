@@ -8,10 +8,8 @@ class JoinScreen extends StatelessWidget {
   JoinScreen({super.key});
 
   Future<void> onCreateButtonPressed(BuildContext context) async {
-    // call api to create meeting and then navigate to MeetingScreen with meetingId,token
+    // Call API to create meeting and then navigate to MeetingScreen with meetingId, token
     await createMeeting().then((meetingId) {
-      // if (!context.mounted) return;
-      print("object");
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -19,15 +17,13 @@ class JoinScreen extends StatelessWidget {
               MeetingScreen(meetingId: meetingId, token: token),
         ),
       );
-      print("object");
     });
   }
 
   void onJoinButtonPressed(BuildContext context) {
     String meetingId = _meetingIdController.text;
-    var re = RegExp("\\w{4}\\-\\w{4}\\-\\w{4}");
-    // check meeting id is not null or invaild
-    // if meeting id is vaild then navigate to MeetingScreen with meetingId,token
+    var re = RegExp(r"\w{4}-\w{4}-\w{4}");
+    // Check meeting ID is not null or invalid
     if (meetingId.isNotEmpty && re.hasMatch(meetingId)) {
       _meetingIdController.clear();
       Navigator.of(context).push(
@@ -40,7 +36,7 @@ class JoinScreen extends StatelessWidget {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Please enter valid meeting id"),
+        content: Text("Please enter a valid meeting ID"),
       ));
     }
   }
@@ -49,7 +45,12 @@ class JoinScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('VideoSDK QuickStart'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {},
+        ),
+        title: const Text('Video Chat'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -57,22 +58,49 @@ class JoinScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
               onPressed: () async {
                 await onCreateButtonPressed(context);
               },
               child: const Text('Create Meeting'),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Meeting Id',
-                  border: OutlineInputBorder(),
+            const SizedBox(height: 40.0),
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Meeting Id',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
-                controller: _meetingIdController,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: const BorderSide(color: Colors.black),
+                ),
               ),
+              controller: _meetingIdController,
             ),
+            const SizedBox(height: 8.0),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
               onPressed: () => onJoinButtonPressed(context),
               child: const Text('Join Meeting'),
             ),

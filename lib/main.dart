@@ -2,22 +2,31 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ploofypaws/chat/ChatScreen.dart';
 import 'package:ploofypaws/chat/services/chat_database_service.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
-import 'package:ploofypaws/pages/onboarding/onboard_carousel.dart';
+import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/home/services/pet_walking/pet_walking.dart';
+import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
+import 'package:ploofypaws/pages/tracker/tracker.dart';
+import 'package:ploofypaws/razorpay/payment_razorpay.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:ploofypaws/video_call/screens/join_screen.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: "assets/.env");
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   registerServices();
@@ -26,7 +35,15 @@ Future<void> main() async {
     statusBarIconBrightness: Brightness.dark,
   ));
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => SelectedPlanProvider()),
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => TimeProvider()),
+      ChangeNotifierProvider(create: (_) => AddressModel()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 void registerServices() {
@@ -48,12 +65,26 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final GetIt _getIt = GetIt.instance;
   late AuthServices _authServices;
+  late UserDatabaseService _userDatabaseService;
+  UserModel currUser = UserModel(
+      id: "", displayName: "", email: "", photoUrl: "", address: null);
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _authServices = _getIt.get<AuthServices>();
+    _userDatabaseService = _getIt.get<UserDatabaseService>();
+
+    if (_authServices.user != null) {
+      _userDatabaseService
+          .getUserProfileByUID(_authServices.user!.uid)
+          .then((value) {
+        setState(() {
+          currUser = value!;
+        });
+        Provider.of<UserProvider>(context, listen: false).setUser(currUser);
+      });
+    }
     print(_authServices.user);
   }
 
@@ -68,7 +99,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null ? const OnboardingCarousel() : const OnboardingCarousel(),
+      home: JoinScreen(),
     );
   }
 }

@@ -8,8 +8,8 @@ class MeetingScreen extends StatefulWidget {
   final String meetingId;
   final String token;
 
-  const MeetingScreen(
-      {super.key, required this.meetingId, required this.token});
+  const MeetingScreen({Key? key, required this.meetingId, required this.token})
+      : super(key: key);
 
   @override
   State<MeetingScreen> createState() => _MeetingScreenState();
@@ -19,6 +19,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
   late Room _room;
   var micEnabled = true;
   var camEnabled = true;
+  int currCamIndex = 1;
 
   Map<String, Participant> participants = {};
 
@@ -26,15 +27,13 @@ class _MeetingScreenState extends State<MeetingScreen> {
   void initState() {
     // create room
     _room = VideoSDK.createRoom(
-        roomId: widget.meetingId,
-        token: widget.token,
-        displayName: "John Doe",
-        micEnabled: micEnabled,
-        camEnabled: camEnabled,
-        defaultCameraIndex: kIsWeb
-            ? 0
-            : 1 // Index of MediaDevices will be used to set default camera
-        );
+      roomId: widget.meetingId,
+      token: widget.token,
+      displayName: "John Doe",
+      micEnabled: micEnabled,
+      camEnabled: camEnabled,
+      defaultCameraIndex: kIsWeb ? 0 : 1,
+    );
 
     setMeetingEventListener();
 
@@ -49,7 +48,9 @@ class _MeetingScreenState extends State<MeetingScreen> {
     _room.on(Events.roomJoined, () {
       setState(() {
         participants.putIfAbsent(
-            _room.localParticipant.id, () => _room.localParticipant);
+          _room.localParticipant.id,
+          () => _room.localParticipant,
+        );
       });
     });
 
@@ -57,16 +58,13 @@ class _MeetingScreenState extends State<MeetingScreen> {
       Events.participantJoined,
       (Participant participant) {
         setState(
-          () => participants.putIfAbsent(participant.id, () => participant),
-        );
+            () => participants.putIfAbsent(participant.id, () => participant));
       },
     );
 
     _room.on(Events.participantLeft, (String participantId) {
       if (participants.containsKey(participantId)) {
-        setState(
-          () => participants.remove(participantId),
-        );
+        setState(() => participants.remove(participantId));
       }
     });
 
@@ -76,94 +74,86 @@ class _MeetingScreenState extends State<MeetingScreen> {
     });
   }
 
-  // onbackButton pressed leave the room
-  bool _onWillPop()  {
-    _room.leave();
-    return true;
-  }
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    List<Participant> otherParticipants = participants.values
+        .where((participant) => participant.id != _room.localParticipant.id)
+        .toList();
+
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            _room.leave();
-            Navigator.pop(context);
-          },
-        ),
-        title: Text('Meeting'),
-        actions: [
-          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
-        ],
+        title: const Text('Video Chat'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            // Display the meeting ID
-            Text(
-              widget.meetingId,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            // Render all participants
+            Text(widget.meetingId),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    mainAxisExtent: 300,
-                  ),
-                  itemBuilder: (context, index) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
-                      child: ParticipantTile(
-                        key: Key(participants.values.elementAt(index).id),
-                        participant: participants.values.elementAt(index),
-                      ),
-                    );
-                  },
-                  itemCount: participants.length,
-                ),
-              ),
-            ),
-            // Meeting controls
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Stack(
                 children: [
-                  IconButton(
-                    icon: Icon(micEnabled ? Icons.mic : Icons.mic_off),
-                    onPressed: () {
-                      micEnabled ? _room.muteMic() : _room.unmuteMic();
-                      setState(() {
-                        micEnabled = !micEnabled;
-                      });
-                    },
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        mainAxisExtent:
+                            MediaQuery.of(context).size.height * 0.7,
+                      ),
+                      itemBuilder: (context, index) {
+                        return ParticipantTile(
+                          key: Key(otherParticipants[index].id),
+                          participant: otherParticipants[index],
+                        );
+                      },
+                      itemCount: otherParticipants.length,
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(camEnabled ? Icons.videocam : Icons.videocam_off),
-                    onPressed: () {
-                      camEnabled ? _room.disableCam() : _room.enableCam();
-                      setState(() {
-                        camEnabled = !camEnabled;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.call_end, color: Colors.red),
-                    onPressed: () {
-                      _room.leave();
-                    },
-                  ),
+                  if (participants.isNotEmpty)
+                    Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.44,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.green, width: 2),
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: ParticipantTile(
+                          key: Key(_room.localParticipant.id),
+                          participant: _room.localParticipant,
+                        ),
+                      ),
+                    ),
                 ],
               ),
+            ),
+            MeetingControls(
+              onToggleMicButtonPressed: () {
+                micEnabled ? _room.muteMic() : _room.unmuteMic();
+                print("toggled mute");
+                setState(() {
+                  micEnabled = !micEnabled;
+                });
+              },
+              onToggleCameraButtonPressed: () {
+                if (_room.camEnabled) {
+                  final cams = _room.getCameras();
+                  print("cams: $cams");
+                  currCamIndex == 1
+                      ? _room.changeCam(cams[0].deviceId)
+                      : _room.changeCam(cams[1].deviceId);
+                  setState(() {
+                    currCamIndex == 1 ? currCamIndex = 0 : currCamIndex = 1;
+                  });
+                }
+              },
+              onLeaveButtonPressed: () {
+                _room.leave();
+              },
             ),
           ],
         ),

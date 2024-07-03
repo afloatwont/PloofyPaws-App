@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ploofypaws/components/input_label.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/ai/ai_chat.dart';
@@ -13,14 +13,14 @@ import 'package:ploofypaws/pages/home/widgets/footer.dart';
 import 'package:ploofypaws/pages/home/widgets/stacked_cards.dart';
 import 'package:ploofypaws/pages/home/widgets/tracker_card.dart';
 
-class Home extends ConsumerStatefulWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
-  ConsumerState createState() => _HomeState();
+  State createState() => _HomeState();
 }
 
-class _HomeState extends ConsumerState<Home> {
+class _HomeState extends State<Home> {
   bool _loading = false;
 
   fetchDummyData() async {

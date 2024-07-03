@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:ploofypaws/chat/models/message.dart';
 import 'package:ploofypaws/pages/ai/ai_appbar.dart';
 import 'package:ploofypaws/pages/ai/gemini.dart';
@@ -23,11 +22,12 @@ class _AiScreenState extends State<AiScreen> {
   late AuthServices _authServices;
   late UserDatabaseService _userDatabaseService;
   late GenModel bot;
-
-  UserModel currUser = UserModel(id: "", displayName: "", email: "", photoUrl: "");
-  UserModel helper = UserModel(id: "ploofypaws", displayName: "AI Assistant", email: ".", photoUrl: ".");
-
   List<Message> messages = [];
+
+  UserModel currUser =
+      UserModel(id: "", displayName: "", email: "", photoUrl: "");
+  UserModel helper = UserModel(
+      id: "ploofypaws", displayName: "AI Assistant", email: ".", photoUrl: ".");
 
   @override
   void initState() {
@@ -41,7 +41,9 @@ class _AiScreenState extends State<AiScreen> {
   void _initializeServices() {
     _authServices = _getIt.get<AuthServices>();
     _userDatabaseService = _getIt.get<UserDatabaseService>();
-    _userDatabaseService.getUserProfileByUID(_authServices.user!.uid).then((value) {
+    _userDatabaseService
+        .getUserProfileByUID(_authServices.user!.uid)
+        .then((value) {
       setState(() {
         currUser = value!;
       });
@@ -97,7 +99,7 @@ class _AiScreenState extends State<AiScreen> {
                 AiAppBar(appBarHeight: appBarHeight),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) {
+                    (context, index) {
                       return _buildMessageBubble(index);
                     },
                     childCount: messages.length,
@@ -119,7 +121,8 @@ class _AiScreenState extends State<AiScreen> {
       child: Align(
         alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
         child: Row(
-          mainAxisAlignment: isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment:
+              isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             if (!isCurrentUser)
               const CircleAvatar(
@@ -128,10 +131,13 @@ class _AiScreenState extends State<AiScreen> {
                 child: Icon(Icons.smart_toy),
               ),
             if (!isCurrentUser) const SizedBox(width: 8),
-            Expanded(
+            Flexible(
               child: Container(
-                margin: isCurrentUser ? const EdgeInsets.only(left: 30) : const EdgeInsets.only(right: 30),
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                margin: isCurrentUser
+                    ? const EdgeInsets.only(left: 30)
+                    : const EdgeInsets.only(right: 30),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(
                   color: isCurrentUser ? Colors.black : Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(20),
@@ -150,6 +156,7 @@ class _AiScreenState extends State<AiScreen> {
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
                 child: Icon(Icons.person),
+                // child: Image.network(),
               ),
           ],
         ),

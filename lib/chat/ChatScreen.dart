@@ -36,7 +36,6 @@ class _ChatScreenState extends State<ChatScreen> {
       },
     );
     chatId = generateChatId(user1.id!, user2.id!);
-    
   }
 
   Future<void> _sendMessage(String text) async {
@@ -143,7 +142,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(bottom: 30, left: 10),
+            margin: const EdgeInsets.only(bottom: 5, left: 0),
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
               width: MediaQuery.sizeOf(context).width,

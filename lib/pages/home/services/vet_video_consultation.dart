@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/adaptive_app_bar.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
@@ -23,7 +23,7 @@ class VetVideoConsultation extends StatefulWidget {
 
 class _VetVideoConsultationState extends State<VetVideoConsultation> {
   final PageController _controller =
-  PageController(viewportFraction: 0.8, initialPage: 0);
+      PageController(viewportFraction: 0.8, initialPage: 0);
 
   final List<Map<String, dynamic>> cardDAta = [
     {
@@ -75,9 +75,9 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
                         Text(
                           'Select walker',
                           style: typography(context).title3.copyWith(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -91,9 +91,9 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
                           child: Text(
                             'View all',
                             style: typography(context).body.copyWith(
-                              color: const Color(0xff1A24DE),
-                              fontSize: 12,
-                            ),
+                                  color: const Color(0xff1A24DE),
+                                  fontSize: 12,
+                                ),
                           ),
                         ),
                       ],
@@ -129,49 +129,49 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptivePageScaffold(
-      appBar: AdaptiveAppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_rounded),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+    return ChangeNotifierProvider(
+      create: (_) => TimeProvider(),
+      child: AdaptivePageScaffold(
+        appBar: AdaptiveAppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Center(
+            child: Text('Vet Video Consultation', style: typography(context).title3),
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.notifications_rounded),
+            onPressed: () {},
+          ),
         ),
-        title: Center(
-          child:
-          Text('Vet Video Consultation', style: typography(context).title3),
-        ),
-        trailing: IconButton(
-          icon: const Icon(Icons.notifications_rounded),
-          onPressed: () {},
-        ),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        children: [
-          //const SectionHeader(title: 'Vet Video Consultation'),
-          const SectionHeader(title: 'Your Pets'),
-          const PetsList(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SectionHeader(title: 'Training packages for XYZ'),
-              GestureDetector(
-                onTap: () {},
-                child: Text(
-                  'View all',
-                  style: typography(context).body.copyWith(
-                    color: const Color(0xff1A24DE),
-                    fontSize: 12,
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          children: [
+            const SectionHeader(title: 'Your Pets'),
+            const PetsList(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SectionHeader(title: 'Training packages for XYZ'),
+                GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    'View all',
+                    style: typography(context).body.copyWith(
+                          color: const Color(0xff1A24DE),
+                          fontSize: 12,
+                        ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          buildConfusedCard(context),
-
-          buildSwipeCards(context),
-        ],
+              ],
+            ),
+            buildConfusedCard(context),
+            buildSwipeCards(context),
+          ],
+        ),
       ),
     );
   }
@@ -182,7 +182,6 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
       child: Container(
         height: 100,
         width: double.infinity,
-        //padding: const EdgeInsets.only(top: 22, left: 12),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -203,29 +202,28 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20.0,
-                    ),
+                    padding: const EdgeInsets.only(top: 20.0),
                     child: Text(
                       'Confused about Training',
                       style: typography(context).strongSmallBody,
                     ),
                   ),
                   Chip(
-                      padding: const EdgeInsets.only(
-                          top: 8, bottom: 8, left: 8, right: 8),
-                      backgroundColor: colors(context).primary.s500,
-                      labelStyle: typography(context)
-                          .strongSmallBody
-                          .copyWith(color: Colors.white),
-                      label: const Text("Chat with Us"))
+                    padding: const EdgeInsets.only(
+                        top: 8, bottom: 8, left: 8, right: 8),
+                    backgroundColor: colors(context).primary.s500,
+                    labelStyle: typography(context)
+                        .strongSmallBody
+                        .copyWith(color: Colors.white),
+                    label: const Text("Chat with Us"),
+                  ),
                 ],
               ),
             ),
             Image.asset(
               'assets/images/content/doctor_and_dog.png',
               height: 55,
-            )
+            ),
           ],
         ),
       ),
@@ -340,47 +338,23 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
                                       buttonColor: colors(context).primary.s500,
                                     ),
                                   ),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.only(
-                                  //       top: 36.0, bottom: 36),
-                                  //   child: Text(
-                                  //     'Features',
-                                  //     style: typography(context).title3,
-                                  //   ),
-                                  // ),
-                                  // const CheckList(),
-                                  // const SizedBox(
-                                  //   height: 12,
-                                  // ),
-                                  // const CheckList(),
-                                  // const SizedBox(
-                                  //   height: 12,
-                                  // ),
-                                  // const CheckList(),
-                                  // const SizedBox(
-                                  //   height: 12,
-                                  // ),
-                                  // const CheckList(),
-                                  // const SizedBox(
-                                  //   height: 12,
-                                  // ),
-                                  // const CheckList()
                                 ],
                               ),
                             ),
                           ),
                         ),
                         Positioned(
-                            left: MediaQuery.of(context).size.width / 2 - 125,
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  top: 10, bottom: 10, left: 22, right: 22),
-                              decoration: BoxDecoration(
-                                color: const Color(0xffF7C945),
-                                borderRadius: BorderRadius.circular(34),
-                              ),
-                              child: const Text('Most Popular'),
-                            )),
+                          left: MediaQuery.of(context).size.width / 2 - 125,
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                top: 10, bottom: 10, left: 22, right: 22),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffF7C945),
+                              borderRadius: BorderRadius.circular(34),
+                            ),
+                            child: const Text('Most Popular'),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -390,36 +364,6 @@ class _VetVideoConsultationState extends State<VetVideoConsultation> {
           );
         },
       ),
-    );
-  }
-}
-
-class CheckList extends StatelessWidget {
-  const CheckList({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const CircleAvatar(
-          radius: 10,
-          backgroundColor: Colors.green,
-          child: Icon(
-            Icons.check,
-            size: 15,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Text(
-            '01 Listing on  1 board for I month.',
-            style: typography(context).body.copyWith(fontSize: 12),
-          ),
-        ),
-        //
-      ],
     );
   }
 }
@@ -503,40 +447,45 @@ Widget buildCalenderPart(Size screenSize) {
 }
 
 Widget buildtime(Size screenSize) {
-  return Consumer(builder: (_, WidgetRef ref, __) {
-    final time = ref.watch(timeProvider);
-    return Padding(
-      padding: EdgeInsets.all(screenSize.width * 0.03),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
+  return Consumer<TimeProvider>(
+    builder: (_, timeProvider, __) {
+      final time = timeProvider.time;
+      return Padding(
+        padding: EdgeInsets.all(screenSize.width * 0.03),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
                 3,
-                    (_) => TimeTile(
+                (_) => TimeTile(
                   time: time,
-                )),
-          ),
-          const SizedBox(height: 14.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
+                ),
+              ),
+            ),
+            const SizedBox(height: 14.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
                 3,
-                    (_) => TimeTile(
+                (_) => TimeTile(
                   time: time,
-                )),
-          ),
-          const SizedBox(height: 14.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
+                ),
+              ),
+            ),
+            const SizedBox(height: 14.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
                 3,
-                    (_) => TimeTile(
+                (_) => TimeTile(
                   time: time,
-                )),
-          ),
-        ],
-      ),
-    );
-  });
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

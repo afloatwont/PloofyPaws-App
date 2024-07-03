@@ -1,10 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/pages/home/services/pet_diet.dart';
-
-final selectionProvider =
-    StateNotifierProvider<SelectionNotifier, SelectionState>((ref) {
-  return SelectionNotifier();
-});
 
 class SelectionState {
   final bool isNonVegSelected;
@@ -13,21 +9,24 @@ class SelectionState {
   SelectionState({required this.isNonVegSelected, required this.isVegSelected});
 }
 
-class SelectionNotifier extends StateNotifier<SelectionState> {
-  SelectionNotifier()
-      : super(SelectionState(isNonVegSelected: true, isVegSelected: true));
+class SelectionNotifier with ChangeNotifier {
+  SelectionState _state = SelectionState(isNonVegSelected: true, isVegSelected: true);
+
+  SelectionState get state => _state;
 
   void toggleNonVeg() {
-    state = SelectionState(
-      isNonVegSelected: !state.isNonVegSelected,
-      isVegSelected: state.isVegSelected,
+    _state = SelectionState(
+      isNonVegSelected: !_state.isNonVegSelected,
+      isVegSelected: _state.isVegSelected,
     );
+    notifyListeners();
   }
 
   void toggleVeg() {
-    state = SelectionState(
-      isNonVegSelected: state.isNonVegSelected,
-      isVegSelected: !state.isVegSelected,
+    _state = SelectionState(
+      isNonVegSelected: _state.isNonVegSelected,
+      isVegSelected: !_state.isVegSelected,
     );
+    notifyListeners();
   }
 }

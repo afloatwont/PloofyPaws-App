@@ -78,6 +78,7 @@ flutter:
   assets:
     - assets/app_icon/
     - assets/images/
+    - assets/images/content/
     - assets/images/auth/
     - assets/images/onboarding/
     - assets/images/pet_onboarding/
@@ -93,7 +94,7 @@ flutter:
     - assets/images/content/doodle_cat.png
     - assets/images/content/dog_with_coat.jpeg
     - assets/images/content/ai_bg.png
-    - assets/.env
+    - .env
 
 
 
