@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/video_call/screens/join_screen.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class RazorPayScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class RazorPayScreenState extends State<RazorPayScreen>
   void initState() {
     super.initState();
     setState(() {
-      _amountController.text = "300.00";
+      _amountController.text = "300";
     });
     _razorpay = Razorpay();
     _razorpay?.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -46,11 +47,16 @@ class RazorPayScreenState extends State<RazorPayScreen>
     super.dispose();
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     setState(() {
       _paymentStatus = "Payment Successful: ${response.paymentId}";
     });
-    _animationController.forward();
+    await _animationController.forward();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => JoinScreen(),
+        ));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
