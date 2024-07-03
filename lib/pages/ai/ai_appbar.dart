@@ -14,6 +14,7 @@ class AiAppBar extends StatelessWidget {
       elevation: 0,
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
+      leading: const SizedBox(),
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           fit: StackFit.expand,
@@ -62,7 +63,9 @@ class AiAppBar extends StatelessWidget {
             backgroundColor: Color.fromARGB(86, 255, 255, 255),
             child: Icon(Icons.close),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ],
       pinned: true,

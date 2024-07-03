@@ -1,11 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ploofypaws/components/products_card.dart';
+import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:provider/provider.dart';
 
-class PetAdoptionPage extends StatelessWidget {
+class PetAdoptionPage extends StatefulWidget with WidgetsBindingObserver{
   const PetAdoptionPage({super.key});
+
+  @override
+  State<PetAdoptionPage> createState() => _PetAdoptionPageState();
+}
+
+class _PetAdoptionPageState extends State<PetAdoptionPage> {
   final String imgPath =
       "https://plus.unsplash.com/premium_photo-1678099940967-73fe30680949?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aGVhZHBob25lc3xlbnwwfHwwfHx8MA%3D%3D";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndShowAddressModal();
+    });
+  }
+
+  void _checkAndShowAddressModal() {
+    final userProvider = context.read<UserProvider>();
+    if (!userProvider.hasAddress()) {
+      _showAddressModal();
+    }
+  }
+
+  void _showAddressModal() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        // Replace this with your actual modal content
+        return const AddressFormScreen();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +107,7 @@ class PetAdoptionPage extends StatelessWidget {
                           child: Text(
                             'Lorem Ipsum asdhb andbad jasdajdi jdajd', // Adjust text as needed
                             style:
-                            TextStyle(color: Colors.white, fontSize: 16.0),
+                                TextStyle(color: Colors.white, fontSize: 16.0),
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis, // Handle overflow
                           ),

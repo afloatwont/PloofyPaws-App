@@ -1,21 +1,52 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ploofypaws/components/adaptive_app_bar.dart';
+import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
 import 'package:ploofypaws/components/pet_list.dart';
 import 'package:ploofypaws/components/section_header.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
 
-import '../../../components/adaptive_app_bar.dart';
-
-class PetWalkingScreen extends ConsumerWidget {
+class PetWalkingScreen extends StatefulWidget {
   const PetWalkingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedPlan = ref.watch(selectedPlanProvider);
+  _PetWalkingScreenState createState() => _PetWalkingScreenState();
+}
+
+class _PetWalkingScreenState extends State<PetWalkingScreen> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndShowAddressModal();
+    });
+  }
+
+  void _checkAndShowAddressModal() {
+    final userProvider = context.read<UserProvider>();
+    if (!userProvider.hasAddress()) {
+      _showAddressModal();
+    }
+  }
+
+  void _showAddressModal() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        // Replace this with your actual modal content
+        return const AddressFormScreen();
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedPlan = context.watch<SelectedPlanProvider>().selectedPlan;
+    final plans = context.watch<SelectedPlanProvider>().plans;
 
     return Scaffold(
       body: AdaptivePageScaffold(
@@ -59,49 +90,47 @@ class PetWalkingScreen extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       return PlanCard(
                         plan: plans[index],
-                        isSelected: plans[index].title == selectedPlan,
+                        isSelected: plans[index].title == selectedPlan.title,
                         onTap: () {
-                          ref.read(selectedPlanProvider.notifier).state = plans[index].title;
+                          context.read<SelectedPlanProvider>().selectedPlan =
+                              plans[index];
                         },
                       );
                     },
                   ),
                 ),
-
-              GestureDetector(
-                onTap: () {},
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0,left: 16,right: 16),
-                  child: Container(
-
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      color: colors(context).primary.s500,
-                      borderRadius: BorderRadius.circular(36),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Continue',
-                          textAlign: TextAlign.center,
-                          style: typography(context).smallBody.copyWith(
-                            color: Colors.white,
-                            fontSize: 12,
+                GestureDetector(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: 12.0, left: 16, right: 16),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: colors(context).primary.s500,
+                        borderRadius: BorderRadius.circular(36),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Continue',
+                            textAlign: TextAlign.center,
+                            style: typography(context).smallBody.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-
-
                 Text('Services for cats and dogs',
                     style: typography(context).title3.copyWith(
-                      fontWeight: FontWeight.bold,
-                    )),
+                          fontWeight: FontWeight.bold,
+                        )),
                 const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -157,8 +186,6 @@ class PetWalkingScreen extends ConsumerWidget {
   }
 }
 
-final selectedPlanProvider = StateProvider<String>((ref) => 'Trial Walk');
-
 class PlanCard extends StatelessWidget {
   final Plan plan;
   final bool isSelected;
@@ -210,26 +237,30 @@ class PlanCard extends StatelessWidget {
                       Text(
                         plan.description,
                         style: typography(context).smallBody.copyWith(
-                          fontSize: 12,
-                          color: isSelected ? Colors.white : Colors.black,
-                        ),
+                              fontSize: 12,
+                              color: isSelected ? Colors.white : Colors.black,
+                            ),
                       ),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(plan.price,
-                          style: typography(context).strong.copyWith(
-                              fontSize: 15,
+                      Text(
+                        plan.price,
+                        style: typography(context).smallBody.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: isSelected ? Colors.white : Colors.black)),
+                              color: isSelected ? Colors.white : Colors.black,
+                              fontSize: 12,
+                            ),
+                      ),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 2)),
                       Text(
                         plan.originalPrice,
                         style: typography(context).smallBody.copyWith(
                             decoration: TextDecoration.lineThrough,
-                            color: isSelected ? Colors.white : Colors.grey,
-                            fontWeight: FontWeight.w600),
+                            color: isSelected ? Colors.white : Colors.black,
+                            fontSize: 12),
                       ),
                     ],
                   ),
@@ -242,55 +273,6 @@ class PlanCard extends StatelessWidget {
     );
   }
 }
-
-class Plan {
-  final String title;
-  final String price;
-  final String originalPrice;
-  final String description;
-  final Gradient? gradient;
-
-  Plan({
-    required this.title,
-    required this.price,
-    required this.originalPrice,
-    required this.description,
-    this.gradient,
-  });
-}
-
-final List<Plan> plans = [
-  Plan(
-    title: 'Trial Walk',
-    price: 'Rs 99',
-    originalPrice: 'Rs 199',
-    description: '1 day, 1 time',
-  ),
-  Plan(
-    title: 'Monthly Plan',
-    price: 'Rs 4499',
-    originalPrice: 'Rs 6099',
-    description: 'Once every day for a month',
-  ),
-  Plan(
-    title: 'Special Monthly Plan',
-    price: 'Rs 8499',
-    originalPrice: 'Rs 10099',
-    description: 'Twice every day for a month',
-  ),
-  Plan(
-    title: 'Quarterly Plan',
-    price: 'Rs 10999',
-    originalPrice: 'Rs 12999',
-    description: 'Once every day for 90 days',
-  ),
-  Plan(
-    title: 'Special Quarterly Plan',
-    price: 'Rs 10999',
-    originalPrice: 'Rs 12999',
-    description: 'Once every day for 90 days',
-  ),
-];
 
 class ServiceCard extends StatelessWidget {
   final String title;
@@ -307,61 +289,61 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        color: color,
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      color: color,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-        Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-        const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
-    Text(
-    title,
-    style: typography(context).title1.copyWith(
-    color: Colors.white,
-    fontWeight: FontWeight.w800,
-    fontSize: 16,
-    ),
-    ),
-    const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
-    GestureDetector(
-    onTap: () {
-    // Add your onTap action here!
-    },
-    child: Container(
-    decoration: BoxDecoration(
-    border: Border.all(color: Colors.white),
-    borderRadius: BorderRadius.circular(12),
-    ),
-    child: Center(
-    child: Padding(
-    padding: const EdgeInsets.symmetric(
-    horizontal: 8, vertical: 4),
-    child: Text(
-    'Explore services',
-    style: typography(context)
-        .smallBody
-        .copyWith(color: Colors.white, fontSize: 9),
-    ),
-    ),
-    ),
-    ),
-    ),
-    const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            ],
-        ),
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                  image,
-                ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
+                Text(
+                  title,
+                  style: typography(context).title1.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                      ),
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                GestureDetector(
+                  onTap: () {
+                    // Add your onTap action here!
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        child: Text(
+                          'Explore services',
+                          style: typography(context)
+                              .smallBody
+                              .copyWith(color: Colors.white, fontSize: 9),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+              ],
             ),
+            const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+            image,
+          ],
         ),
+      ),
     );
   }
 }
@@ -412,7 +394,7 @@ class TestimonialCard extends StatelessWidget {
                         Row(
                           children: List.generate(
                             rating,
-                                (index) => const Icon(Icons.star,
+                            (index) => const Icon(Icons.star,
                                 color: Colors.yellowAccent, size: 18),
                           ),
                         ),
@@ -435,4 +417,3 @@ class TestimonialCard extends StatelessWidget {
     );
   }
 }
-

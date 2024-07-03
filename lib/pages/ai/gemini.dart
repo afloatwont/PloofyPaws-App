@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -15,9 +13,18 @@ class GenModel {
     _alertService = getIt.get<AlertService>();
     String key = dotenv.env['PLOOFYBOT_KEY'] ?? "key";
     _model = GenerativeModel(
-        model: "gemini-1.5-flash",
-        apiKey: key,
-        systemInstruction: Content("system", <Part>[TextPart(instructions)]));
+      model: "gemini-1.5-flash",
+      apiKey: key,
+      systemInstruction: Content(
+        "system",
+        <Part>[
+          TextPart(instructions),
+        ],
+      ),
+      generationConfig: GenerationConfig(
+        maxOutputTokens: 250,
+      ),
+    );
   }
 
   Future<String> getResponse(String prompt) async {

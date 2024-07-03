@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ploofypaws/components/adaptive_app_bar.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
@@ -8,56 +8,48 @@ import 'package:ploofypaws/components/section_header.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/controllers/card_selection_provider.dart';
 
-class DietPage extends StatefulWidget {
+class DietPage extends StatelessWidget {
   const DietPage({super.key});
 
   @override
-  State<DietPage> createState() => _DietPageState();
-}
-
-class _DietPageState extends State<DietPage> {
-  @override
   Widget build(BuildContext context) {
-    return AdaptivePageScaffold(
-      appBar: AdaptiveAppBar(
-        bottom: const Divider(color: Color(0xffD6D6D6),),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_rounded),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+    return ChangeNotifierProvider(
+      create: (_) => SelectionNotifier(),
+      child: AdaptivePageScaffold(
+        appBar: AdaptiveAppBar(
+          bottom: const Divider(color: Color(0xffD6D6D6)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Center(
+            child: Text('Diet', style: typography(context).title3),
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.notifications_rounded),
+            onPressed: () {},
+          ),
         ),
-        title: Center(
-          child: Text('Diet', style: typography(context).title3),
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          children: const [
+            SectionHeader(title: 'My Pets'),
+            PetsList(),
+            SectionHeader(title: "Arlo’s analysis"),
+            CalorieCard(),
+            NutritionalEnhancementsCard(),
+            SectionHeader(title: 'Food Recipes'),
+            DietPreferences(),
+            FoodRecipesList(),
+            ShowMoreButton(),
+          ],
         ),
-        trailing: IconButton(
-          icon: const Icon(Icons.notifications_rounded),
-          onPressed: () {
-
-          },
-        ),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        children: const [
-          SectionHeader(title: 'My Pets'),
-          PetsList(),
-          SectionHeader(title: "Arlo’s analysis"),
-          CalorieCard(),
-          NutritionalEnhancementsCard(),
-          SectionHeader(title: 'Food Recipes'),
-          DietPreferences(),
-          FoodRecipesList(),
-          ShowMoreButton(),
-        ],
       ),
     );
   }
 }
-
-
-
-
 
 class CalorieCard extends StatelessWidget {
   const CalorieCard({super.key});
@@ -297,12 +289,12 @@ class FoodRecipesList extends StatelessWidget {
   }
 }
 
-class DietPreferences extends ConsumerWidget {
+class DietPreferences extends StatelessWidget {
   const DietPreferences({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectionState = ref.watch(selectionProvider);
+  Widget build(BuildContext context) {
+    final selectionState = context.watch<SelectionNotifier>().state;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -310,13 +302,13 @@ class DietPreferences extends ConsumerWidget {
         SelectionButton(
           label: 'Non-veg',
           isSelected: selectionState.isNonVegSelected,
-          onPressed: () => ref.read(selectionProvider.notifier).toggleNonVeg(),
+          onPressed: () => context.read<SelectionNotifier>().toggleNonVeg(),
         ),
         const SizedBox(width: 20),
         SelectionButton(
           label: 'Veg',
           isSelected: selectionState.isVegSelected,
-          onPressed: () => ref.read(selectionProvider.notifier).toggleVeg(),
+          onPressed: () => context.read<SelectionNotifier>().toggleVeg(),
         ),
       ],
     );
@@ -381,35 +373,12 @@ class ShowMoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 24.0),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          decoration: BoxDecoration(
-            color: colors(context).primary.s500,
-            borderRadius: BorderRadius.circular(36),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Unlock More',
-                textAlign: TextAlign.center,
-                style: typography(context).smallBody.copyWith(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Icon(Icons.lock_open_rounded,
-                    size: 12, color: Colors.white),
-              ),
-            ],
-          ),
+    return TextButton(
+      onPressed: () {},
+      child: const Text(
+        'Show More',
+        style: TextStyle(
+          color: Colors.black,
         ),
       ),
     );
