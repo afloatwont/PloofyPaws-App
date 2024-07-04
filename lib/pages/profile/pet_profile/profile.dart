@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/gradient_header.dart';
@@ -13,54 +12,57 @@ class ModalFit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: SafeArea(
-      top: false,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const Center(
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Center(
               child: Icon(
-            Iconsax.minus,
-            size: 34,
-            color: primary,
-          )),
-          ListTile(
-            title: const Text('Share Profile'),
-            leading: const Icon(Icons.share_outlined),
-            onTap: () => Navigator.of(context).pop(),
-          ),
-          ListTile(
-            title: const Text('My Favorites'),
-            leading: const Icon(Iconsax.heart),
-            onTap: () => Navigator.of(context).pop(),
-          ),
-          ListTile(
-            title: const Text('My Bookings'),
-            leading: const Icon(Iconsax.book),
-            onTap: () => Navigator.of(context).pop(),
-          ),
-          ListTile(
+                Iconsax.minus,
+                size: 34,
+                color: primary,
+              ),
+            ),
+            ListTile(
+              title: const Text('Share Profile'),
+              leading: const Icon(Icons.share_outlined),
+              onTap: () => Navigator.of(context).pop(),
+            ),
+            ListTile(
+              title: const Text('My Favorites'),
+              leading: const Icon(Iconsax.heart),
+              onTap: () => Navigator.of(context).pop(),
+            ),
+            ListTile(
+              title: const Text('My Bookings'),
+              leading: const Icon(Iconsax.book),
+              onTap: () => Navigator.of(context).pop(),
+            ),
+            ListTile(
               title: const Text('Settings'),
               leading: const Icon(Iconsax.setting),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialWithModalsPageRoute(builder: (context) => const AppSettings()));
-              }),
-          const SizedBox(height: 24),
-        ],
+              },
+            ),
+            const SizedBox(height: 24),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
 
-class Profile extends ConsumerStatefulWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
   @override
-  ConsumerState createState() => _ProfileState();
+  _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends ConsumerState<Profile> {
+class _ProfileState extends State<Profile> {
   final PageController _controller = PageController(viewportFraction: 0.8, initialPage: 0);
 
   // Dummy data that might typically come from a backend.

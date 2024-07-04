@@ -55,7 +55,8 @@ class _PetServicesState extends State<PetServices> {
             margin: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: const Color(0xffee3e4f3), // Assuming a background color from theme
+              color: const Color(
+                  0xffee3e4f3), // Assuming a background color from theme
               // boxShadow: [
               //   BoxShadow(
               //     color: Colors.grey.withOpacity(0.2),

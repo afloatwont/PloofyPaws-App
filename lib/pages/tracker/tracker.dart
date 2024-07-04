@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/adaptive_app_bar.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
@@ -10,7 +7,6 @@ import 'package:ploofypaws/components/gradient_header.dart';
 import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
-import 'package:ploofypaws/pages/tracker/app_bar.dart';
 import 'package:ploofypaws/pages/tracker/pairing.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +19,6 @@ class Tracker extends StatefulWidget {
 }
 
 class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
-
-
   @override
   void initState() {
     super.initState();
@@ -49,7 +43,6 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -85,143 +78,145 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          GradientHeader(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Get your",
-                    style: typography(context)
-                        .smallBody
-                        .copyWith(color: Colors.white)),
-                const SizedBox(width: 8),
-                GradientText(
-                    text: "Toe Tracker",
-                    gradient: LinearGradient(colors: [
-                      colors(context).primary.s400,
-                      colors(context).warning.s500
-                    ])),
-                const SizedBox(width: 8),
-                Text("Here",
-                    style: typography(context)
-                        .smallBody
-                        .copyWith(color: Colors.white))
-              ],
-            ),
-            trailing:
-                const Icon(Icons.keyboard_arrow_right, color: Colors.white),
-          ),
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.blue.shade200,
-                  Colors.white,
-                  Colors.blue.shade200,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            GradientHeader(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Get your",
+                      style: typography(context)
+                          .smallBody
+                          .copyWith(color: Colors.white)),
+                  const SizedBox(width: 8),
+                  GradientText(
+                      text: "Toe Tracker",
+                      gradient: LinearGradient(colors: [
+                        colors(context).primary.s400,
+                        colors(context).warning.s500
+                      ])),
+                  const SizedBox(width: 8),
+                  Text("Here",
+                      style: typography(context)
+                          .smallBody
+                          .copyWith(color: Colors.white))
                 ],
-                stops: const [0.0, 0.5, 1.0],
+              ),
+              trailing:
+                  const Icon(Icons.keyboard_arrow_right, color: Colors.white),
+            ),
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.blue.shade200,
+                    Colors.white,
+                    Colors.blue.shade200,
+                  ],
+                  stops: const [0.0, 0.5, 1.0],
+                ),
+              ),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 12),
+                    child: Image.asset("assets/images/content/tracker_bg.png"),
+                  ),
+                  Positioned(
+                    top: 25.0,
+                    left: 36.0,
+                    child: Text(
+                      "Get your",
+                      style: typography(context)
+                          .smallBody
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                  Positioned(
+                    top: 40.0,
+                    left: 36.0,
+                    child: Text(
+                      "Tracker",
+                      style: typography(context).smallBody.copyWith(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Positioned(
+                    top: 60.0,
+                    left: 36.0,
+                    child: Text(
+                      "Now",
+                      style: typography(context)
+                          .smallBody
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 40.0,
+                    left: 36.0,
+                    child: Button(
+                      onPressed: () {
+                        // Add button action here
+                      },
+                      label: "Explore",
+                      variant: 'filled',
+                      buttonColor: Colors.white,
+                      foregroundColor: Colors.black,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 50.0,
+                    right: 50.0,
+                    child: Text(
+                      "Ploofypaws",
+                      style: typography(context)
+                          .smallBody
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 12),
-                  child: Image.asset("assets/images/content/tracker_bg.png"),
-                ),
-                Positioned(
-                  top: 25.0,
-                  left: 36.0,
-                  child: Text(
-                    "Get your",
-                    style: typography(context)
-                        .smallBody
-                        .copyWith(color: Colors.white),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.34,
+              child: Stack(
+                children: [
+                  Image.asset("assets/images/content/text.png"),
+                  Positioned(
+                    bottom: 11,
+                    left: 10,
+                    right: 10,
+                    child: _addDevice(),
                   ),
-                ),
-                Positioned(
-                  top: 40.0,
-                  left: 36.0,
-                  child: Text(
-                    "Tracker",
-                    style: typography(context).smallBody.copyWith(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
+                  Positioned(
+                    right: 10,
+                    left: 10,
+                    bottom: 8,
+                    top: 0,
+                    child: Opacity(
+                      opacity: 0.7,
+                      child: Image.asset(
+                          "assets/images/content/doodle_cat_black.png"),
+                    ),
                   ),
-                ),
-                Positioned(
-                  top: 60.0,
-                  left: 36.0,
-                  child: Text(
-                    "Now",
-                    style: typography(context)
-                        .smallBody
-                        .copyWith(color: Colors.white),
-                  ),
-                ),
-                Positioned(
-                  bottom: 40.0,
-                  left: 36.0,
-                  child: Button(
-                    onPressed: () {
-                      // Add button action here
-                    },
-                    label: "Explore",
-                    variant: 'filled',
-                    buttonColor: Colors.white,
-                    foregroundColor: Colors.black,
-                  ),
-                ),
-                Positioned(
-                  bottom: 50.0,
-                  right: 50.0,
-                  child: Text(
-                    "Ploofypaws",
-                    style: typography(context)
-                        .smallBody
-                        .copyWith(color: Colors.white),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.34,
-            child: Stack(
-              children: [
-                Image.asset("assets/images/content/text.png"),
-                Positioned(
-                  bottom: 11,
-                  left: 10,
-                  right: 10,
-                  child: _addDevice(),
-                ),
-                Positioned(
-                  right: 10,
-                  left: 10,
-                  bottom: 8,
-                  top: 0,
-                  child: Opacity(
-                    opacity: 0.7,
-                    child: Image.asset(
-                        "assets/images/content/doodle_cat_black.png"),
-                  ),
-                ),
-              ],
+            const Text(
+              "By adding you are agreeing to terms and conditions and blah blah lorem ipsum",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey),
             ),
-          ),
-          const Text(
-            "By adding you are agreeing to terms and conditions and blah blah lorem ipsum",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

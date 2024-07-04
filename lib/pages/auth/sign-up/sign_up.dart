@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/components/input_label.dart';
 import 'package:ploofypaws/config/icons/google.dart';
@@ -17,14 +19,14 @@ import 'package:ploofypaws/services/repositories/auth/auth.dart';
 import 'package:ploofypaws/services/repositories/auth/model.dart' as models;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SignUpPage extends ConsumerStatefulWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  ConsumerState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends ConsumerState<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool isSuffixIconVisible = false;
   bool _loading = false;
@@ -54,13 +56,15 @@ class _SignInPageState extends ConsumerState<SignUpPage> {
       _googleLoading = true;
     });
     try {
-      final authRepository = ref.read(authRepositoryProvider);
-      final user = await authRepository.signInWithGoogle();
+      final authServices = AuthServices();
+      final user = await authServices.signInWithGoogle();
 
       final storage = await SharedPreferences.getInstance();
       storage.setString('auth', jsonEncode(user));
 
       if (!mounted) return;
+
+      Provider.of<UserProvider>(context, listen: false).setUser(user!);
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
