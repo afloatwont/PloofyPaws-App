@@ -13,16 +13,12 @@ class RazorPayScreenState extends State<RazorPayScreen>
     with SingleTickerProviderStateMixin {
   Razorpay? _razorpay;
   String _paymentStatus = "Idle";
-  final TextEditingController _amountController = TextEditingController();
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _amountController.text = "300";
-    });
     _razorpay = Razorpay();
     _razorpay?.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay?.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -66,12 +62,11 @@ class RazorPayScreenState extends State<RazorPayScreen>
     _animationController.forward();
   }
 
-  void openCheckout(String amount) async {
-    // Since UPI is removed, prefill is no longer needed
+  void openCheckout() async {
     var options = {
       'key': 'rzp_test_1DP5mmOlF5G5ag', // Replace with your Razorpay key
-      'amount': int.parse(amount) * 100, // Convert to paise
-      'name': 'Acme Corp.',
+      'amount': 30000, // Fixed amount in paise (300 INR)
+      'name': 'PloofyPaws.',
       'description': 'Fine T-Shirt',
     };
 
@@ -101,37 +96,14 @@ class RazorPayScreenState extends State<RazorPayScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextField(
-                controller: _amountController,
-                decoration: InputDecoration(
-                  labelText: 'Enter Amount',
-                  labelStyle: const TextStyle(color: Colors.black),
-                  contentPadding: const EdgeInsets.all(20),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                keyboardType: TextInputType.number,
+              const Text(
+                'Amount to be paid: 300 INR',
+                style: TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  if (_amountController.text.isNotEmpty) {
-                    openCheckout(_amountController.text);
-                  } else {
-                    setState(() {
-                      _paymentStatus = "Please enter the amount.";
-                    });
-                    _animationController.forward();
-                  }
+                  openCheckout();
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
