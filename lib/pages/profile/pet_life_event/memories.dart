@@ -25,13 +25,19 @@ class _MemoriesState extends State<Memories> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
           title: const Text("Memories"),
           centerTitle: true,
           actions: [
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => PetMemorialScreen()));
+                    builder: (context) => const PetMemorialScreen()));
               },
               icon: const Icon(
                 Icons.add,
