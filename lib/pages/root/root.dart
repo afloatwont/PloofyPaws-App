@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/navigation.dart';
@@ -16,20 +15,21 @@ import 'package:ploofypaws/pages/home/home.dart';
 import 'package:ploofypaws/pages/profile/app_bar.dart';
 import 'package:ploofypaws/pages/profile/pet_profile/profile.dart';
 import 'package:ploofypaws/pages/root/platform_app_bar.dart';
-import 'package:ploofypaws/pages/root/provider.dart';
 import 'package:ploofypaws/pages/root/sidebar.dart';
 import 'package:ploofypaws/pages/tracker/app_bar.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:provider/provider.dart';
 
-class Root extends ConsumerStatefulWidget {
+class Root extends StatefulWidget {
   const Root({super.key});
 
   @override
-  ConsumerState createState() => _RootState();
+  _RootState createState() => _RootState();
 }
 
-class _RootState extends ConsumerState<Root> {
+class _RootState extends State<Root> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = const [
@@ -85,7 +85,7 @@ class _RootState extends ConsumerState<Root> {
 
   @override
   void initState() {
-    ref.read(profileProvider);
+    Provider.of<UserProvider>(context, listen: false);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.black,
       systemNavigationBarColor: Colors.black,
@@ -116,16 +116,20 @@ class _RootState extends ConsumerState<Root> {
                 items: tabs,
               ),
             ),
-            body: Consumer(builder: (context, ref, child) {
-              if (Platform.isIOS) {
-                return NestedScrollView(
-                  headerSliverBuilder: (context, isScrolled) =>
-                      [appBar.ios(context)],
-                  body: _pages[_selectedIndex],
-                );
-              }
-              return _pages[_selectedIndex];
-            })));
+            body: _buildBody(context)));
+  }
+
+  Widget _buildBody(BuildContext context) {
+    final platform = Platform.isIOS;
+    final selectedPage = _pages[_selectedIndex];
+    final appBar = _appBars[_selectedIndex];
+    if (platform) {
+      return NestedScrollView(
+        headerSliverBuilder: (context, isScrolled) => [appBar.ios(context)],
+        body: selectedPage,
+      );
+    }
+    return selectedPage;
   }
 
   ItemNavigationView _buildNavigationItem(
@@ -143,6 +147,4 @@ class _RootState extends ConsumerState<Root> {
       childAfter: Icon(iconAfter, color: Colors.black),
     );
   }
-
- 
 }

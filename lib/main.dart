@@ -11,6 +11,7 @@ import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/pet_walking.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
+import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/razorpay/payment_razorpay.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
@@ -99,7 +100,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: RazorPayScreen(),
+      home: const Root(),
     );
   }
 }
