@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: JoinScreen(),
+      home: RazorPayScreen(),
     );
   }
 }
