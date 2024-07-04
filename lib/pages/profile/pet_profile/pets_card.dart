@@ -1,17 +1,16 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
-
-class PetScreen extends ConsumerWidget {
+import 'package:provider/provider.dart';
+class PetScreen extends StatelessWidget {
   const PetScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final pet = ref.watch(petProvider);
+  Widget build(BuildContext context) {
+    final pet = Provider.of<PetProvider>(context).pet;
 
     return Scaffold(
         body: Stack(children: [
@@ -211,8 +210,8 @@ class Pet {
   });
 }
 
-final petProvider = Provider<Pet>((ref) {
-  return Pet(
+class PetProvider with ChangeNotifier {
+  Pet _pet = Pet(
     name: "Arlo",
     description:
         "Muscles begin to emerge subtly around the lower back and abdomen, adding a slight definition to the physique. However, abdomen, adding a slight definition to the physique.",
@@ -226,4 +225,11 @@ final petProvider = Provider<Pet>((ref) {
     aggression: "Low",
     diet: "Non-veg",
   );
-});
+
+  Pet get pet => _pet;
+
+  void setPet(Pet pet) {
+    _pet = pet;
+    notifyListeners();
+  }
+}

@@ -102,27 +102,35 @@ class _RootState extends State<Root> {
             item['iconBefore'], item['label'], item['iconAfter']))
         .toList();
 
-    final PlatformAppBar appBar = _appBars[_selectedIndex];
+    final PlatformAppBar? appBar =
+        _selectedIndex == 2 ? null : _appBars[_selectedIndex];
 
     return CupertinoScaffold(
-        body: Scaffold(
-            drawer: const Sidebar(),
-            appBar: Platform.isAndroid ? appBar.android(context) : null,
-            bottomNavigationBar: Padding(
-              padding: EdgeInsets.only(bottom: Platform.isIOS ? 16.0 : 0.0),
-              child: NavigationView(
-                onChangePage: _onItemTapped,
-                color: primary,
-                items: tabs,
-              ),
-            ),
-            body: _buildBody(context)));
+      body: Scaffold(
+        drawer: const Sidebar(),
+        appBar: Platform.isAndroid && appBar != null
+            ? appBar.android(context)
+            : null,
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(bottom: Platform.isIOS ? 16.0 : 0.0),
+          child: NavigationView(
+            onChangePage: _onItemTapped,
+            color: primary,
+            items: tabs,
+          ),
+        ),
+        body: _buildBody(context),
+      ),
+    );
   }
 
   Widget _buildBody(BuildContext context) {
     final platform = Platform.isIOS;
     final selectedPage = _pages[_selectedIndex];
     final appBar = _appBars[_selectedIndex];
+    if (_selectedIndex == 2) {
+      return selectedPage; // No app bar for Tracker
+    }
     if (platform) {
       return NestedScrollView(
         headerSliverBuilder: (context, isScrolled) => [appBar.ios(context)],

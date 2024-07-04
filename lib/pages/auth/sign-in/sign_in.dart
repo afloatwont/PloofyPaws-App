@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
 import 'package:iconsax/iconsax.dart';
@@ -18,17 +16,20 @@ import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
 import 'package:ploofypaws/services/repositories/auth/auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
-import 'package:ploofypaws/services/repositories/auth/model.dart' as models;
+import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/location/map_location.dart';
 
-class SignInPage extends ConsumerStatefulWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
-  ConsumerState createState() => _SignInPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _SignInPageState extends ConsumerState<SignInPage> {
+class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool isSuffixIconVisible = false;
   bool _loading = false;
@@ -54,7 +55,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       _loading = true;
     });
     try {
-      ref.read(authRepositoryProvider);
       showCupertinoModalBottomSheet(
           useRootNavigator: true,
           enableDrag: false,
@@ -75,13 +75,14 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       _googleLoading = true;
     });
     try {
-      final authRepository = ref.read(authRepositoryProvider);
-      final user = await authRepository.signInWithGoogle();
+      final user = await _authServices.signInWithGoogle();
 
       final storage = await SharedPreferences.getInstance();
       storage.setString('auth', jsonEncode(user));
 
       if (!mounted) return;
+
+      Provider.of<UserProvider>(context, listen: false).setUser(user!);
 
       Navigator.of(context).pushAndRemoveUntil(
           MaterialWithModalsPageRoute(
@@ -235,7 +236,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                   Button(
                     loading: _googleLoading,
                     onPressed: () async {
-                      await _authServices.signInWithGoogle();
+                      // await _handleGoogleLogin();
                     },
                     variant: 'outlined',
                     label: 'Continue with Google',
