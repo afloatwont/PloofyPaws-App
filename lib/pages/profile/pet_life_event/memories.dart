@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/create_pet_memorial.dart';
 
 class Memories extends StatefulWidget {
@@ -10,7 +12,15 @@ class Memories extends StatefulWidget {
 
 class _MemoriesState extends State<Memories> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final displayName = userProvider.user?.displayName ?? "User";
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -59,9 +69,9 @@ class _MemoriesState extends State<Memories> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Angad",
-                style: TextStyle(
+              Text(
+                displayName,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
