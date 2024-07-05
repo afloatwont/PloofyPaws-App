@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AiScreen(),
+                builder: (context) => const AiScreen(),
               ));
         }),
         const SizedBox(height: 16),
