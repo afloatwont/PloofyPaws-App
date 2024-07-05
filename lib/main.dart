@@ -10,7 +10,6 @@ import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
-import 'package:ploofypaws/pages/profile/pet_life_event/memories_new.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/pet_memories.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
