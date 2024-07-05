@@ -11,6 +11,7 @@ import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/memories_new.dart';
+import 'package:ploofypaws/pages/profile/pet_life_event/pet_memories.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
@@ -98,7 +99,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null ? const MemoriesNew() : const InitApp(),
+      home: _authServices.user != null ? const PetMemories() : const InitApp(),
     );
   }
 }
