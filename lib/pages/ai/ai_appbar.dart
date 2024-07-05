@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/pages/root/root.dart';
 
 class AiAppBar extends StatelessWidget {
   final double appBarHeight;
@@ -64,7 +65,11 @@ class AiAppBar extends StatelessWidget {
             child: Icon(Icons.close),
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Root(),
+                ));
           },
         ),
       ],

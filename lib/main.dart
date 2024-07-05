@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null ? const Memories() : const InitApp(),
+      home: _authServices.user != null ? const Root() : const InitApp(),
     );
   }
 }

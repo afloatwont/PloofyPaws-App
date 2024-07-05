@@ -5,6 +5,57 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 
+class AddAddressSheet extends StatelessWidget {
+  const AddAddressSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            blurRadius: 10.0,
+            spreadRadius: 1.0,
+            offset: Offset(0, -5),
+          ),
+        ],
+      ),
+      child: Wrap(
+        children: [
+          const Text(
+            "Before you continue, kindly add your address!",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                fixedSize: const Size.fromWidth(double.maxFinite),
+              ),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => const AddressFormScreen(),
+                );
+              },
+              child: const Text('Add Address',
+                  style: TextStyle(color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class AddressFormScreen extends StatefulWidget {
   const AddressFormScreen({super.key});
 
@@ -67,8 +118,10 @@ class AddressFormScreenState extends State<AddressFormScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          LocationPicker(
-              currentLocation: currentLocation, mapController: mapController),
+          Positioned.fill(
+            child: LocationPicker(
+                currentLocation: currentLocation, mapController: mapController),
+          ),
           Positioned(
             bottom: 0,
             left: 0,
@@ -211,7 +264,7 @@ class AddressFormBottomSheet extends StatelessWidget {
                 backgroundColor: Colors.black,
               ),
               onPressed: () => _showAddressFormBottomSheet(context),
-              child: const Text('Enter Address Details',
+              child: const Text('Confirm Location',
                   style: TextStyle(color: Colors.white)),
             ),
           ),

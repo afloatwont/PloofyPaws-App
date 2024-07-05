@@ -6,6 +6,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/navigation.dart';
 import 'package:ploofypaws/config/constants.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/ai/ai_chat.dart';
 import 'package:ploofypaws/pages/care/app_bar.dart';
 import 'package:ploofypaws/pages/care/care.dart';
 import 'package:ploofypaws/pages/developer/app_bar.dart';
@@ -35,6 +36,7 @@ class _RootState extends State<Root> {
   final List<Widget> _pages = const [
     Home(),
     PetAdoptionPage(),
+    AiScreen(),
     Tracker(),
     Profile(),
     if (kDeveloperMode) DeveloperMode(),
@@ -58,6 +60,11 @@ class _RootState extends State<Root> {
       'iconBefore': Iconsax.pet4,
       'label': 'Adoption',
       'iconAfter': Iconsax.pet5
+    },
+    {
+      'iconBefore': Iconsax.radio,
+      'label': 'PloofyBot',
+      'iconAfter': Iconsax.radio5
     },
     {
       'iconBefore': Iconsax.location,

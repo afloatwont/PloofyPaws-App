@@ -39,7 +39,7 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
       context: context,
       builder: (BuildContext context) {
         // Replace this with your actual modal content
-        return const AddressFormScreen();
+        return const AddAddressSheet();
       },
     );
   }
@@ -51,7 +51,9 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
         materialAppBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
           title: const Text("Tracker"),
           centerTitle: true,

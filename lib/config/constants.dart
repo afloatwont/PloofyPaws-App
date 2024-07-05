@@ -1,1 +1,1 @@
-const kDeveloperMode = true;
+const kDeveloperMode = false;
