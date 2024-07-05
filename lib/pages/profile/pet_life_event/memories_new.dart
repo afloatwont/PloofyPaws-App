@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MemoriesNew extends StatefulWidget {
-  const MemoriesNew({Key? key}) : super(key: key);
+  const MemoriesNew({super.key});
 
   @override
   State<MemoriesNew> createState() => _MemoriesNewState();
@@ -64,7 +64,6 @@ class _MemoriesNewState extends State<MemoriesNew> {
         collapseMode: CollapseMode.none,
         centerTitle: true,
         title: Container(
-          height: MediaQuery.of(context).size.height * 0.21,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20),
@@ -74,7 +73,6 @@ class _MemoriesNewState extends State<MemoriesNew> {
           child: Stack(
             children: [
               Positioned(
-                top: 0,
                 left: 0,
                 right: 0,
                 child: Image.asset(
@@ -83,8 +81,8 @@ class _MemoriesNewState extends State<MemoriesNew> {
                 ),
               ),
               Positioned(
-                right: MediaQuery.of(context).size.width * 0.26,
-                top: MediaQuery.of(context).size.height * 0.1,
+                right: MediaQuery.of(context).size.width * 0.4,
+                top: MediaQuery.of(context).size.height * 0.18,
                 bottom: 0,
                 child: Stack(
                   children: [
@@ -96,7 +94,7 @@ class _MemoriesNewState extends State<MemoriesNew> {
                       ),
                     ),
                     Positioned(
-                      bottom: MediaQuery.of(context).size.height * 0.03,
+                      bottom: MediaQuery.of(context).size.height * 0.08,
                       right: MediaQuery.of(context).size.width * 0.01,
                       child: Container(
                         padding: const EdgeInsets.all(2),
@@ -119,16 +117,20 @@ class _MemoriesNewState extends State<MemoriesNew> {
                 ),
               ),
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.18,
-                left: MediaQuery.of(context).size.width * 0.27,
-                child: const Text(
-                  'Logan',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                top: MediaQuery.of(context).size.height * 0.25,
+                left: MediaQuery.of(context).size.width * 0.34,
+                right: MediaQuery.of(context).size.width * 0.3,
+                child: const Padding(
+                  padding: EdgeInsets.all(14),
+                  child: Text(
+                    'Logan',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ],
@@ -279,7 +281,7 @@ class _MemoriesNewState extends State<MemoriesNew> {
             flex: 1,
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
@@ -289,7 +291,7 @@ class _MemoriesNewState extends State<MemoriesNew> {
             flex: 1,
             child: Text(
               value,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16.0,
               ),
             ),
