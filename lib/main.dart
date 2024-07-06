@@ -15,6 +15,7 @@ import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
+import 'package:ploofypaws/pages/profile/pet_profile/profile.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
@@ -98,7 +99,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null ? const PetMemories() : const InitApp(),
+      home: _authServices.user != null ? const Root() : const InitApp(),
     );
   }
 }

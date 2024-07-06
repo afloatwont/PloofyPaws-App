@@ -45,6 +45,7 @@ class _RootState extends State<Root> {
   final List _appBars = [
     HomeAppBar(),
     CareAppBar(),
+    AppBar(),
     TrackerAppBar(),
     ProfileAppBar(),
     if (kDeveloperMode) DevelopersAppBar(),
