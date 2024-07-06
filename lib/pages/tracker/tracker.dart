@@ -8,7 +8,7 @@ import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/tracker/pairing.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class Tracker extends StatefulWidget {

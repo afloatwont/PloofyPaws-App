@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 
 class UserDatabaseService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;

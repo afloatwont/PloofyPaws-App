@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/gradient_header.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/profile/app_settings/app_settings.dart';
 import 'package:ploofypaws/pages/profile/widgets/pet_card.dart';
 
@@ -44,7 +45,8 @@ class ModalFit extends StatelessWidget {
               leading: const Icon(Iconsax.setting),
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialWithModalsPageRoute(builder: (context) => const AppSettings()));
+                Navigator.of(context).push(MaterialWithModalsPageRoute(
+                    builder: (context) => const AppSettings()));
               },
             ),
             const SizedBox(height: 24),
@@ -63,7 +65,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final PageController _controller = PageController(viewportFraction: 0.8, initialPage: 0);
+  final PageController _controller =
+      PageController(viewportFraction: 0.8, initialPage: 0);
 
   // Dummy data that might typically come from a backend.
   final List<Map<String, dynamic>> petData = [
@@ -106,28 +109,47 @@ class _ProfileState extends State<Profile> {
                       scale = _controller.page! - index;
                       scale = (1 - (scale.abs() * 0.2)).clamp(0.8, 1.0);
                     } else {
-                      scale = index == 0 ? 1.0 : 0.8; // Default scale for the initial load
+                      scale = index == 0
+                          ? 1.0
+                          : 0.8; // Default scale for the initial load
                     }
                     return Center(
                       child: SizedBox(
-                        height: Curves.easeInOut.transform(scale) * MediaQuery.of(context).size.height * 0.6,
-                        width: Curves.easeInOut.transform(scale) * MediaQuery.of(context).size.width * 0.8,
+                        height: Curves.easeInOut.transform(scale) *
+                            MediaQuery.of(context).size.height *
+                            0.6,
+                        width: Curves.easeInOut.transform(scale) *
+                            MediaQuery.of(context).size.width *
+                            0.8,
                         child: index < petData.length
                             ? PetCard(pet: petData[index], scale: scale)
-                            : Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Iconsax.add_circle, size: 50, color: Colors.white),
-                                    const SizedBox(height: 16),
-                                    Text('Add a pet',
-                                        style: typography(context).ploofypawsTitle.copyWith(color: Colors.amber)),
-                                  ],
+                            : GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PetOnboarding(),
+                                      ));
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Iconsax.add_circle,
+                                          size: 50, color: Colors.white),
+                                      const SizedBox(height: 16),
+                                      Text('Add a pet',
+                                          style: typography(context)
+                                              .ploofypawsTitle
+                                              .copyWith(color: Colors.amber)),
+                                    ],
+                                  ),
                                 ),
                               ),
                       ),
@@ -145,7 +167,8 @@ class _ProfileState extends State<Profile> {
                     color: Colors.white,
                   ),
             ),
-            trailing: const Icon(Icons.keyboard_arrow_right_outlined, color: Colors.white),
+            trailing: const Icon(Icons.keyboard_arrow_right_outlined,
+                color: Colors.white),
           ),
           const SizedBox(height: 16),
           GradientHeader(
@@ -155,7 +178,8 @@ class _ProfileState extends State<Profile> {
                     color: Colors.white,
                   ),
             ),
-            trailing: const Icon(Icons.keyboard_arrow_right_outlined, color: Colors.white),
+            trailing: const Icon(Icons.keyboard_arrow_right_outlined,
+                color: Colors.white),
           ),
         ],
       ),

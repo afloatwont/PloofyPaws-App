@@ -16,10 +16,10 @@ import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
 import 'package:ploofypaws/services/repositories/auth/auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 import 'package:ploofypaws/location/map_location.dart';
 
 class SignInPage extends StatefulWidget {

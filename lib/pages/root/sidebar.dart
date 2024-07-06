@@ -4,7 +4,7 @@ import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({super.key});

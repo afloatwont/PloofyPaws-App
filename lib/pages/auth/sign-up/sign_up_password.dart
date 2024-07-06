@@ -14,7 +14,7 @@ import 'package:ploofypaws/services/networking/exceptions.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 
 class SignUpPassword extends StatefulWidget {
   final String displayName;

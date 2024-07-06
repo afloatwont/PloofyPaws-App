@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/create_pet_memorial.dart';
 

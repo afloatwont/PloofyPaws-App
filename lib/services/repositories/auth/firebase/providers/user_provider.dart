@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/location/map_location.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 
 class UserProvider with ChangeNotifier {
   UserModel? _user;

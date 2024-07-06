@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 import 'package:ploofypaws/chat/models/message.dart';
 
 class MessageList extends StatelessWidget {

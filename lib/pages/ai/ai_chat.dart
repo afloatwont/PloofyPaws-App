@@ -6,7 +6,7 @@ import 'package:ploofypaws/pages/ai/ai_appbar.dart';
 import 'package:ploofypaws/pages/ai/gemini.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 
 class AiScreen extends StatefulWidget {
   const AiScreen({super.key});

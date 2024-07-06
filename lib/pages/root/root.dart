@@ -20,7 +20,7 @@ import 'package:ploofypaws/pages/root/sidebar.dart';
 import 'package:ploofypaws/pages/tracker/app_bar.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class Root extends StatefulWidget {

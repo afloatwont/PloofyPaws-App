@@ -8,7 +8,7 @@ import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
 import 'package:ploofypaws/components/pet_list.dart';
 import 'package:ploofypaws/components/section_header.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 
 class PetWalkingScreen extends StatefulWidget {
   const PetWalkingScreen({super.key});

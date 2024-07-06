@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ploofypaws/components/products_card.dart';
 import 'package:ploofypaws/location/map_location.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-class PetAdoptionPage extends StatefulWidget with WidgetsBindingObserver{
+class PetAdoptionPage extends StatefulWidget with WidgetsBindingObserver {
   const PetAdoptionPage({super.key});
 
   @override
@@ -37,7 +37,7 @@ class _PetAdoptionPageState extends State<PetAdoptionPage> {
       context: context,
       builder: (BuildContext context) {
         // Replace this with your actual modal content
-        return const AddressFormScreen();
+        return const AddAddressSheet();
       },
     );
   }

@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/chat/models/chat_model.dart';
 import 'package:ploofypaws/chat/models/message.dart';
 import 'package:ploofypaws/chat/services/chat_database_service.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
