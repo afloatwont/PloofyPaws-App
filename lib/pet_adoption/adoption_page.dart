@@ -19,27 +19,7 @@ class _PetAdoptionPageState extends State<PetAdoptionPage> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAndShowAddressModal();
-    });
-  }
-
-  void _checkAndShowAddressModal() {
-    final userProvider = context.read<UserProvider>();
-    if (!userProvider.hasAddress()) {
-      _showAddressModal();
-    }
-  }
-
-  void _showAddressModal() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        // Replace this with your actual modal content
-        return const AddAddressSheet();
-      },
-    );
+    super.initState();    
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/components/pet_list.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/consultation_section.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/my_pets_section.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/upcoming_appointments_section.dart';
@@ -14,7 +15,7 @@ class VetVideoConsultationScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-           Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
         actions: [
@@ -26,17 +27,17 @@ class VetVideoConsultationScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyPetsSection(),
-              const SizedBox(height: 16),
-              const UpcomingAppointmentsSection(),
-              const SizedBox(height: 16),
-              const ConsultationSection(),
+              // MyPetsSection(),
+              PetsList(),
+              UpcomingAppointmentsSection(),
+              SizedBox(height: 16),
+              ConsultationSection(),
             ],
           ),
         ),

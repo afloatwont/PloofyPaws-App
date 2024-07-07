@@ -70,22 +70,22 @@ class _ProfileState extends State<Profile> {
 
   // Dummy data that might typically come from a backend.
   final List<Map<String, dynamic>> petData = [
-    {
-      'name': 'Arlo',
-      'type': 'Beagle',
-      'species': 'Dog',
-      'gender': 'Male',
-      'age': '2 years old',
-      'image': 'assets/images/placeholders/pet_card_placeholder.png'
-    },
-    {
-      'name': 'Bella',
-      'type': 'Labrador',
-      'species': 'Dog',
-      'gender': 'Female',
-      'age': '3 years old',
-      'image': 'assets/images/placeholders/pet_card_placeholder.png'
-    }
+    // {
+    //   'name': 'Arlo',
+    //   'type': 'Beagle',
+    //   'species': 'Dog',
+    //   'gender': 'Male',
+    //   'age': '2 years old',
+    //   'image': 'assets/images/placeholders/pet_card_placeholder.png'
+    // },
+    // {
+    //   'name': 'Bella',
+    //   'type': 'Labrador',
+    //   'species': 'Dog',
+    //   'gender': 'Female',
+    //   'age': '3 years old',
+    //   'image': 'assets/images/placeholders/pet_card_placeholder.png'
+    // }
   ];
 
   @override

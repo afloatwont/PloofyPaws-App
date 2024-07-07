@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 
 class PetsList extends StatefulWidget {
   const PetsList({super.key});
@@ -8,12 +9,15 @@ class PetsList extends StatefulWidget {
 }
 
 class _PetsListState extends State<PetsList> {
-  List<String> petNames = ['Arlo', 'Bella', 'Charlie']; // Example initial data
+  // List<String> petNames = ['Arlo', 'Bella', 'Charlie']; // Example initial data
+  List<String> petNames = []; // Example initial data
 
   void addPet() {
-    setState(() {
-      petNames.add('New Pet ${petNames.length + 1}');
-    });
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const PetOnboarding(),
+        ));
   }
 
   @override

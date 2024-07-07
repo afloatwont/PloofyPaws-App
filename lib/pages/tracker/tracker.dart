@@ -7,6 +7,7 @@ import 'package:ploofypaws/components/gradient_header.dart';
 import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/pages/tracker/pairing.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,11 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Root(),
+                  ));
             },
           ),
           title: const Text("Tracker"),
