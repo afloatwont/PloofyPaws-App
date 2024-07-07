@@ -11,13 +11,17 @@ class PetProvider with ChangeNotifier {
   void startAddingPet() {
     _currentPet = Pet(
       name: '',
+      description: '',
+      characteristics: [],
+      size: 0.0,
+      aggression: '',
+      diet: '',
       type: PetType.dog, // default value
       breeds: [],
-      size: '',
       weight: 0,
       weightUnit: WeightUnit.kg, // default value
       dob: DateTime.now(),
-      gender: Gender.idk, // default value
+      gender: Gender.na, // default value
       vaccinated: false,
       neutered: false,
       microchipped: false,
@@ -29,9 +33,13 @@ class PetProvider with ChangeNotifier {
 
   void updatePet({
     String? name,
+    String? description,
+    List<String>? characteristics,
+    double? size,
+    String? aggression,
+    String? diet,
     PetType? type,
     List<String>? breeds,
-    String? size,
     double? weight,
     WeightUnit? weightUnit,
     DateTime? dob,
@@ -45,9 +53,13 @@ class PetProvider with ChangeNotifier {
     if (_currentPet != null) {
       _currentPet = Pet(
         name: name ?? _currentPet!.name,
+        description: description ?? _currentPet!.description,
+        characteristics: characteristics ?? _currentPet!.characteristics,
+        size: size ?? _currentPet!.size,
+        aggression: aggression ?? _currentPet!.aggression,
+        diet: diet ?? _currentPet!.diet,
         type: type ?? _currentPet!.type,
         breeds: breeds ?? _currentPet!.breeds,
-        size: size ?? _currentPet!.size,
         weight: weight ?? _currentPet!.weight,
         weightUnit: weightUnit ?? _currentPet!.weightUnit,
         dob: dob ?? _currentPet!.dob,

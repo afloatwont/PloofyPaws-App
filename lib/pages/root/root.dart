@@ -110,8 +110,9 @@ class _RootState extends State<Root> {
             item['iconBefore'], item['label'], item['iconAfter']))
         .toList();
 
-    final PlatformAppBar? appBar =
-        _selectedIndex == 2 ? null : _appBars[_selectedIndex];
+    final PlatformAppBar? appBar = (_selectedIndex == 2 || _selectedIndex == 3)
+        ? null
+        : _appBars[_selectedIndex];
 
     return CupertinoScaffold(
       body: Scaffold(

@@ -208,6 +208,8 @@ class Pet {
     required this.aggression,
     required this.diet,
   });
+
+  static fromJson(Map<String, dynamic> petJson) {}
 }
 
 class PetProvider with ChangeNotifier {

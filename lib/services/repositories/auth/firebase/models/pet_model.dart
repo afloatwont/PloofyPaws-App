@@ -1,14 +1,18 @@
 import 'dart:convert';
 
 enum PetType { cat, dog, bird, fish, hamster, guneapig, turtle, horse, pig }
-enum Gender { male, female, idk }
+enum Gender { male, female, na }
 enum WeightUnit { kg, lbs, gms }
 
 class Pet {
   final String name;
+  final String description;
+  final List<String> characteristics;
+  final double size;
+  final String aggression;
+  final String diet;
   final PetType type;
   final List<String> breeds;
-  final String size;
   final double weight;
   final WeightUnit weightUnit;
   final DateTime dob;
@@ -21,9 +25,13 @@ class Pet {
 
   Pet({
     required this.name,
+    required this.description,
+    required this.characteristics,
+    required this.size,
+    required this.aggression,
+    required this.diet,
     required this.type,
     required this.breeds,
-    required this.size,
     required this.weight,
     required this.weightUnit,
     required this.dob,
@@ -38,9 +46,13 @@ class Pet {
   factory Pet.fromJson(Map<String, dynamic> json) {
     return Pet(
       name: json['name'],
+      description: json['description'],
+      characteristics: List<String>.from(json['characteristics']),
+      size: json['size'],
+      aggression: json['aggression'],
+      diet: json['diet'],
       type: PetType.values.firstWhere((e) => e.toString() == 'PetType.${json['type']}'),
       breeds: List<String>.from(json['breeds']),
-      size: json['size'],
       weight: json['weight'],
       weightUnit: WeightUnit.values.firstWhere((e) => e.toString() == 'WeightUnit.${json['weightUnit']}'),
       dob: DateTime.parse(json['dob']),
@@ -56,9 +68,13 @@ class Pet {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
+      'description': description,
+      'characteristics': characteristics,
+      'size': size,
+      'aggression': aggression,
+      'diet': diet,
       'type': type.toString().split('.').last,
       'breeds': breeds,
-      'size': size,
       'weight': weight,
       'weightUnit': weightUnit.toString().split('.').last,
       'dob': dob.toIso8601String(),

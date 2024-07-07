@@ -56,6 +56,8 @@ dependencies:
   delightful_toast: ^1.1.0
   google_generative_ai: ^0.4.3
   flutter_dotenv: ^5.1.0
+  flutter_radar: ^3.9.1
+  maplibre_gl: ^0.20.0
 
 
 
@@ -95,6 +97,7 @@ flutter:
     - assets/images/content/dog_with_coat.jpeg
     - assets/images/content/ai_bg.png
     - .env
+
 
 
 

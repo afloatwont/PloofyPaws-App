@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_radar/flutter_radar.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ploofypaws/chat/services/chat_database_service.dart';
@@ -13,6 +15,7 @@ import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provide
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/pet_memories.dart';
+import 'package:ploofypaws/pages/profile/pet_profile/pets_card.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
@@ -36,6 +39,8 @@ Future<void> main() async {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
+  await Radar.initialize(
+      "prj_test_pk_44e2f013c8ef77e406660f4f6dcbf30878d94dab");
 
   runApp(MultiProvider(
     providers: [
@@ -44,6 +49,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => TimeProvider()),
       ChangeNotifierProvider(create: (_) => AddressModel()),
       ChangeNotifierProvider(create: (_) => CalendarProvider()),
+      ChangeNotifierProvider(create: (_) => PetProvider()),
     ],
     child: const MyApp(),
   ));
@@ -88,7 +94,9 @@ class _MyAppState extends State<MyApp> {
         Provider.of<UserProvider>(context, listen: false).setUser(currUser);
       });
     }
-    print(_authServices.user);
+    if (kDebugMode) {
+      print(_authServices.user);
+    }
   }
 
   @override

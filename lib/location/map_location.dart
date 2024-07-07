@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_radar/flutter_radar.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -149,12 +150,14 @@ class LocationPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
         initialCenter: currentLocation ?? const LatLng(51.5, -0.09),
-        initialZoom: 12.0,
-        maxZoom: 200,
+        initialZoom: 16.0,
+        maxZoom: 18.0,
       ),
       children: [
         TileLayer(
