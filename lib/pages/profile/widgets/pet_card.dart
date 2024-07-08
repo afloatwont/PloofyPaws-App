@@ -69,6 +69,7 @@ class PetCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+            
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
