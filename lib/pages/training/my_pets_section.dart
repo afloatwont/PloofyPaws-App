@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyPetsSection extends StatelessWidget {
   const MyPetsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

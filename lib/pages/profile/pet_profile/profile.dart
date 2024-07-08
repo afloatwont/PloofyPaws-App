@@ -6,6 +6,8 @@ import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/profile/app_settings/app_settings.dart';
 import 'package:ploofypaws/pages/profile/widgets/pet_card.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class ModalFit extends StatelessWidget {
   const ModalFit({super.key});
@@ -90,6 +92,8 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final petsList = userProvider.user!.pets ?? [];
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
@@ -99,7 +103,7 @@ class _ProfileState extends State<Profile> {
             height: MediaQuery.of(context).size.height * 0.6,
             child: PageView.builder(
               controller: _controller,
-              itemCount: petData.length + 1, // +1 for the 'Add a pet' card
+              itemCount: (userProvider.user!.pets?.length ?? 0) + 1, // +1 for the 'Add a pet' card
               itemBuilder: (context, index) {
                 return AnimatedBuilder(
                   animation: _controller,
@@ -121,8 +125,8 @@ class _ProfileState extends State<Profile> {
                         width: Curves.easeInOut.transform(scale) *
                             MediaQuery.of(context).size.width *
                             0.8,
-                        child: index < petData.length
-                            ? PetCard(pet: petData[index], scale: scale)
+                        child: index < petsList.length
+                            ? PetCard(pet: petsList[index], scale: scale)
                             : GestureDetector(
                                 onTap: () {
                                   Navigator.push(

@@ -204,8 +204,8 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
           "a";
 
       if (_currentPage == 5) {
-        await _handleSubmit(petName, petType, petBreed, petSize, petGender, petDob,
-            petExtraDetails);
+        await _handleSubmit(petName, petType, petBreed, petSize, petGender,
+            petDob, petExtraDetails);
       }
 
       _pageController.nextPage(
@@ -357,6 +357,7 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
                       final user = await _databaseService
                           .getUserProfileByUID(_authServices.user!.uid);
                       userProvider.setUser(user!);
+                      print(user.pets!.last.name);
                     },
                     variant: 'filled',
                     buttonIcon: const Icon(
