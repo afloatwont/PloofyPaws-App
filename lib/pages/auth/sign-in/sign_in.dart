@@ -235,9 +235,7 @@ class _SignInPageState extends State<SignInPage> {
                   const SizedBox(height: 24),
                   Button(
                     loading: _googleLoading,
-                    onPressed: () async {
-                      // await _handleGoogleLogin();
-                    },
+                    onPressed: _handleGoogleLogin,
                     variant: 'outlined',
                     label: 'Continue with Google',
                     iconAsset: const GoogleIcon(

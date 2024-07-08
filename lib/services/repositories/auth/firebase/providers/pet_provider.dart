@@ -13,20 +13,16 @@ class PetProvider with ChangeNotifier {
       name: '',
       description: '',
       characteristics: [],
-      size: 0.0,
+      size: "Not Specified",
       aggression: '',
       diet: '',
-      type: PetType.dog, // default value
+      type: "dog", // default value
       breeds: [],
       weight: 0,
-      weightUnit: WeightUnit.kg, // default value
+      weightUnit: "Kg", // default value
       dob: DateTime.now(),
-      gender: Gender.na, // default value
-      vaccinated: false,
-      neutered: false,
-      microchipped: false,
-      houseTrained: false,
-      leashTrained: false,
+      gender: 'Not Specified', // default value
+      extraDetails: [],
     );
     notifyListeners();
   }
@@ -35,20 +31,16 @@ class PetProvider with ChangeNotifier {
     String? name,
     String? description,
     List<String>? characteristics,
-    double? size,
+    String? size,
     String? aggression,
     String? diet,
-    PetType? type,
+    String? type,
     List<String>? breeds,
     double? weight,
-    WeightUnit? weightUnit,
+    String? weightUnit,
     DateTime? dob,
-    Gender? gender,
-    bool? vaccinated,
-    bool? neutered,
-    bool? microchipped,
-    bool? houseTrained,
-    bool? leashTrained,
+    String? gender,
+    List<String>? extraDetails,
   }) {
     if (_currentPet != null) {
       _currentPet = Pet(
@@ -64,11 +56,7 @@ class PetProvider with ChangeNotifier {
         weightUnit: weightUnit ?? _currentPet!.weightUnit,
         dob: dob ?? _currentPet!.dob,
         gender: gender ?? _currentPet!.gender,
-        vaccinated: vaccinated ?? _currentPet!.vaccinated,
-        neutered: neutered ?? _currentPet!.neutered,
-        microchipped: microchipped ?? _currentPet!.microchipped,
-        houseTrained: houseTrained ?? _currentPet!.houseTrained,
-        leashTrained: leashTrained ?? _currentPet!.leashTrained,
+        extraDetails: extraDetails ?? _currentPet!.extraDetails,
       );
       notifyListeners();
     }

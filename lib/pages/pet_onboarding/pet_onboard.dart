@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get_it/get_it.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -14,7 +15,14 @@ import 'package:ploofypaws/pages/pet_onboarding/add_update_pet_size.dart';
 import 'package:ploofypaws/pages/pet_onboarding/add_update_pet_type_and_breed.dart';
 import 'package:ploofypaws/pages/pet_onboarding/data/breed.dart';
 import 'package:ploofypaws/pages/root/root.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/pet_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/model.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ploofypaws/helpers/date_format.dart';
 
 class PetOnboarding extends StatefulWidget {
   const PetOnboarding({
@@ -25,7 +33,8 @@ class PetOnboarding extends StatefulWidget {
   State<PetOnboarding> createState() => _PetOnboardingState();
 }
 
-class _PetOnboardingState extends State<PetOnboarding> with SingleTickerProviderStateMixin {
+class _PetOnboardingState extends State<PetOnboarding>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _lottieController;
 
   @override
@@ -61,8 +70,9 @@ class _PetOnboardingState extends State<PetOnboarding> with SingleTickerProvider
             storage.setBool('pet_onboarding', true);
 
             if (!mounted) return;
-            Navigator.of(context)
-                .pushAndRemoveUntil(MaterialWithModalsPageRoute(builder: (context) => const Root()), (route) => false);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialWithModalsPageRoute(builder: (context) => const Root()),
+                (route) => false);
           },
           variant: 'text',
         ),
@@ -96,7 +106,8 @@ class _PetOnboardingState extends State<PetOnboarding> with SingleTickerProvider
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Lottie.asset('assets/lottie/pet_onboarding.json', controller: _lottieController, onLoaded: (composition) {
+          Lottie.asset('assets/lottie/pet_onboarding.json',
+              controller: _lottieController, onLoaded: (composition) {
             _lottieController
               ..duration = composition.duration
               ..repeat();
@@ -124,17 +135,34 @@ class AddUpdatePetInfo extends StatefulWidget {
 class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
   PetBreed? selectedBreed;
   int _currentPage = 0;
+  final _getIt = GetIt.instance;
+  late AuthServices _authServices;
+  late UserDatabaseService _databaseService;
 
-  final GlobalKey<FormBuilderState> _petNameFormKey = GlobalKey<FormBuilderState>();
-  final GlobalKey<FormBuilderState> _petTypeFormKey = GlobalKey<FormBuilderState>();
-  final GlobalKey<FormBuilderState> _petSizeFormKey = GlobalKey<FormBuilderState>();
-  final GlobalKey<FormBuilderState> _petGenderFormKey = GlobalKey<FormBuilderState>();
-  final GlobalKey<FormBuilderState> _petDobFormKey = GlobalKey<FormBuilderState>();
-  final GlobalKey<FormBuilderState> _petExtraDetailsFormKey = GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> _petNameFormKey =
+      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> _petTypeFormKey =
+      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> _petSizeFormKey =
+      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> _petGenderFormKey =
+      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> _petDobFormKey =
+      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> _petExtraDetailsFormKey =
+      GlobalKey<FormBuilderState>();
 
   final PageController _pageController = PageController(
     initialPage: 0,
   );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _authServices = _getIt.get<AuthServices>();
+    _databaseService = _getIt.get<UserDatabaseService>();
+  }
 
   @override
   void dispose() {
@@ -148,7 +176,7 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
     });
   }
 
-  void nextPage() {
+  Future<void> nextPage() async {
     final formKeys = [
       _petNameFormKey,
       _petTypeFormKey,
@@ -160,32 +188,51 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
 
     if (formKeys[_currentPage].currentState?.saveAndValidate() ?? false) {
       final petName = _petNameFormKey.currentState?.fields['pet_name']?.value;
-      final petType = _petTypeFormKey.currentState?.fields['pet_type']?.value ?? "Dog";
+      final petType =
+          _petTypeFormKey.currentState?.fields['pet_type']?.value ?? "Dog";
       final petBreed = selectedBreed?.name ?? "";
       final petSize = _petSizeFormKey.currentState?.fields['pet_size']?.value;
-      final petDob = _petDobFormKey.currentState?.fields['pet_date_of_birth']?.value;
-      final petGender = _petGenderFormKey.currentState?.fields['pet_gender']?.value;
-      final petExtraDetails = _petExtraDetailsFormKey.currentState?.fields['pet_extra_details']?.value ?? "a";
+      final petDob =
+          _petDobFormKey.currentState?.fields['pet_date_of_birth']?.value;
+      print(petDob);
+      // print(parseDateString(petDob ?? ""));
+
+      final petGender =
+          _petGenderFormKey.currentState?.fields['pet_gender']?.value;
+      final petExtraDetails = _petExtraDetailsFormKey
+              .currentState?.fields['pet_extra_details']?.value ??
+          "a";
 
       if (_currentPage == 5) {
-        _handleSubmit(petName, petType, petBreed, petSize, petDob, petGender, petExtraDetails);
+        await _handleSubmit(petName, petType, petBreed, petSize, petGender, petDob,
+            petExtraDetails);
       }
 
-      _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+      _pageController.nextPage(
+          duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
     } else {
       // Optionally handle the case where validation fails
     }
   }
 
-  _handleSubmit(String petName, String petType, String petBreed, String petSize, String petGender, String petDob,
-      List<String> petExtraDetails) async {
+  _handleSubmit(String petName, String petType, String petBreed, String petSize,
+      String petGender, DateTime petDob, List<String> petExtraDetails) async {
     try {
       final storage = await SharedPreferences.getInstance();
       storage.setBool('pet_onboarding', true);
-
+      final pet = Pet(
+          name: petName,
+          type: petType,
+          dob: petDob,
+          gender: petGender,
+          extraDetails: petExtraDetails,
+          size: petSize,
+          weightUnit: "");
+      await _databaseService.updatePetForUser(_authServices.user!.uid, pet);
       if (!mounted) return;
-      Navigator.of(context)
-          .pushAndRemoveUntil(MaterialWithModalsPageRoute(builder: (context) => const Root()), (route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialWithModalsPageRoute(builder: (context) => const Root()),
+          (route) => false);
     } catch (e) {
       print(e);
     }
@@ -195,14 +242,16 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
     setState(() {
       selectedBreed = breed.first;
     });
-    _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+    _pageController.nextPage(
+        duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
   void onPagePopped() {
     if (_currentPage == 0) {
       Navigator.of(context).pop();
     } else {
-      _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+      _pageController.previousPage(
+          duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
     }
   }
 
@@ -231,7 +280,8 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
 
                 if (!mounted) return;
                 Navigator.of(context).pop(false);
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Root()));
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const Root()));
               },
               child: const Text('Yes'),
             ),
@@ -245,6 +295,8 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
   Widget build(BuildContext context) {
     final double bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final petName = _petNameFormKey.currentState?.fields['pet_name']?.value;
+
+    final userProvider = Provider.of<UserProvider>(context);
     return WillPopScope(
       onWillPop: onPageWillPopScope,
       child: Scaffold(
@@ -270,7 +322,11 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
               formKey: _petTypeFormKey,
               petName: petName,
             )),
-            KeepAlivePage(child: AddUpdatePetSize(selected: selectedBreed, formKey: _petSizeFormKey, petName: petName)),
+            KeepAlivePage(
+                child: AddUpdatePetSize(
+                    selected: selectedBreed,
+                    formKey: _petSizeFormKey,
+                    petName: petName)),
             KeepAlivePage(
                 child: AddUpdatePetDOB(
               formKey: _petDobFormKey,
@@ -290,12 +346,18 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
         bottomNavigationBar: _currentPage == 1
             ? null
             : Padding(
-                padding: EdgeInsets.only(bottom: bottomPadding + 16, left: 16, right: 16, top: 16),
+                padding: EdgeInsets.only(
+                    bottom: bottomPadding + 16, left: 16, right: 16, top: 16),
                 child: Directionality(
                   textDirection: TextDirection.rtl,
                   child: Button(
                     label: 'Next',
-                    onPressed: nextPage,
+                    onPressed: () async {
+                      await nextPage();
+                      final user = await _databaseService
+                          .getUserProfileByUID(_authServices.user!.uid);
+                      userProvider.setUser(user!);
+                    },
                     variant: 'filled',
                     buttonIcon: const Icon(
                       Iconsax.arrow_right_14,

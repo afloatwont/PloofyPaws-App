@@ -1,5 +1,3 @@
-
-
 import 'package:intl/intl.dart';
 
 extension DateTimeExtensions on DateTime {
@@ -62,4 +60,9 @@ extension DateTimeExtensions on DateTime {
   String to24HourTime() {
     return DateFormat('HH:mm').format(this);
   }
+
 }
+  DateTime parseDateString(String dateString) {
+    DateFormat inputFormat = DateFormat("MMMM dd, yyyy");
+    return inputFormat.parse(dateString);
+  }

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _googleLoading = true;
     });
     try {
-      final authServices = AuthServices();
+      final authServices = GetIt.instance.get<AuthServices>();
       final user = await authServices.signInWithGoogle();
 
       final storage = await SharedPreferences.getInstance();

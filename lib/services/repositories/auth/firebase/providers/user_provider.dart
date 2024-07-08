@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:ploofypaws/location/map_location.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 
 class UserProvider with ChangeNotifier {
@@ -24,6 +28,7 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
   bool hasAddress() {
     return _user?.address != null;
   }

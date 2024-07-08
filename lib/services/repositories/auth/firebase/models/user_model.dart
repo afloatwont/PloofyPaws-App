@@ -1,4 +1,4 @@
-import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/pet_model.dart';
 
 class UserModel {

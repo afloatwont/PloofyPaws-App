@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_radar/flutter_radar.dart';
+import 'package:get_it/get_it.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:ploofypaws/services/alert/alert_service.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 
@@ -299,8 +305,27 @@ void _showAddressFormBottomSheet(BuildContext context) {
   );
 }
 
-class AddressFormContent extends StatelessWidget {
+class AddressFormContent extends StatefulWidget {
   const AddressFormContent({super.key});
+
+  @override
+  State<AddressFormContent> createState() => _AddressFormContentState();
+}
+
+class _AddressFormContentState extends State<AddressFormContent> {
+  final _getIt = GetIt.instance;
+  late AuthServices _authServices;
+  late UserDatabaseService _userDatabaseService;
+  late AlertService _alertService;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _authServices = _getIt.get<AuthServices>();
+    _alertService = _getIt.get<AlertService>();
+    _userDatabaseService = _getIt.get<UserDatabaseService>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -474,14 +499,34 @@ class AddressFormContent extends StatelessWidget {
   }
 
   Widget _buildSaveButton(BuildContext context, AddressModel address) {
+    final userProvier = Provider.of<UserProvider>(context);
     return Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
         ),
-        onPressed: () {
-          print(
-              'Address saved: ${address.flatNo}, ${address.area}, ${address.landmark}');
+        onPressed: () async {
+          try {
+            userProvier.updateAddress(address);
+            await _userDatabaseService.updateAddress(
+                _authServices.user!.uid, address);
+            final user = await _userDatabaseService
+                .getUserProfileByUID(userProvier.user!.id!);
+            userProvier.setUser(user!);
+            _alertService.showToast(
+              text: "Address saved successfully",
+              icon: Icons.check,
+              color: Colors.green,
+            );
+
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+            // Navigator.of(context).popUntil((route) => route
+            // .isCurrent); // Close all bottom sheets and return to the initial page
+          } catch (e) {
+            print("Error saving address: $e");
+          }
         },
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 65),
@@ -496,68 +541,5 @@ class AddressFormContent extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class AddressModel with ChangeNotifier {
-  String flatNo;
-  String area;
-  String landmark;
-  bool isForMyself;
-  String saveAs;
-
-  AddressModel({
-    this.flatNo = '',
-    this.area = '',
-    this.landmark = '',
-    this.isForMyself = true,
-    this.saveAs = 'Home',
-  });
-
-  // Converts a JSON map to an AddressModel instance
-  factory AddressModel.fromJson(Map<String, dynamic> json) {
-    return AddressModel(
-      flatNo: json['flatNo'] as String? ?? '',
-      area: json['area'] as String? ?? '',
-      landmark: json['landmark'] as String? ?? '',
-      isForMyself: json['isForMyself'] as bool? ?? true,
-      saveAs: json['saveAs'] as String? ?? 'Home',
-    );
-  }
-
-  // Converts an AddressModel instance to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'flatNo': flatNo,
-      'area': area,
-      'landmark': landmark,
-      'isForMyself': isForMyself,
-      'saveAs': saveAs,
-    };
-  }
-
-  void updateFlatNo(String value) {
-    flatNo = value;
-    notifyListeners();
-  }
-
-  void updateArea(String value) {
-    area = value;
-    notifyListeners();
-  }
-
-  void updateLandmark(String value) {
-    landmark = value;
-    notifyListeners();
-  }
-
-  void updateIsForMyself(bool value) {
-    isForMyself = value;
-    notifyListeners();
-  }
-
-  void updateSaveAs(String value) {
-    saveAs = value;
-    notifyListeners();
   }
 }

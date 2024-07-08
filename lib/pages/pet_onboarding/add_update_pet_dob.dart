@@ -18,6 +18,7 @@ class AddUpdatePetDOB extends StatefulWidget {
 
 class _AddUpdatePetDOBState extends State<AddUpdatePetDOB> {
   DateTime? selectedDate;
+  final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,9 @@ class _AddUpdatePetDOBState extends State<AddUpdatePetDOB> {
         child: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            InputLabel(label: 'What is the \nbirth date of \n${widget.petName}?', size: 36),
+            InputLabel(
+                label: 'What is the \nbirth date of \n${widget.petName}?',
+                size: 36),
             const SizedBox(height: 20),
             const InputLabel(label: 'Pet Birth Date'),
             FormBuilderTextField(
@@ -37,7 +40,8 @@ class _AddUpdatePetDOBState extends State<AddUpdatePetDOB> {
               validator: FormBuilderValidators.required(
                 errorText: 'Pet birth date is required',
               ),
-              name: 'pet_date_of_birth',
+              name:
+                  'pet_date_of_birth_display', // Change the name to indicate this is for display
               decoration: const InputDecoration(
                 suffixIconColor: Colors.black,
                 suffixIcon: Icon(Iconsax.calendar),
@@ -50,18 +54,35 @@ class _AddUpdatePetDOBState extends State<AddUpdatePetDOB> {
                   disableFutureDates: true,
                   onDateSelected: (selectedDate) {
                     setState(() {
-                      this.selectedDate = selectedDate;  // Update the state with the new date
+                      this.selectedDate = selectedDate;
                       final formattedDate = selectedDate.toFullDate();
-                      widget.formKey.currentState?.fields['pet_date_of_birth']?.didChange(formattedDate);
+                      widget.formKey.currentState?.fields['pet_date_of_birth']
+                          ?.didChange(selectedDate); // Update the hidden field
+                      widget.formKey.currentState
+                          ?.fields['pet_date_of_birth_display']
+                          ?.didChange(formattedDate); // Update the hidden field
                     });
                   },
                 );
               },
-              initialValue: selectedDate?.toFullDate(),  // Use the formatted date as the initial value if available
+              initialValue: selectedDate
+                  ?.toFullDate(), // Use the formatted date as the initial value if available
+            ),
+            FormBuilderField(
+              name: 'pet_date_of_birth', // Hidden field to store DateTime value
+              builder: (FormFieldState<DateTime?> field) {
+                return SizedBox.shrink();
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
   }
 }
