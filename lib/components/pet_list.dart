@@ -72,8 +72,8 @@ class _PetsListState extends State<PetsList> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0, left: 8),
-                    child: Text(userProvider.user!.pets![petIndex]
-                        .name!), // Dynamic name from state
+                    child: Text(userProvider.user!.pets?[petIndex]
+                        .name! ?? ""), // Dynamic name from state
                   ),
                 ],
               ),
