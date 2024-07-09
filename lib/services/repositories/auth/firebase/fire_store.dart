@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
@@ -10,7 +13,7 @@ class UserDatabaseService {
 
   final GetIt _getIt = GetIt.instance;
   late AuthServices _authService;
-
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   CollectionReference? _usersCollection;
 
   UserDatabaseService() {
@@ -41,6 +44,35 @@ class UserDatabaseService {
       return UserModel.fromJson(docSnapshot.data() as Map<String, dynamic>);
     } else {
       return null;
+    }
+  }
+
+  Future<String> uploadProfilePicture(String userId, File file) async {
+    try {
+      // Create a reference to the location you want to upload to in Firebase Storage
+      Reference storageReference = _firebaseStorage
+          .ref()
+          .child('pfp/$userId/${file.uri.pathSegments.last}');
+
+      // Upload the file
+      UploadTask uploadTask = storageReference.putFile(file);
+
+      // Waits till the file is uploaded then stores the download url
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      // Update the user profile with the download URL
+      await _usersCollection?.doc(userId).update({'photoUrl': downloadUrl});
+      final userDoc = _usersCollection!.doc(userId);
+      await userDoc.update({
+        'photoUrl':
+            downloadUrl, // Nesting the address fields under 'address'
+      });
+
+      return downloadUrl;
+    } catch (e) {
+      print(e);
+      return Future.error('Error uploading profile picture');
     }
   }
 
