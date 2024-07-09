@@ -7,7 +7,7 @@ import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model
 class AuthServices {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  
+
   final _getIt = GetIt.instance;
   late AlertService _alertService;
 
@@ -32,7 +32,16 @@ class AuthServices {
     }
   }
 
-  Future<UserModel> login(
+  Future<void> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      _alertService.showToast(text: "Email sent successfully");
+    } catch (e) {
+      _alertService.showToast(text: "Error sending reset email");
+    }
+  }
+
+  Future<UserModel?> login(
       {required String email, required String password}) async {
     try {
       UserCredential userCredential =
@@ -53,10 +62,12 @@ class AuthServices {
         );
       } else {
         _alertService.showToast(text: "Login Failed");
+
         return Future.error('Login failed');
       }
     } catch (e) {
       _alertService.showToast(text: e.toString());
+      print(e);
       return Future.error(e);
     }
   }
@@ -134,8 +145,7 @@ class AuthServices {
       await _firebaseAuth.signOut();
       return true;
     } catch (e) {
-      
-        _alertService.showToast(text: "Error");
+      _alertService.showToast(text: "Error");
       print(e);
       return false;
       // return Future.error(e);

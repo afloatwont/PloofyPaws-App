@@ -18,6 +18,8 @@ import 'package:ploofypaws/pages/profile/pet_life_event/pet_memories.dart';
 import 'package:ploofypaws/pages/profile/pet_profile/pets_card.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
+import 'package:ploofypaws/pages/tracker/pairing.dart';
+import 'package:ploofypaws/pages/training/training.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
 import 'package:ploofypaws/pages/profile/pet_profile/profile.dart';
@@ -40,8 +42,6 @@ Future<void> main() async {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
-  await Radar.initialize(
-      "prj_test_pk_44e2f013c8ef77e406660f4f6dcbf30878d94dab");
 
   runApp(MultiProvider(
     providers: [
@@ -84,6 +84,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _userDatabaseService = _getIt.get<UserDatabaseService>();
+    final userProvider = context.read<UserProvider>();
 
     if (_authServices.user != null) {
       _userDatabaseService
@@ -91,8 +92,8 @@ class _MyAppState extends State<MyApp> {
           .then((value) {
         setState(() {
           currUser = value!;
+          userProvider.setUser(currUser);
         });
-        Provider.of<UserProvider>(context, listen: false).setUser(currUser);
       });
     }
     if (kDebugMode) {
@@ -112,7 +113,7 @@ class _MyAppState extends State<MyApp> {
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
       home:
-          _authServices.user != null ? const PetOnboarding() : const InitApp(),
+          _authServices.user != null ? const Root() : const InitApp(),
     );
   }
 }

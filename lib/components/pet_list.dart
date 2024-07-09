@@ -29,7 +29,7 @@ class _PetsListState extends State<PetsList> {
       height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: (userProvider.user!.pets?.length ?? 0) +
+        itemCount: (userProvider.user?.pets?.length ?? 0) +
             1, // +1 to include the add button
         itemBuilder: (BuildContext context, int index) {
           // Check if it's the first item (add button)
