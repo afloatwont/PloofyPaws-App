@@ -312,19 +312,8 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
             buttonIcon: const Icon(Icons.add, color: Colors.white),
           ),
         ),
-        body: Column(
-          children: [
-            ListTile(
-              title: const Text("Demo"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyMapWidget(),
-                    ));
-              },
-            ),
-          ],
+        body: const Column(
+          children: [],
         ));
   }
 }

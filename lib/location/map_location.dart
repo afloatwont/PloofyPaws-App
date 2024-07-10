@@ -233,7 +233,6 @@ class _LocationPickerState extends State<LocationPicker> {
                 coordinates: mb.Position(
                   widget.currentLocation!.longitude,
                   widget.currentLocation!.latitude,
-
                 ),
               )
             : mb.Point(
