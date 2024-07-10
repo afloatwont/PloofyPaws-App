@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 
 class AddressModel with ChangeNotifier {
   String? flatNo;
   String? area;
   String? landmark;
+  String? location;
   bool? isForMyself;
   String? saveAs;
 
@@ -12,6 +12,7 @@ class AddressModel with ChangeNotifier {
     this.flatNo = '',
     this.area = '',
     this.landmark = '',
+    this.location = '',
     this.isForMyself = true,
     this.saveAs = 'Home',
   });
@@ -22,6 +23,7 @@ class AddressModel with ChangeNotifier {
       flatNo: json['flatNo'] as String? ?? '',
       area: json['area'] as String? ?? '',
       landmark: json['landmark'] as String? ?? '',
+      location: json['location'] as String? ?? '',
       isForMyself: json['isForMyself'] as bool? ?? true,
       saveAs: json['saveAs'] as String? ?? 'Home',
     );
@@ -33,6 +35,7 @@ class AddressModel with ChangeNotifier {
       'flatNo': flatNo,
       'area': area,
       'landmark': landmark,
+      'location': location,
       'isForMyself': isForMyself,
       'saveAs': saveAs,
     };
@@ -55,6 +58,11 @@ class AddressModel with ChangeNotifier {
 
   void updateIsForMyself(bool value) {
     isForMyself = value;
+    notifyListeners();
+  }
+
+  void updateLocation(String value) {
+    location = value;
     notifyListeners();
   }
 

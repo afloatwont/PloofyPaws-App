@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get_it/get_it.dart';
@@ -5,11 +7,13 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 // import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:ploofypaws/services/alert/alert_service.dart';
+import 'package:ploofypaws/services/networking/api_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:ploofypaws/config/theme/theme.dart';
 
 class AddAddressSheet extends StatelessWidget {
@@ -76,9 +80,18 @@ class AddressFormScreenState extends State<AddressFormScreen> {
 
   @override
   void initState() {
+    final add = context.read<AddressModel>();
     super.initState();
     mapController = MapController();
-    _getCurrentLocation();
+    _getCurrentLocation().then(
+      (value) {
+        getPlace(currentLocation!).then(
+          (value) {
+            add.updateLocation(value);
+          },
+        );
+      },
+    );
   }
 
   Future<void> _getCurrentLocation() async {
@@ -111,6 +124,23 @@ class AddressFormScreenState extends State<AddressFormScreen> {
       currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
       mapController.move(currentLocation!, 12.0);
     });
+  }
+
+  Future<String> getPlace(LatLng location) async {
+    String res = "Unknown place";
+    final url = Uri.parse(
+        "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${location.latitude}&lon=${location.longitude}");
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      print(data);
+      res = data['display_name'] ?? "Unknown place";
+    } else {
+      print('Failed to get place: ${response.statusCode}');
+    }
+
+    return res;
   }
 
   void _updateLocation(LatLng newLocation) {
@@ -156,8 +186,8 @@ class LocationPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    // final width = MediaQuery.of(context).size.width;
+    // final height = MediaQuery.of(context).size.height;
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
@@ -187,23 +217,10 @@ class LocationPicker extends StatelessWidget {
           ),
       ],
     );
-    // return mb.MapWidget(
-    //   key: const ValueKey("mapWidget"),
-    //   cameraOptions: mb.CameraOptions(
-    //       center: mb.Point(
-    //           coordinates: mb.Position(
-    //         6.0033416748046875,
-    //         43.70908256335716,
-    //       )),
-    //       zoom: 3.0),
-    //   styleUri: mb.MapboxStyles.LIGHT,
-    //   textureView: true,
-    //   onLongTapListener: (coordinate) {},
-    // );
   }
 }
 
-class AddressFormBottomSheet extends StatelessWidget {
+class AddressFormBottomSheet extends StatefulWidget {
   final LatLng? currentLocation;
   final ValueChanged<LatLng> updateLocation;
 
@@ -213,7 +230,17 @@ class AddressFormBottomSheet extends StatelessWidget {
     required this.updateLocation,
   });
 
-  Future<void> _getCurrentLocation(BuildContext context) async {
+  @override
+  State<AddressFormBottomSheet> createState() => _AddressFormBottomSheetState();
+}
+
+class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _getCurrentLocation() async {
     final location = Location();
 
     bool serviceEnabled;
@@ -236,13 +263,15 @@ class AddressFormBottomSheet extends StatelessWidget {
     }
 
     var locationData = await location.getLocation();
-    updateLocation(LatLng(locationData.latitude!, locationData.longitude!));
+    if (locationData.latitude != null && locationData.longitude != null) {
+      widget.updateLocation(
+          LatLng(locationData.latitude!, locationData.longitude!));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final address = context.watch<AddressModel>();
-
+    final address = Provider.of<AddressModel>(context);
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: const BoxDecoration(
@@ -261,13 +290,15 @@ class AddressFormBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (currentLocation != null) ...[
+          if (widget.currentLocation != null) ...[
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Latitude: ${currentLocation!.latitude}, Longitude: ${currentLocation!.longitude}',
-                style:
-                    typography(context).largeBody.copyWith(color: Colors.black),
+                address.location ?? "Unknown",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
           ] else ...[
