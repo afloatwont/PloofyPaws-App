@@ -36,6 +36,7 @@ class _MyMapWidgetState extends State<MyMapWidget> {
       ),
       body: MapWidget(
         key: const ValueKey("mapWidget"),
+      
         onMapCreated: _onMapCreated,
         cameraOptions: CameraOptions(
           center: Point(coordinates: Position(20.88, 78.67)),

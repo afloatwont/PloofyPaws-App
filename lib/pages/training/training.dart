@@ -71,13 +71,10 @@ class _TrainingScreenState extends State<TrainingScreen>
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            PetsList(),
+            const SizedBox(height: 8),
             const Padding(
-              padding: EdgeInsets.all(16),
-              child: PetsList(),
-            ),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: GroomingPackagesSection(),
             ),
             const SizedBox(height: 16),
