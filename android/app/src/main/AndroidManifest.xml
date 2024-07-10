@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <application
-        android:name=".Application"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="ploofypaws">
         <activity
@@ -37,8 +37,8 @@
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
             <meta-data
-                android:name="Test"
-                android:value="prj_test_pk_44e2f013c8ef77e406660f4f6dcbf30878d94dab" />
+                android:name="com.mapbox.token"
+                android:value="pk.eyJ1IjoiYW5nYWRzaW5naDIxIiwiYSI6ImNseWU4ODFoNTBjbzAyanF5YmkyNzc2cm0ifQ.N2yJEXxfwkPMGiikPk_4Og"/>
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
