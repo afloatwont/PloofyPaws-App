@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/training/how_it_works.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'my_pets_section.dart';
@@ -28,6 +29,7 @@ class _TrainingScreenState extends State<TrainingScreen>
 
   void _checkAndShowAddressModal() {
     final userProvider = context.read<UserProvider>();
+    print("address status: ${userProvider.hasAddress()}");
     if (!userProvider.hasAddress()) {
       _showAddressModal();
     }
@@ -64,17 +66,36 @@ class _TrainingScreenState extends State<TrainingScreen>
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        // padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const PetsList(),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: PetsList(),
+            ),
             const SizedBox(height: 16),
-            const GroomingPackagesSection(),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: GroomingPackagesSection(),
+            ),
             const SizedBox(height: 16),
-            const ExpertConsultationsSection(),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: ExpertConsultationsSection(),
+            ),
             const SizedBox(height: 16),
-            ReviewsSection(),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ReviewsSection(),
+            ),
+            const Divider(thickness: 0.5, color: Colors.black),
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 1.36,
+              width: MediaQuery.sizeOf(context).width,
+              child: const HowItWorks(),
+            ),
           ],
         ),
       ),

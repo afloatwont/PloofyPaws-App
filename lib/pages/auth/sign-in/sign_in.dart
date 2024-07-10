@@ -9,6 +9,7 @@ import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/components/input_label.dart';
 import 'package:ploofypaws/config/icons/google.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/auth/sign-in/reset_password.dart';
 import 'package:ploofypaws/pages/auth/sign-in/sign_in_otp.dart';
 import 'package:ploofypaws/pages/auth/sign-up/sign_up.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
@@ -197,7 +198,18 @@ class _SignInPageState extends State<SignInPage> {
                       errorText: 'Please enter your password',
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                const ResetPasswordInstructions()));
+                      },
+                      child: const Text('Forgot password?'),
+                    ),
+                  ),
+                  const SizedBox(height: 50),
                   Button(
                     loading: _loading,
                     onPressed: () async {

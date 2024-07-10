@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_radar/flutter_radar.dart';
 import 'package:get_it/get_it.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+// import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
@@ -187,6 +187,19 @@ class LocationPicker extends StatelessWidget {
           ),
       ],
     );
+    // return mb.MapWidget(
+    //   key: const ValueKey("mapWidget"),
+    //   cameraOptions: mb.CameraOptions(
+    //       center: mb.Point(
+    //           coordinates: mb.Position(
+    //         6.0033416748046875,
+    //         43.70908256335716,
+    //       )),
+    //       zoom: 3.0),
+    //   styleUri: mb.MapboxStyles.LIGHT,
+    //   textureView: true,
+    //   onLongTapListener: (coordinate) {},
+    // );
   }
 }
 

@@ -11,27 +11,27 @@ class ReviewsSection extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 8),
-        ReviewCard(
+        const ReviewCard(
           userName: 'Samaira Sharma',
           reviewDate: '26/03/2024',
           reviewText: 'Excellent support!',
         ),
-        ReviewCard(
+        const ReviewCard(
           userName: 'Samaira Sharma',
           reviewDate: '26/03/2024',
           reviewText: 'Excellent support!',
         ),
-        ReviewCard(
+        const ReviewCard(
           userName: 'Samaira Sharma',
           reviewDate: '26/03/2024',
           reviewText: 'Excellent support!',
         ),
-        ReviewCard(
+        const ReviewCard(
           userName: 'Samaira Sharma',
           reviewDate: '26/03/2024',
           reviewText: 'Excellent support!',
         ),
-        ReviewCard(
+        const ReviewCard(
           userName: 'Samaira Sharma',
           reviewDate: '26/03/2024',
           reviewText: 'Excellent support!',
@@ -46,7 +46,8 @@ class ReviewCard extends StatelessWidget {
   final String reviewDate;
   final String reviewText;
 
-  const ReviewCard({super.key, 
+  const ReviewCard({
+    super.key,
     required this.userName,
     required this.reviewDate,
     required this.reviewText,
