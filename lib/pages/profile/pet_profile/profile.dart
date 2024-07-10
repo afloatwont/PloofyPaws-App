@@ -83,7 +83,7 @@ class _ProfileState extends State<Profile> {
             height: MediaQuery.of(context).size.height * 0.6,
             child: PageView.builder(
               controller: _controller,
-              itemCount: (userProvider.user!.pets?.length ?? 0) + 1, // +1 for the 'Add a pet' card
+              itemCount: (userProvider.user?.pets?.length ?? 0) + 1, // +1 for the 'Add a pet' card
               itemBuilder: (context, index) {
                 return AnimatedBuilder(
                   animation: _controller,

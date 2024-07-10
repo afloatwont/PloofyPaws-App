@@ -69,6 +69,7 @@ class _MemoriesState extends State<Memories> {
                   final user = await userDatabaseService
                       .getUserProfileByUID(userProvider.user!.id!);
                   userProvider.setUser(user!);
+                  setState(() {});
                 },
                 child: Container(
                   margin: const EdgeInsets.fromLTRB(40, 0, 0, 0),
@@ -78,10 +79,14 @@ class _MemoriesState extends State<Memories> {
                     children: [
                       CircleAvatar(
                         radius: 34,
-                        backgroundColor: Colors.grey,
-                        child: userProvider.user!.photoUrl != null
-                            ? Image.network(userProvider.user!.photoUrl!)
-                            : (const Icon(Iconsax.user)),
+                        backgroundColor: Colors
+                            .grey, // If photoUrl is not null, child should be null
+                        backgroundImage: userProvider.user!.photoUrl != null
+                            ? NetworkImage(userProvider.user!.photoUrl!)
+                            : null,
+                        child: userProvider.user!.photoUrl == null
+                            ? const Icon(Iconsax.user)
+                            : null,
                       ),
                       const Positioned(
                         bottom: 0,
