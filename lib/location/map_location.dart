@@ -367,64 +367,7 @@ void _showAddressFormBottomSheet(BuildContext context) {
           return SingleChildScrollView(
             controller: scrollController,
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  'Enter Address Details',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 19,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Address Line 1',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Address Line 2',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'City',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'State',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Postal Code',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                  ),
-                  onPressed: () {
-                    // Handle address form submission
-                  },
-                  child: const Text('Submit',
-                      style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            ),
+            child: const AddressFormContent(),
           );
         },
       );

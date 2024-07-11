@@ -68,8 +68,9 @@ class _MemoriesState extends State<Memories> {
                   showImageSourceActionSheet(context, userProvider.user!.id!);
                   final user = await userDatabaseService
                       .getUserProfileByUID(userProvider.user!.id!);
-                  userProvider.setUser(user!);
-                  setState(() {});
+                  setState(() {
+                    userProvider.setUser(user!);
+                  });
                 },
                 child: Container(
                   margin: const EdgeInsets.fromLTRB(40, 0, 0, 0),
@@ -79,8 +80,7 @@ class _MemoriesState extends State<Memories> {
                     children: [
                       CircleAvatar(
                         radius: 34,
-                        backgroundColor: Colors
-                            .grey, // If photoUrl is not null, child should be null
+                        backgroundColor: Colors.grey,
                         backgroundImage: userProvider.user!.photoUrl != null
                             ? NetworkImage(userProvider.user!.photoUrl!)
                             : null,

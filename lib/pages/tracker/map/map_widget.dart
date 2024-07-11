@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class MyMapWidget extends StatefulWidget {
   const MyMapWidget({super.key});
@@ -18,6 +19,8 @@ class _MyMapWidgetState extends State<MyMapWidget> {
   mb.MapboxMap? map;
   double? batteryPercentage;
   mb.PointAnnotationManager? pointAnnotationManager;
+  Timer? _timer;
+  bool _isButtonDisabled = false;
 
   @override
   void initState() {
@@ -27,6 +30,21 @@ class _MyMapWidgetState extends State<MyMapWidget> {
       throw Exception('Mapbox access token is not set');
     }
     mb.MapboxOptions.setAccessToken(accessToken);
+
+    _startLocationUpdate();
+  }
+
+  void _startLocationUpdate() {
+    _updateLocation();
+    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      _updateLocation();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   void _onMapCreated(mb.MapboxMap map) {
@@ -57,7 +75,9 @@ class _MyMapWidgetState extends State<MyMapWidget> {
       if (map != null) {
         map!.flyTo(
           mb.CameraOptions(
-              center: mb.Point(coordinates: mb.Position(longitude, latitude))),
+            center: mb.Point(coordinates: mb.Position(longitude, latitude)),
+            zoom: 15,
+          ),
           mb.MapAnimationOptions(duration: 1000),
         );
 
@@ -68,6 +88,44 @@ class _MyMapWidgetState extends State<MyMapWidget> {
           geometry: mb.Point(coordinates: mb.Position(longitude, latitude)),
           image: list,
         ));
+      }
+    } else {
+      throw Exception('Failed to load location');
+    }
+  }
+
+  void _onUpdateLocationPressed() {
+    _updateLocation();
+    _timer?.cancel();
+    _startLocationUpdate();
+
+    setState(() {
+      _isButtonDisabled = true;
+    });
+
+    Future.delayed(const Duration(seconds: 45), () {
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    });
+  }
+
+  Future<void> _navigateToGoogleMaps() async {
+    final response = await http.get(Uri.parse(
+        'https://vahantrack.com/api/api.php?api=user&ver=1.0&key=E43FEC932566D9E32F1CD2DC3F5CAE01&cmd=OBJECT_GET_LOCATIONS,861261029438534'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)['861261029438534'];
+      final latitude = double.parse(data['lat']);
+      final longitude = double.parse(data['lng']);
+
+      final googleMapsUrl = Uri.parse(
+          'https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude&travelmode=driving');
+
+      if (await canLaunchUrl(googleMapsUrl)) {
+        await launchUrl(googleMapsUrl);
+      } else {
+        throw Exception('Could not launch Google Maps');
       }
     } else {
       throw Exception('Failed to load location');
@@ -85,6 +143,16 @@ class _MyMapWidgetState extends State<MyMapWidget> {
             left: MediaQuery.sizeOf(context).width * 0.2,
             right: MediaQuery.sizeOf(context).width * 0.2,
             child: InfoCard(batteryPercentage: batteryPercentage),
+          ),
+          Positioned(
+            bottom: MediaQuery.sizeOf(context).height * 0.3,
+            right: 10,
+            child: FloatingActionButton(
+              onPressed: _navigateToGoogleMaps,
+              backgroundColor: Colors.black,
+              elevation: 5,
+              child: const Icon(Icons.map_outlined),
+            ),
           ),
         ],
       ),
@@ -157,7 +225,9 @@ class _MyMapWidgetState extends State<MyMapWidget> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: ElevatedButton(
-                          onPressed: _updateLocation,
+                          onPressed: _isButtonDisabled
+                              ? null
+                              : _onUpdateLocationPressed,
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                               fixedSize:
@@ -297,7 +367,7 @@ class BatteryPainter extends CustomPainter {
     double angle = 2 * 3.141592653589793238 * (percentage / 100);
 
     Paint paint = Paint()
-      ..color = Colors.black
+      ..color = const Color.fromARGB(115, 76, 175, 79)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5;
 
