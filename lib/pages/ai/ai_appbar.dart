@@ -68,7 +68,7 @@ class AiAppBar extends StatelessWidget {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Root(),
+                  builder: (context) => const Root(),
                 ));
           },
         ),

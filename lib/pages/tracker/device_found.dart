@@ -3,6 +3,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
 import 'package:ploofypaws/components/input_label.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/pages/tracker/map/map_widget.dart';
 
 class DeviceFound extends StatefulWidget {
   final BarcodeCapture? barcodeCapture;
@@ -28,20 +29,36 @@ class _DeviceFoundState extends State<DeviceFound> {
                 itemCount: 3,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, index) => const SizedBox(height: 16),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
                 itemBuilder: (context, index) {
                   return ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 16.0),
                     tileColor: Colors.black,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
                     title: Text(
                       'Connect',
-                      style: typography(context).strongSmallBody.copyWith(color: Colors.white),
+                      style: typography(context)
+                          .strongSmallBody
+                          .copyWith(color: Colors.white),
                     ),
                     subtitle: Text('Device-id sadjoas212 $index',
-                        style: typography(context).smallBody.copyWith(color: Colors.white)),
-                    trailing:
-                        ProgressRing(percent: 20, backgroundColor: Colors.greenAccent, foregroundColor: Colors.green),
+                        style: typography(context)
+                            .smallBody
+                            .copyWith(color: Colors.white)),
+                    trailing: const ProgressRing(
+                        percent: 20,
+                        backgroundColor: Colors.greenAccent,
+                        foregroundColor: Colors.green),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyMapWidget(),
+                          ));
+                    },
                   );
                 }),
             const SizedBox(height: 16),
@@ -68,7 +85,11 @@ class ProgressRing extends StatelessWidget {
   final Color backgroundColor;
   final Color foregroundColor;
 
-  const ProgressRing({super.key, required this.percent, required this.backgroundColor, required this.foregroundColor});
+  const ProgressRing(
+      {super.key,
+      required this.percent,
+      required this.backgroundColor,
+      required this.foregroundColor});
 
   @override
   Widget build(BuildContext context) {

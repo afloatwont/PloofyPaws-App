@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
@@ -74,13 +75,20 @@ class _MemoriesState extends State<Memories> {
                   margin: const EdgeInsets.fromLTRB(40, 0, 0, 0),
                   height: 70,
                   width: 100,
-                  child: const Stack(
+                  child: Stack(
                     children: [
                       CircleAvatar(
                         radius: 34,
-                        backgroundColor: Colors.grey,
+                        backgroundColor: Colors
+                            .grey, // If photoUrl is not null, child should be null
+                        backgroundImage: userProvider.user!.photoUrl != null
+                            ? NetworkImage(userProvider.user!.photoUrl!)
+                            : null,
+                        child: userProvider.user!.photoUrl == null
+                            ? const Icon(Iconsax.user)
+                            : null,
                       ),
-                      Positioned(
+                      const Positioned(
                         bottom: 0,
                         right: 20,
                         child: Icon(

@@ -156,16 +156,17 @@ class GroomingPackageCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 8),
         width: isSelected
             ? MediaQuery.sizeOf(context).width *
-                0.46 // Increased selected width
+                0.48 // Increased selected width
             : MediaQuery.sizeOf(context).width * 0.36,
         height: isSelected
             ? MediaQuery.sizeOf(context).height *
-                0.40 // Increased selected height
+                0.42 // Increased selected height
             : MediaQuery.sizeOf(context).height * 0.36,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isRecommended ? Colors.purple : Colors.grey.shade50,
+            width: isRecommended ? 2 : 1,
           ),
         ),
         child: Column(

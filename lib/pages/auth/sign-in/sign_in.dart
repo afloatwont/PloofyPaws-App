@@ -209,7 +209,6 @@ class _SignInPageState extends State<SignInPage> {
                       child: const Text('Forgot password?'),
                     ),
                   ),
-                  const SizedBox(height: 50),
                   Button(
                     loading: _loading,
                     onPressed: () async {

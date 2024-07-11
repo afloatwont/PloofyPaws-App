@@ -1,15 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get_it/get_it.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-// import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:ploofypaws/config/theme/theme.dart';
 
 class AddAddressSheet extends StatelessWidget {
@@ -44,7 +48,7 @@ class AddAddressSheet extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
-                fixedSize: const Size.fromWidth(double.maxFinite),
+                fixedSize: Size.fromWidth(double.maxFinite),
               ),
               onPressed: () {
                 showModalBottomSheet(
@@ -72,13 +76,21 @@ class AddressFormScreen extends StatefulWidget {
 
 class AddressFormScreenState extends State<AddressFormScreen> {
   LatLng? currentLocation;
-  late MapController mapController;
+  mb.MapboxMap? mapboxMap;
 
   @override
   void initState() {
+    final add = context.read<AddressModel>();
     super.initState();
-    mapController = MapController();
-    _getCurrentLocation();
+    _getCurrentLocation().then(
+      (value) {
+        getPlace(currentLocation!).then(
+          (value) {
+            add.updateLocation(value);
+          },
+        );
+      },
+    );
   }
 
   Future<void> _getCurrentLocation() async {
@@ -109,14 +121,54 @@ class AddressFormScreenState extends State<AddressFormScreen> {
     var locationData = await location.getLocation();
     setState(() {
       currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
-      mapController.move(currentLocation!, 12.0);
+      mapboxMap?.flyTo(
+        mb.CameraOptions(
+          center: mb.Point(
+            coordinates:
+                mb.Position(locationData.longitude!, locationData.latitude!),
+          ),
+          zoom: 12,
+        ),
+        mb.MapAnimationOptions(duration: 1),
+      );
+    });
+  }
+
+  Future<String> getPlace(LatLng location) async {
+    String res = "Unknown place";
+    final url = Uri.parse(
+        "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${location.latitude}&lon=${location.longitude}");
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      res = data['display_name'] ?? "Unknown place";
+    } else {
+      print('Failed to get place: ${response.statusCode}');
+    }
+
+    return res;
+  }
+
+  void _onMapCreated(mb.MapboxMap map) {
+    setState(() {
+      mapboxMap = map;
     });
   }
 
   void _updateLocation(LatLng newLocation) {
     setState(() {
       currentLocation = newLocation;
-      mapController.move(currentLocation!, 12.0);
+      mapboxMap?.flyTo(
+        mb.CameraOptions(
+          center: mb.Point(
+            coordinates:
+                mb.Position(newLocation.longitude, newLocation.latitude),
+          ),
+          zoom: 12,
+        ),
+        mb.MapAnimationOptions(duration: 1),
+      );
     });
   }
 
@@ -127,7 +179,7 @@ class AddressFormScreenState extends State<AddressFormScreen> {
         children: [
           Positioned.fill(
             child: LocationPicker(
-                currentLocation: currentLocation, mapController: mapController),
+                currentLocation: currentLocation, onMapCreated: _onMapCreated),
           ),
           Positioned(
             bottom: 0,
@@ -147,63 +199,54 @@ class AddressFormScreenState extends State<AddressFormScreen> {
   }
 }
 
-class LocationPicker extends StatelessWidget {
+class LocationPicker extends StatefulWidget {
   final LatLng? currentLocation;
-  final MapController mapController;
+  final Function(mb.MapboxMap) onMapCreated;
 
   const LocationPicker(
-      {super.key, this.currentLocation, required this.mapController});
+      {super.key, this.currentLocation, required this.onMapCreated});
+
+  @override
+  State<LocationPicker> createState() => _LocationPickerState();
+}
+
+class _LocationPickerState extends State<LocationPicker> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    String? accessToken = dotenv.env['MAPBOX_DOWNLOADS_TOKEN'];
+    if (accessToken == null || accessToken.isEmpty) {
+      throw Exception('Mapbox access token is not set');
+    }
+    mb.MapboxOptions.setAccessToken(accessToken);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-    return FlutterMap(
-      mapController: mapController,
-      options: MapOptions(
-        initialCenter: currentLocation ?? const LatLng(51.5, -0.09),
-        initialZoom: 16.0,
-        maxZoom: 18.0,
-      ),
-      children: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          subdomains: const ['a', 'b', 'c'],
-        ),
-        if (currentLocation != null)
-          MarkerLayer(
-            markers: [
-              Marker(
-                width: 80.0,
-                height: 80.0,
-                point: currentLocation!,
-                child: const Icon(
-                  Icons.location_on,
-                  color: Colors.red,
-                  size: 40.0,
+    return mb.MapWidget(
+      key: const ValueKey("mapWidget"),
+      onMapCreated: widget.onMapCreated,
+      cameraOptions: mb.CameraOptions(
+        center: widget.currentLocation != null
+            ? mb.Point(
+                coordinates: mb.Position(
+                  widget.currentLocation!.longitude,
+                  widget.currentLocation!.latitude,
                 ),
+              )
+            : mb.Point(
+                coordinates:
+                    mb.Position(20.88, 78.67), // Default to some location
               ),
-            ],
-          ),
-      ],
+        zoom: 1,
+      ),
+      mapOptions: mb.MapOptions(pixelRatio: 4),
     );
-    // return mb.MapWidget(
-    //   key: const ValueKey("mapWidget"),
-    //   cameraOptions: mb.CameraOptions(
-    //       center: mb.Point(
-    //           coordinates: mb.Position(
-    //         6.0033416748046875,
-    //         43.70908256335716,
-    //       )),
-    //       zoom: 3.0),
-    //   styleUri: mb.MapboxStyles.LIGHT,
-    //   textureView: true,
-    //   onLongTapListener: (coordinate) {},
-    // );
   }
 }
 
-class AddressFormBottomSheet extends StatelessWidget {
+class AddressFormBottomSheet extends StatefulWidget {
   final LatLng? currentLocation;
   final ValueChanged<LatLng> updateLocation;
 
@@ -213,7 +256,17 @@ class AddressFormBottomSheet extends StatelessWidget {
     required this.updateLocation,
   });
 
-  Future<void> _getCurrentLocation(BuildContext context) async {
+  @override
+  State<AddressFormBottomSheet> createState() => _AddressFormBottomSheetState();
+}
+
+class _AddressFormBottomSheetState extends State<AddressFormBottomSheet> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _getCurrentLocation() async {
     final location = Location();
 
     bool serviceEnabled;
@@ -236,13 +289,15 @@ class AddressFormBottomSheet extends StatelessWidget {
     }
 
     var locationData = await location.getLocation();
-    updateLocation(LatLng(locationData.latitude!, locationData.longitude!));
+    if (locationData.latitude != null && locationData.longitude != null) {
+      widget.updateLocation(
+          LatLng(locationData.latitude!, locationData.longitude!));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final address = context.watch<AddressModel>();
-
+    final address = Provider.of<AddressModel>(context);
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: const BoxDecoration(
@@ -261,13 +316,15 @@ class AddressFormBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (currentLocation != null) ...[
+          if (widget.currentLocation != null) ...[
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Latitude: ${currentLocation!.latitude}, Longitude: ${currentLocation!.longitude}',
-                style:
-                    typography(context).largeBody.copyWith(color: Colors.black),
+                address.location ?? "Unknown",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
           ] else ...[
@@ -310,7 +367,64 @@ void _showAddressFormBottomSheet(BuildContext context) {
           return SingleChildScrollView(
             controller: scrollController,
             padding: const EdgeInsets.all(16.0),
-            child: const AddressFormContent(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Enter Address Details',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 19,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Address Line 1',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Address Line 2',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'City',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'State',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Postal Code',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                  ),
+                  onPressed: () {
+                    // Handle address form submission
+                  },
+                  child: const Text('Submit',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
           );
         },
       );

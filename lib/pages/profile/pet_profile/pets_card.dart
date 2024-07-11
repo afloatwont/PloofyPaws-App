@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:provider/provider.dart';
+
 class PetScreen extends StatelessWidget {
   const PetScreen({super.key});
 
