@@ -57,7 +57,9 @@ class _MyMapWidgetState extends State<MyMapWidget> {
       if (map != null) {
         map!.flyTo(
           mb.CameraOptions(
-              center: mb.Point(coordinates: mb.Position(longitude, latitude))),
+            center: mb.Point(coordinates: mb.Position(longitude, latitude)),
+            zoom: 15,
+          ),
           mb.MapAnimationOptions(duration: 1000),
         );
 

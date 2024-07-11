@@ -24,7 +24,7 @@
 
          <meta-data
             android:name="com.mapbox.token"
-            android:value="pk.eyJ1IjoiYW5nYWRzaW5naDIxIiwiYSI6ImNseWU4ODFoNTBjbzAyanF5YmkyNzc2cm0ifQ.N2yJEXxfwkPMGiikPk_4Og"/>
+            android:value="sk.eyJ1IjoiYW5nYWRzaW5naDIxIiwiYSI6ImNseWZ2cGIwajA0M2kyaXBvd3Rtd21zcDUifQ.ks1YRQZC9JizO-vqhoHmYA"/>
             
         <activity
             android:name=".MainActivity"
