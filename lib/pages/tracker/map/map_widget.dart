@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:http/http.dart' as http;
 
@@ -18,6 +18,8 @@ class _MyMapWidgetState extends State<MyMapWidget> {
   mb.MapboxMap? map;
   double? batteryPercentage;
   mb.PointAnnotationManager? pointAnnotationManager;
+  Timer? _timer;
+  bool _isButtonDisabled = false;
 
   @override
   void initState() {
@@ -27,6 +29,21 @@ class _MyMapWidgetState extends State<MyMapWidget> {
       throw Exception('Mapbox access token is not set');
     }
     mb.MapboxOptions.setAccessToken(accessToken);
+
+    _startLocationUpdate();
+  }
+
+  void _startLocationUpdate() {
+    _updateLocation();
+    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      _updateLocation();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   void _onMapCreated(mb.MapboxMap map) {
@@ -74,6 +91,22 @@ class _MyMapWidgetState extends State<MyMapWidget> {
     } else {
       throw Exception('Failed to load location');
     }
+  }
+
+  void _onUpdateLocationPressed() {
+    _updateLocation();
+    _timer?.cancel();
+    _startLocationUpdate();
+
+    setState(() {
+      _isButtonDisabled = true;
+    });
+
+    Future.delayed(const Duration(seconds: 45), () {
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    });
   }
 
   @override
@@ -159,7 +192,9 @@ class _MyMapWidgetState extends State<MyMapWidget> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: ElevatedButton(
-                          onPressed: _updateLocation,
+                          onPressed: _isButtonDisabled
+                              ? null
+                              : _onUpdateLocationPressed,
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                               fixedSize:
@@ -299,7 +334,7 @@ class BatteryPainter extends CustomPainter {
     double angle = 2 * 3.141592653589793238 * (percentage / 100);
 
     Paint paint = Paint()
-      ..color = Colors.black
+      ..color = const Color.fromARGB(115, 76, 175, 79)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5;
 
