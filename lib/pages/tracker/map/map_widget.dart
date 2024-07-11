@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class MyMapWidget extends StatefulWidget {
   const MyMapWidget({super.key});
@@ -109,6 +110,28 @@ class _MyMapWidgetState extends State<MyMapWidget> {
     });
   }
 
+  Future<void> _navigateToGoogleMaps() async {
+    final response = await http.get(Uri.parse(
+        'https://vahantrack.com/api/api.php?api=user&ver=1.0&key=E43FEC932566D9E32F1CD2DC3F5CAE01&cmd=OBJECT_GET_LOCATIONS,861261029438534'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)['861261029438534'];
+      final latitude = double.parse(data['lat']);
+      final longitude = double.parse(data['lng']);
+
+      final googleMapsUrl = Uri.parse(
+          'https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude&travelmode=driving');
+
+      if (await canLaunchUrl(googleMapsUrl)) {
+        await launchUrl(googleMapsUrl);
+      } else {
+        throw Exception('Could not launch Google Maps');
+      }
+    } else {
+      throw Exception('Failed to load location');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,6 +143,16 @@ class _MyMapWidgetState extends State<MyMapWidget> {
             left: MediaQuery.sizeOf(context).width * 0.2,
             right: MediaQuery.sizeOf(context).width * 0.2,
             child: InfoCard(batteryPercentage: batteryPercentage),
+          ),
+          Positioned(
+            bottom: MediaQuery.sizeOf(context).height * 0.3,
+            right: 10,
+            child: FloatingActionButton(
+              onPressed: _navigateToGoogleMaps,
+              backgroundColor: Colors.black,
+              elevation: 5,
+              child: const Icon(Icons.map_outlined),
+            ),
           ),
         ],
       ),

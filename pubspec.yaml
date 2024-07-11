@@ -59,6 +59,7 @@ dependencies:
   flutter_radar: ^3.9.1
   firebase_storage: ^12.1.1
   mapbox_maps_flutter: ^2.0.0
+  url_launcher: ^6.3.0
 
 
 
