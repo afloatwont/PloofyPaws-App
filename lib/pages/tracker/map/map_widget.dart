@@ -1,26 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
-
-void main() async {
-  await dotenv.load(fileName: ".env");
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Mapbox Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyMapWidget(),
-    );
-  }
-}
+import 'package:http/http.dart' as http;
 
 class MyMapWidget extends StatefulWidget {
   const MyMapWidget({super.key});
@@ -31,6 +16,8 @@ class MyMapWidget extends StatefulWidget {
 
 class _MyMapWidgetState extends State<MyMapWidget> {
   mb.MapboxMap? map;
+  double? batteryPercentage;
+  mb.PointAnnotationManager? pointAnnotationManager;
 
   @override
   void initState() {
@@ -47,7 +34,44 @@ class _MyMapWidgetState extends State<MyMapWidget> {
       this.map = map;
       map.style = mb.StyleManager();
       map.loadStyleURI("mapbox://styles/mapbox/light-v10");
+      map.annotations.createPointAnnotationManager().then((manager) {
+        pointAnnotationManager = manager;
+      });
     });
+  }
+
+  Future<void> _updateLocation() async {
+    final response = await http.get(Uri.parse(
+        'https://vahantrack.com/api/api.php?api=user&ver=1.0&key=E43FEC932566D9E32F1CD2DC3F5CAE01&cmd=OBJECT_GET_LOCATIONS,861261029438534'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)['861261029438534'];
+      final latitude = double.parse(data['lat']);
+      final longitude = double.parse(data['lng']);
+      final battery = double.parse(data['params']['bats']);
+
+      setState(() {
+        batteryPercentage = battery;
+      });
+
+      if (map != null) {
+        map!.flyTo(
+          mb.CameraOptions(
+              center: mb.Point(coordinates: mb.Position(longitude, latitude))),
+          mb.MapAnimationOptions(duration: 1000),
+        );
+
+        final ByteData bytes =
+            await rootBundle.load('assets/images/content/dog.png');
+        final Uint8List list = bytes.buffer.asUint8List();
+        pointAnnotationManager?.create(mb.PointAnnotationOptions(
+          geometry: mb.Point(coordinates: mb.Position(longitude, latitude)),
+          image: list,
+        ));
+      }
+    } else {
+      throw Exception('Failed to load location');
+    }
   }
 
   @override
@@ -60,9 +84,98 @@ class _MyMapWidgetState extends State<MyMapWidget> {
             top: 50,
             left: MediaQuery.sizeOf(context).width * 0.2,
             right: MediaQuery.sizeOf(context).width * 0.2,
-            child: const InfoCard(),
+            child: InfoCard(batteryPercentage: batteryPercentage),
           ),
         ],
+      ),
+      bottomSheet: DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.27,
+        minChildSize: 0.27,
+        maxChildSize: 0.7,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Container(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: 60,
+                    height: 5,
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade900,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    controller: scrollController,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(left: 16),
+                        height: MediaQuery.sizeOf(context).height * 0.14,
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.my_location_outlined),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Street Name",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "\t\t121/136, Pocket 8",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "\t\tUpdated 1 min ago",
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: ElevatedButton(
+                          onPressed: _updateLocation,
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              fixedSize:
+                                  const Size.fromWidth(double.maxFinite)),
+                          child: const Text(
+                            "Update Location",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      // Add more widgets here as needed
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -87,7 +200,9 @@ class MapView extends StatelessWidget {
 }
 
 class InfoCard extends StatelessWidget {
-  const InfoCard({super.key});
+  final double? batteryPercentage;
+
+  const InfoCard({super.key, this.batteryPercentage});
 
   @override
   Widget build(BuildContext context) {
@@ -120,9 +235,9 @@ class InfoCard extends StatelessWidget {
               const UserInfo(),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: BatteryIndicator(percentage: 75),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: BatteryIndicator(percentage: batteryPercentage ?? 0),
           ),
         ],
       ),
