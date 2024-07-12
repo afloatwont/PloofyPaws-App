@@ -4,7 +4,8 @@ import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_pr
 import 'package:provider/provider.dart';
 
 class PetsList extends StatefulWidget {
-  const PetsList({Key? key}) : super(key: key);
+  const PetsList({super.key, this.showTitle = false});
+  final bool showTitle;
 
   @override
   _PetsListState createState() => _PetsListState();
@@ -29,18 +30,19 @@ class _PetsListState extends State<PetsList> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            'My Pets',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+        if (widget.showTitle)
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'My Pets',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
         SizedBox(
-          height: 100,
+          height: 80,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: (userProvider.user?.pets?.length ?? 0) +

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/pages/training/explore.dart';
 
 class GroomingPackagesSection extends StatefulWidget {
   const GroomingPackagesSection({super.key});
@@ -251,27 +252,36 @@ class GroomingPackageCard extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, left: 20),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Explore  ",
-                    style: TextStyle(
-                      fontSize: isSelected
-                          ? 16
-                          : 14, // Set font size based on isSelected
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExploreScreen(),
+                    ));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0, left: 20),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Explore  ",
+                      style: TextStyle(
+                        fontSize: isSelected
+                            ? 16
+                            : 14, // Set font size based on isSelected
+                        color: isSelected ? Colors.black : Colors.grey,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 15,
                       color: isSelected ? Colors.black : Colors.grey,
                     ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 15,
-                    color: isSelected ? Colors.black : Colors.grey,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

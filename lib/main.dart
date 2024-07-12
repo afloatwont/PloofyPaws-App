@@ -19,6 +19,7 @@ import 'package:ploofypaws/pages/profile/pet_profile/pets_card.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/pages/tracker/pairing.dart';
+import 'package:ploofypaws/pages/training/explore.dart';
 import 'package:ploofypaws/pages/training/training.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
@@ -113,7 +114,7 @@ class _MyAppState extends State<MyApp> {
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
       home:
-          _authServices.user != null ? const Root() : const InitApp(),
+          _authServices.user != null ? const ExploreScreen() : const InitApp(),
     );
   }
 }
