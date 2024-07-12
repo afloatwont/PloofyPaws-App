@@ -287,7 +287,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   Widget buildFeatureContainerGroup(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
       decoration: BoxDecoration(
         color: const Color.fromARGB(194, 64, 38, 137),
         borderRadius: BorderRadius.circular(16),
