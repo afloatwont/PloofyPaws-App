@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -8,9 +9,29 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller =
+        VideoPlayerController.asset('assets/images/content/CREATE_YOUR.mp4')
+          ..initialize().then((_) {
+            _controller.setLooping(true);
+            _controller.play();
+          });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final appbarheight = MediaQuery.sizeOf(context).height * 0.41;
+    final appBarHeight = MediaQuery.sizeOf(context).height * 0.41;
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -19,200 +40,28 @@ class _ExploreScreenState extends State<ExploreScreen> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: appbarheight),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: buildAppBar(context, appBarHeight),
+                  ),
+                  buildDividerWithText(context, "For your companion!"),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.sizeOf(context).width * 0.22,
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.pets),
-                                  Text(
-                                    "Professional Expertise",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                const Icon(
-                                  Icons.cleaning_services,
-                                ),
-                                SizedBox(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.2,
-                                    child: const Text(
-                                      "Clean as before",
-                                      textAlign: TextAlign.center,
-                                    )),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.2,
-                                    child: const Icon(Icons.local_hospital)),
-                                const Text(
-                                  "Hygiene",
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                const Icon(Icons.restaurant),
-                                SizedBox(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.2,
-                                    child: const Text(
-                                      "Authentic Products",
-                                      textAlign: TextAlign.center,
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          padding: EdgeInsets.all(
-                              MediaQuery.sizeOf(context).width * 0.04),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(194, 64, 38, 137),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/content/pt1.png',
-                                    height:
-                                        MediaQuery.sizeOf(context).width * 0.1,
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.1,
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.06),
-                                  const Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Weight Tracking:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "Allows you to track your pet's weight over time to monitor progress and make adjustments to the diet plan as needed.",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                  height:
-                                      MediaQuery.sizeOf(context).width * 0.04),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/content/pt2.png',
-                                    height:
-                                        MediaQuery.sizeOf(context).width * 0.1,
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.1,
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.06),
-                                  const Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Food Recommendations:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "Provide a list of recommended pet foods or recipes tailored to the pet's nutritional needs.",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                  height:
-                                      MediaQuery.sizeOf(context).width * 0.04),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/content/pt3.png',
-                                    height:
-                                        MediaQuery.sizeOf(context).width * 0.1,
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.1,
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.06),
-                                  const Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Reminders and Notifications:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "You can set up a feeding schedule with reminders to ensure regular and timely meals.",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                        buildIconRow(context),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 16.0, bottom: 8),
+                          child: Text(
+                            "Why Ploofy Grooming?",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Container(
-                          height: MediaQuery.sizeOf(context).height * 0.24,
-                          color: Colors.grey.shade300,
-                          child: const Center(
-                            child: Text(
-                              "video",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 24),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
+                        buildFeatureContainerGroup(context),
+                        const SizedBox(height: 40), // Increased spacing
+                        buildVideo(),
+                        const SizedBox(height: 40), // Increased spacing
                         const Text(
                           "Why Ploofy Nutrition?",
                           style: TextStyle(
@@ -220,48 +69,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              width: MediaQuery.sizeOf(context).width * 0.22,
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.check_circle, size: 50),
-                                  Text(
-                                    "Balanced Diet",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.sizeOf(context).width * 0.22,
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.check_circle, size: 50),
-                                  Text(
-                                    "Weight Management",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.sizeOf(context).width * 0.22,
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.check_circle, size: 50),
-                                  Text(
-                                    "Small Paws Diet",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                        const SizedBox(height: 40), // Increased spacing
+                        buildIconRow(context),
+                        SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.1),
                       ],
                     ),
                   ),
@@ -269,112 +80,295 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
             ),
             Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Stack(
-                children: [
-                  Positioned(
-                      top: MediaQuery.sizeOf(context).height * 0.05,
-                      left: MediaQuery.sizeOf(context).width * 0.03,
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.arrow_back_ios,
-                            color: Colors.white,
-                          ))),
-                  Container(
-                    height: appbarheight * 0.98,
-                    padding: const EdgeInsets.all(12),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xffe7D66C1), Colors.white],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: 30,
-                          backgroundImage:
-                              AssetImage("assets/images/content/logo.png"),
-                        ),
-                        const Text(
-                          "Ploofy Grooming",
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xffe462C90),
-                          ),
-                        ),
-                        const Text(
-                          "your pets' grooming companions",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "RS. 399/-",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                  color: Color(0xffe462C90),
-                                ),
-                              ),
-                              Text(
-                                " for 3 months",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color(0xffe462C90),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffe462C90),
-                            foregroundColor: Colors.white,
-                            fixedSize: Size(
-                                MediaQuery.sizeOf(context).width * 0.6,
-                                MediaQuery.sizeOf(context).height * 0.07),
-                          ),
-                          child: const Text("Buy Now"),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ],
+              bottom: MediaQuery.sizeOf(context).height * 0.02,
+              left: MediaQuery.sizeOf(context).width * 0.08,
+              right: MediaQuery.sizeOf(context).width * 0.08,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {},
+                child: const Text("Buy Now"),
               ),
             ),
-            Positioned(
-                bottom: MediaQuery.sizeOf(context).height * 0.1,
-                left: MediaQuery.sizeOf(context).width * 0.1,
-                right: MediaQuery.sizeOf(context).width * 0.1,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white),
-                    onPressed: () {},
-                    child: const Text("Buy Now"))),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildAppBar(BuildContext context, double appBarHeight) {
+    return Stack(
+      children: [
+        Container(
+          height: appBarHeight * 0.98,
+          padding: const EdgeInsets.all(2),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xffe7d66c1), Colors.white],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(12),
+              bottomRight: Radius.circular(12),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 35,
+                  backgroundImage: AssetImage("assets/images/content/logo.png"),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  "Ploofy Grooming",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
+                    color: Color(0xffe462c90),
+                  ),
+                ),
+              ),
+              const Text(
+                "your pets' grooming companions",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "RS. 399/-",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xffe462c90),
+                      ),
+                    ),
+                    Text(
+                      " for 3 months",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xffe462c90),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xffe462c90),
+                  foregroundColor: Colors.white,
+                  fixedSize: Size(
+                    MediaQuery.sizeOf(context).width * 0.6,
+                    MediaQuery.sizeOf(context).height * 0.07,
+                  ),
+                ),
+                child: const Text("Buy Now"),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
+        Positioned(
+          top: MediaQuery.sizeOf(context).height * 0.05,
+          left: MediaQuery.sizeOf(context).width * 0.03,
+          child: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildDividerWithText(BuildContext context, String text) {
+    return Row(
+      children: [
+        Expanded(
+          child: Divider(
+            indent: MediaQuery.sizeOf(context).width * 0.03,
+            endIndent: MediaQuery.sizeOf(context).width * 0.03,
+            thickness: 1,
+            color: Colors.black,
+          ),
+        ),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        Expanded(
+          child: Divider(
+            indent: MediaQuery.sizeOf(context).width * 0.03,
+            endIndent: MediaQuery.sizeOf(context).width * 0.03,
+            thickness: 1,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildIconRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.22,
+          child: const Column(
+            children: [
+              Icon(Icons.pets),
+              Text(
+                "Professional Expertise",
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.22,
+          child: const Column(
+            children: [
+              Icon(Icons.cleaning_services),
+              Text(
+                "Clean as before",
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.22,
+          child: const Column(
+            children: [
+              Icon(Icons.local_hospital),
+              Text(
+                "Hygiene",
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.22,
+          child: const Column(
+            children: [
+              Icon(Icons.restaurant),
+              Text(
+                "Authentic Products",
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildFeatureContainerGroup(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(194, 64, 38, 137),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          buildFeatureContainer(
+            context,
+            'assets/images/content/pt1.png',
+            "Weight Tracking:",
+            "Allows you to track your pet's weight over time to monitor progress and make adjustments to the diet plan as needed.",
+          ),
+          SizedBox(height: MediaQuery.sizeOf(context).width * 0.04),
+          buildFeatureContainer(
+            context,
+            'assets/images/content/pt2.png',
+            "Food Recommendations:",
+            "Provide a list of recommended pet foods or recipes tailored to the pet's nutritional needs.",
+          ),
+          SizedBox(height: MediaQuery.sizeOf(context).width * 0.04),
+          buildFeatureContainer(
+            context,
+            'assets/images/content/pt3.png',
+            "Reminders and Notifications:",
+            "You can set up a feeding schedule with reminders to ensure regular and timely meals.",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildFeatureContainer(BuildContext context, String imagePath,
+      String title, String description) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(
+          imagePath,
+          height: MediaQuery.sizeOf(context).width * 0.1,
+          width: MediaQuery.sizeOf(context).width * 0.1,
+        ),
+        SizedBox(width: MediaQuery.sizeOf(context).width * 0.06),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                description,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildVideo() {
+    return Container(
+      height: MediaQuery.sizeOf(context).height * 0.24,
+      color: Colors.grey.shade300,
+      child: FutureBuilder(
+        future: _controller.initialize(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return AspectRatio(
+              aspectRatio: 16 / 9,
+              child: VideoPlayer(_controller),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }
