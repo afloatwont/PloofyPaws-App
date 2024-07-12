@@ -36,7 +36,7 @@ class DietPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           children: const [
             SectionHeader(title: 'My Pets'),
-            PetsList(),
+            PetsList(showTitle: false),
             SectionHeader(title: "Arlo’s analysis"),
             CalorieCard(),
             NutritionalEnhancementsCard(),
