@@ -362,7 +362,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return AspectRatio(
-              aspectRatio: 16 / 9,
+              aspectRatio: 16 / 9, 
               child: VideoPlayer(_controller),
             );
           } else {
