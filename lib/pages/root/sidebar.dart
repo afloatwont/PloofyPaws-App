@@ -5,6 +5,8 @@ import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({super.key});
@@ -39,9 +41,10 @@ class _SidebarState extends State<Sidebar> {
     _authServices = _getIt.get<AuthServices>();
     _userDatabaseService = _getIt.get<UserDatabaseService>();
     _userDatabaseService.getUserProfileByUID(_authServices.user!.uid).then(
-          (value) {
+      (value) {
         setState(() {
-          user = value ?? UserModel(id: "", displayName: "", email: "", photoUrl: "");
+          user = value ??
+              UserModel(id: "", displayName: "", email: "", photoUrl: "");
         });
       },
     );
@@ -49,6 +52,7 @@ class _SidebarState extends State<Sidebar> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.read<UserProvider>();
     return Drawer(
       child: Column(
         children: [
@@ -67,7 +71,9 @@ class _SidebarState extends State<Sidebar> {
               },
             ),
           ),
-          _buildSignOutButton(context),
+          _buildSignOutButton(context, () {
+            userProvider.setUser(null);
+          }),
         ],
       ),
     );
@@ -143,11 +149,12 @@ class _SidebarState extends State<Sidebar> {
     );
   }
 
-  Widget _buildSignOutButton(BuildContext context) {
+  Widget _buildSignOutButton(BuildContext context, VoidCallback setUser) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: ElevatedButton(
         onPressed: () async {
+          setUser();
           bool res = await _authServices.signOut();
           if (res) {
             Navigator.pushReplacement(
@@ -163,8 +170,8 @@ class _SidebarState extends State<Sidebar> {
             borderRadius: BorderRadius.circular(16),
           ),
           foregroundColor: Colors.white,
-          fixedSize: Size(
-              double.maxFinite, MediaQuery.sizeOf(context).height * 0.07),
+          fixedSize:
+              Size(double.maxFinite, MediaQuery.sizeOf(context).height * 0.07),
         ),
         child: const Text("Sign Out"),
       ),

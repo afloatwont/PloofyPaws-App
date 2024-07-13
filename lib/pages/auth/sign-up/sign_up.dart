@@ -6,6 +6,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/button.dart';
@@ -58,7 +60,14 @@ class _SignUpPageState extends State<SignUpPage> {
     });
     try {
       final authServices = GetIt.instance.get<AuthServices>();
+      final databaseService = GetIt.instance.get<UserDatabaseService>();
       final user = await authServices.signInWithGoogle();
+      await databaseService.createUserProfile(
+          userProfile: UserModel(
+              id: user!.id,
+              displayName: user.displayName,
+              email: user.email,
+              photoUrl: user.photoUrl));
 
       final storage = await SharedPreferences.getInstance();
       storage.setString('auth', jsonEncode(user));
