@@ -81,10 +81,10 @@ class _MemoriesState extends State<Memories> {
                       CircleAvatar(
                         radius: 34,
                         backgroundColor: Colors.grey,
-                        backgroundImage: userProvider.user!.photoUrl != null
+                        backgroundImage: userProvider.user?.photoUrl != null
                             ? NetworkImage(userProvider.user!.photoUrl!)
                             : null,
-                        child: userProvider.user!.photoUrl == null
+                        child: userProvider.user?.photoUrl == null
                             ? const Icon(Iconsax.user)
                             : null,
                       ),

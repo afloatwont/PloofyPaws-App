@@ -11,6 +11,7 @@ import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/controllers/calender_provider.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/home/services/nutrititon.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';

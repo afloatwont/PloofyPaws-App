@@ -20,6 +20,7 @@ import 'package:ploofypaws/pages/root/sidebar.dart';
 import 'package:ploofypaws/pages/tracker/app_bar.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
+import 'package:ploofypaws/pet_adoption/new_adoption.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +36,7 @@ class _RootState extends State<Root> {
 
   final List<Widget> _pages = const [
     Home(),
-    PetAdoptionPage(),
+    PetAdoptionScreen(),
     AiScreen(),
     Tracker(),
     Profile(),
@@ -110,9 +111,10 @@ class _RootState extends State<Root> {
             item['iconBefore'], item['label'], item['iconAfter']))
         .toList();
 
-    final PlatformAppBar? appBar = (_selectedIndex == 2 || _selectedIndex == 3)
-        ? null
-        : _appBars[_selectedIndex];
+    final PlatformAppBar? appBar =
+        (_selectedIndex == 2 || _selectedIndex == 3 || _selectedIndex == 1)
+            ? null
+            : _appBars[_selectedIndex];
 
     return CupertinoScaffold(
       body: Scaffold(

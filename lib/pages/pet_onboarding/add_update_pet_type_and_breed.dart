@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/grouped_list_picker.dart';
 import 'package:ploofypaws/components/input_label.dart';
+import 'package:ploofypaws/pages/pet_onboarding/breeds.dart';
 import 'package:ploofypaws/pages/pet_onboarding/data/breed.dart';
 import 'package:ploofypaws/pages/pet_onboarding/widgets/stacked_cards.dart';
 
@@ -13,7 +14,13 @@ class AddUpdatePetType extends StatefulWidget {
 
   final GlobalKey<FormBuilderState> formKey;
 
-  const AddUpdatePetType({super.key, required this.onBreedSelected, this.petName, required this.formKey, this.petType});
+  const AddUpdatePetType({
+    super.key,
+    required this.onBreedSelected,
+    this.petName,
+    required this.formKey,
+    this.petType,
+  });
 
   @override
   State<AddUpdatePetType> createState() => _AddUpdatePetTypeState();
@@ -22,14 +29,6 @@ class AddUpdatePetType extends StatefulWidget {
 class _AddUpdatePetTypeState extends State<AddUpdatePetType> {
   FocusNode myFocusNode = FocusNode();
 
-  Future<List<PetBreed>> dummyBreedData() async {
-    return [
-      const PetBreed(uuid: '1', name: 'Poodle'),
-      const PetBreed(uuid: '2', name: 'Bulldog'),
-      // Add the rest with unique UUIDs
-    ];
-  }
-
   final List<String> _petTypeOptions = [
     'Dog',
     'Cat',
@@ -37,11 +36,24 @@ class _AddUpdatePetTypeState extends State<AddUpdatePetType> {
     'Fish',
     'Rabbit',
     'Hamster',
-    'Guinea Pig',
     'Turtle',
-    'Horse',
-    'Pig'
+    'Other',
   ];
+
+  final Map<String, List<String>> _breedOptions = {
+    'Dog': dogBreeds,
+    'Cat': catBreeds,
+    'Bird': birdBreeds,
+    'Rabbit': rabbitBreeds,
+  };
+
+  Future<List<PetBreed>> getBreedData(String petType) async {
+    if (_breedOptions.containsKey(petType)) {
+      return _breedOptions[petType]!.map((name) => PetBreed(uuid: name, name: name)).toList();
+    } else {
+      return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +63,20 @@ class _AddUpdatePetTypeState extends State<AddUpdatePetType> {
         children: [
           FormBuilder(
             key: widget.formKey,
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: InputLabel(label: 'What type of \npet ${widget.petName} is?', size: 36),
-              ),
-              FormBuilderField(
-                name: 'pet_type',
-                builder: (FormFieldState<dynamic> field) {
-                  return ListView.builder(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: InputLabel(
+                    label: 'What type of \npet ${widget.petName} is?',
+                    size: 36,
+                  ),
+                ),
+                FormBuilderField(
+                  name: 'pet_type',
+                  builder: (FormFieldState<dynamic> field) {
+                    return ListView.builder(
                       shrinkWrap: true,
                       itemCount: _petTypeOptions.length,
                       physics: const NeverScrollableScrollPhysics(),
@@ -70,22 +87,33 @@ class _AddUpdatePetTypeState extends State<AddUpdatePetType> {
                             setState(() {
                               widget.formKey.currentState?.fields['pet_type']?.didChange(_petTypeOptions[index]);
                             });
-                            final value = await showCupertinoModalBottomSheet(
+
+                            if (_breedOptions.containsKey(_petTypeOptions[index])) {
+                              final value = await showCupertinoModalBottomSheet(
                                 context: context,
                                 builder: (context) {
                                   return GroupedListPicker(
-                                      listFuture: dummyBreedData, isMulti: false, name: 'select breed type');
-                                });
+                                    listFuture: () => getBreedData(_petTypeOptions[index]),
+                                    isMulti: false,
+                                    name: 'select breed type',
+                                  );
+                                },
+                              );
 
-                            if (value != null) {
-                              widget.onBreedSelected(value);
+                              if (value != null) {
+                                widget.onBreedSelected(value);
+                              }
+                            } else {
+                              widget.onBreedSelected([]);
                             }
                           },
                         );
-                      });
-                },
-              )
-            ]),
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
