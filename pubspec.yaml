@@ -56,7 +56,6 @@ dependencies:
   delightful_toast: ^1.1.0
   google_generative_ai: ^0.4.3
   flutter_dotenv: ^5.1.0
-  flutter_radar: ^3.9.1
   firebase_storage: ^12.1.1
   mapbox_maps_flutter: ^2.0.0
   url_launcher: ^6.3.0

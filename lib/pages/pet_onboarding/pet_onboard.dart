@@ -192,6 +192,7 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
           _petTypeFormKey.currentState?.fields['pet_type']?.value ?? "Dog";
       final petBreed = selectedBreed?.name ?? "";
       final petSize = _petSizeFormKey.currentState?.fields['pet_size']?.value;
+      print(petSize);
       final petDob =
           _petDobFormKey.currentState?.fields['pet_date_of_birth']?.value;
       print(petDob);
@@ -354,10 +355,14 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
                     label: 'Next',
                     onPressed: () async {
                       await nextPage();
-                      final user = await _databaseService
-                          .getUserProfileByUID(_authServices.user!.uid);
-                      userProvider.setUser(user!);
-                      print(user.pets!.last.name);
+                      if (_currentPage == 6) {
+                        final user = await _databaseService
+                            .getUserProfileByUID(_authServices.user!.uid);
+                        if (user != null) {
+                          userProvider.setUser(user);
+                        }
+                        print(user?.pets!.last.name);
+                      }
                     },
                     variant: 'filled',
                     buttonIcon: const Icon(

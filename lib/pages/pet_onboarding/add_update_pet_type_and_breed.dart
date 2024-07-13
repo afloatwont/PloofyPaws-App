@@ -40,6 +40,17 @@ class _AddUpdatePetTypeState extends State<AddUpdatePetType> {
     'Other',
   ];
 
+  final List<String> _images = [
+    'assets/images/content/dogs.png',
+    'assets/images/content/cat.png',
+    'assets/images/content/parrot.png',
+    'assets/images/content/fish.png',
+    'assets/images/content/rabbit.png',
+    'assets/images/content/hamster.png',
+    'assets/images/content/turtle.png',
+    'assets/images/content/turtle.png',
+  ];
+
   final Map<String, List<String>> _breedOptions = {
     'Dog': dogBreeds,
     'Cat': catBreeds,
@@ -89,6 +100,7 @@ class _AddUpdatePetTypeState extends State<AddUpdatePetType> {
                       itemBuilder: (context, index) {
                         return StackOfCards(
                           label: _petTypeOptions[index],
+                          imageAsset: _images[index],
                           onTap: () async {
                             setState(() {
                               widget.formKey.currentState?.fields['pet_type']

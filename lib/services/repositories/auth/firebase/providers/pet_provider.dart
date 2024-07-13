@@ -17,7 +17,7 @@ class PetProvider with ChangeNotifier {
       aggression: '',
       diet: '',
       type: "dog", // default value
-      breeds: [],
+      breeds: '',
       weight: 0,
       weightUnit: "Kg", // default value
       dob: DateTime.now(),
@@ -35,7 +35,7 @@ class PetProvider with ChangeNotifier {
     String? aggression,
     String? diet,
     String? type,
-    List<String>? breeds,
+    String? breeds,
     double? weight,
     String? weightUnit,
     DateTime? dob,

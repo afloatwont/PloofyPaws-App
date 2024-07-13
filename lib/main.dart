@@ -3,28 +3,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_radar/flutter_radar.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ploofypaws/chat/services/chat_database_service.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/controllers/calender_provider.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
-import 'package:ploofypaws/location/map_location.dart';
-import 'package:ploofypaws/pages/home/services/nutrititon.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
-import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
-import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
-import 'package:ploofypaws/pages/profile/pet_life_event/pet_memories.dart';
 import 'package:ploofypaws/pages/profile/pet_profile/pets_card.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
-import 'package:ploofypaws/pages/tracker/pairing.dart';
-import 'package:ploofypaws/pages/training/explore.dart';
-import 'package:ploofypaws/pages/training/training.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
-import 'package:ploofypaws/pages/profile/pet_profile/profile.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
@@ -102,7 +92,7 @@ class _MyAppState extends State<MyApp> {
         }
       }).catchError(
         (e) {
-          _alertService.showToast(text: e);
+          _alertService.showToast(text: e.toString());
         },
       );
     }
