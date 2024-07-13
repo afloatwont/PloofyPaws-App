@@ -76,6 +76,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final GetIt _getIt = GetIt.instance;
   late AuthServices _authServices;
+  late AlertService _alertService;
   late UserDatabaseService _userDatabaseService;
   UserModel currUser = UserModel(
       id: "", displayName: "", email: "", photoUrl: "", address: null);
@@ -85,6 +86,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _userDatabaseService = _getIt.get<UserDatabaseService>();
+    _alertService = _getIt.get<AlertService>();
     final userProvider = context.read<UserProvider>();
 
     if (_authServices.user != null) {
@@ -97,7 +99,11 @@ class _MyAppState extends State<MyApp> {
             userProvider.setUser(currUser);
           });
         }
-      });
+      }).catchError(
+        (e) {
+          _alertService.showToast(text: e);
+        },
+      );
     }
     if (kDebugMode) {
       print(_authServices.user);

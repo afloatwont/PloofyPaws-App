@@ -14,12 +14,12 @@ class PetAdoptionPage extends StatefulWidget with WidgetsBindingObserver {
 
 class _PetAdoptionPageState extends State<PetAdoptionPage> {
   final String imgPath =
-      "https://plus.unsplash.com/premium_photo-1678099940967-73fe30680949?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aGVhZHBob25lc3xlbnwwfHwwfHx8MA%3D%3D";
+      "https://dogtime.com/wp-content/uploads/sites/12/2020/11/GettyImages-512366437-e1688677726208.jpg?w=1024";
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();    
+    super.initState();
   }
 
   @override
@@ -65,7 +65,7 @@ class _PetAdoptionPageState extends State<PetAdoptionPage> {
                   margin: const EdgeInsets.all(5.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.0),
-                    color: const Color.fromARGB(255, 146, 10, 0),
+                    color: Colors.black,
                   ),
                   child: Row(
                     children: [
@@ -76,7 +76,8 @@ class _PetAdoptionPageState extends State<PetAdoptionPage> {
                           borderRadius: BorderRadius.circular(16),
                           child: Image.network(
                             imgPath,
-                            fit: BoxFit.contain,
+                            height: 150,
+                            fit: BoxFit.fitHeight,
                           ),
                         ),
                       ),
