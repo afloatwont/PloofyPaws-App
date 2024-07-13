@@ -45,11 +45,17 @@ class _AddUpdatePetTypeState extends State<AddUpdatePetType> {
     'Cat': catBreeds,
     'Bird': birdBreeds,
     'Rabbit': rabbitBreeds,
+    'Hamster': hamsterBreeds,
+    'Turtle': turtleBreeds,
+    'Fish': fishBreeds,
+    'Other': ['Other'],
   };
 
   Future<List<PetBreed>> getBreedData(String petType) async {
     if (_breedOptions.containsKey(petType)) {
-      return _breedOptions[petType]!.map((name) => PetBreed(uuid: name, name: name)).toList();
+      return _breedOptions[petType]!
+          .map((name) => PetBreed(uuid: name, name: name))
+          .toList();
     } else {
       return [];
     }
@@ -85,15 +91,18 @@ class _AddUpdatePetTypeState extends State<AddUpdatePetType> {
                           label: _petTypeOptions[index],
                           onTap: () async {
                             setState(() {
-                              widget.formKey.currentState?.fields['pet_type']?.didChange(_petTypeOptions[index]);
+                              widget.formKey.currentState?.fields['pet_type']
+                                  ?.didChange(_petTypeOptions[index]);
                             });
 
-                            if (_breedOptions.containsKey(_petTypeOptions[index])) {
+                            if (_breedOptions
+                                .containsKey(_petTypeOptions[index])) {
                               final value = await showCupertinoModalBottomSheet(
                                 context: context,
                                 builder: (context) {
                                   return GroupedListPicker(
-                                    listFuture: () => getBreedData(_petTypeOptions[index]),
+                                    listFuture: () =>
+                                        getBreedData(_petTypeOptions[index]),
                                     isMulti: false,
                                     name: 'select breed type',
                                   );
