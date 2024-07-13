@@ -35,7 +35,7 @@ import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: "assets/.env");
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   registerServices();
@@ -91,10 +91,12 @@ class _MyAppState extends State<MyApp> {
       _userDatabaseService
           .getUserProfileByUID(_authServices.user!.uid)
           .then((value) {
-        setState(() {
-          currUser = value!;
-          userProvider.setUser(currUser);
-        });
+        if (value != null) {
+          setState(() {
+            currUser = value;
+            userProvider.setUser(currUser);
+          });
+        }
       });
     }
     if (kDebugMode) {
@@ -113,8 +115,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home:
-          _authServices.user != null ? const Root() : const InitApp(),
+      home: _authServices.user != null ? const Root() : const InitApp(),
     );
   }
 }

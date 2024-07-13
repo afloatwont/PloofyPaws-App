@@ -73,7 +73,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final petsList = userProvider.user!.pets ?? [];
+    final petsList = userProvider.user?.pets ?? [];
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,

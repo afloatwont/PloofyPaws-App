@@ -257,8 +257,10 @@ import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/components/gradient_header.dart';
 import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
-import 'package:ploofypaws/pages/tracker/map/map_widget.dart';
+import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/tracker/pairing.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class Tracker extends StatefulWidget {
   const Tracker({super.key});
@@ -268,6 +270,33 @@ class Tracker extends StatefulWidget {
 }
 
 class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndShowAddressModal();
+    });
+  }
+
+  void _checkAndShowAddressModal() {
+    final userProvider = context.read<UserProvider>();
+    print("address status: ${userProvider.hasAddress()}");
+    if (!userProvider.hasAddress()) {
+      _showAddressModal();
+    }
+  }
+
+  void _showAddressModal() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        // Replace this with your actual modal content
+        return const AddAddressSheet();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdaptivePageScaffold(

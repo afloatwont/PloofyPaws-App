@@ -373,12 +373,35 @@ class ShowMoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {},
-      child: const Text(
-        'Show More',
-        style: TextStyle(
-          color: Colors.black,
+    return GestureDetector(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 24.0),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: colors(context).primary.s500,
+            borderRadius: BorderRadius.circular(36),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Unlock More',
+                textAlign: TextAlign.center,
+                style: typography(context).smallBody.copyWith(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Icon(Icons.lock_open_rounded,
+                    size: 12, color: Colors.white),
+              ),
+            ],
+          ),
         ),
       ),
     );
