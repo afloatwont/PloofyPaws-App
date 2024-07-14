@@ -6,6 +6,7 @@ import 'package:ploofypaws/pages/vet_video_consultation/expert_consultation_sect
 import 'package:ploofypaws/pages/vet_video_consultation/my_pets_section.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/services.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/upcoming_appointments_section.dart';
+import 'package:ploofypaws/pages/vet_video_consultation/video.dart';
 
 class VetVideoConsultationScreen extends StatelessWidget {
   const VetVideoConsultationScreen({super.key});
@@ -42,11 +43,16 @@ class VetVideoConsultationScreen extends StatelessWidget {
               const SizedBox(height: 16),
               const ConsultationSection(),
               const ExpertConsultationsSection(),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: const SectionHeader(title: "What we provide"),
+              const Padding(
+                padding: EdgeInsets.all(12.0),
+                child: SectionHeader(title: "What we provide"),
               ),
               ServicesGrid(),
+              const Padding(
+                padding: EdgeInsets.all(12.0),
+                child: SectionHeader(title: "Our Diet Specialists"),
+              ),
+              const VideoWidget(),
             ],
           ),
         ),

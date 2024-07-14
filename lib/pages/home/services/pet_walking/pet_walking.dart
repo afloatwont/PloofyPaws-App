@@ -98,7 +98,6 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                       return PlanCard(
                         plan: plans[index],
                         isSelected: plans[index].title == selectedPlan.title,
-                        recommended: index == 2 ? Colors.black : Colors.white,
                         onTap: () {
                           context.read<SelectedPlanProvider>().selectedPlan =
                               plans[index];
@@ -610,14 +609,12 @@ class PlanCard extends StatelessWidget {
   final Plan plan;
   final bool isSelected;
   final VoidCallback onTap;
-  final Color recommended;
 
   const PlanCard({
     super.key,
     required this.plan,
     required this.isSelected,
     required this.onTap,
-    this.recommended = Colors.white,
   });
 
   @override
@@ -634,11 +631,11 @@ class PlanCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          elevation: 0,
+          elevation: 2,
           child: Container(
             margin: edgeInsets,
             decoration: BoxDecoration(
-              color: isSelected ? Colors.black : recommended,
+              color: isSelected ? Colors.black : Colors.white,
               gradient: isSelected ? null : plan.gradient,
               borderRadius: BorderRadius.circular(12),
             ),
