@@ -191,7 +191,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   child: SectionHeader(title: 'Other Services'),
                 ),
                 OtherServices(),
-                Icon(Icons.lightbulb_outline_rounded, size: 100),
+                const Icon(Icons.lightbulb_outline_rounded, size: 100),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -204,7 +204,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text('Get your answers...'),
                 ),
-                FAQSection(),
+                const FAQSection(),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -358,7 +358,7 @@ class OtherServices extends StatelessWidget {
     return Container(
       height: height * 0.6,
       width: width * 0.8,
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         image: const DecorationImage(
