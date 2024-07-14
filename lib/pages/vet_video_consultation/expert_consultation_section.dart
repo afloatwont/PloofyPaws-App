@@ -15,12 +15,12 @@ class ExpertConsultationsSection extends StatelessWidget {
         const SizedBox(height: 8),
         SizedBox(
           height: MediaQuery.sizeOf(context).height *
-              0.34, // Adjust height as necessary
+              0.21, // Adjust height as necessary
           child: GridView.count(
             crossAxisCount: 2,
-            childAspectRatio: 3,
+            childAspectRatio: 5,
             mainAxisSpacing: 0,
-            crossAxisSpacing: 8,
+            crossAxisSpacing: 0,
             shrinkWrap: true,
             children: const [
               ConsultationChip(label: 'Skin'),

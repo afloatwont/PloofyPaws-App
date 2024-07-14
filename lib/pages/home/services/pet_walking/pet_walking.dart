@@ -98,9 +98,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                       return PlanCard(
                         plan: plans[index],
                         isSelected: plans[index].title == selectedPlan.title,
-                        recommended: index == 2
-                            ? const Color(0xffeFDEDE0)
-                            : Colors.white,
+                        recommended: index == 2 ? Colors.black : Colors.white,
                         onTap: () {
                           context.read<SelectedPlanProvider>().selectedPlan =
                               plans[index];
@@ -640,7 +638,7 @@ class PlanCard extends StatelessWidget {
           child: Container(
             margin: edgeInsets,
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xffeBBA593) : recommended,
+              color: isSelected ? Colors.black : recommended,
               gradient: isSelected ? null : plan.gradient,
               borderRadius: BorderRadius.circular(12),
             ),
@@ -656,13 +654,13 @@ class PlanCard extends StatelessWidget {
                           style: typography(context).title2.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: isSelected ? Colors.black : Colors.black)),
+                              color: isSelected ? Colors.white : Colors.black)),
                       const Padding(padding: EdgeInsets.symmetric(vertical: 2)),
                       Text(
                         plan.description,
                         style: typography(context).smallBody.copyWith(
                               fontSize: 12,
-                              color: isSelected ? Colors.black : Colors.black,
+                              color: isSelected ? Colors.white : Colors.black,
                             ),
                       ),
                     ],
@@ -674,7 +672,7 @@ class PlanCard extends StatelessWidget {
                         plan.price,
                         style: typography(context).smallBody.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: isSelected ? Colors.black : Colors.black,
+                              color: isSelected ? Colors.white : Colors.black,
                               fontSize: 12,
                             ),
                       ),
@@ -683,7 +681,7 @@ class PlanCard extends StatelessWidget {
                         plan.originalPrice,
                         style: typography(context).smallBody.copyWith(
                             decoration: TextDecoration.lineThrough,
-                            color: isSelected ? Colors.black : Colors.black,
+                            color: isSelected ? Colors.white : Colors.black,
                             fontSize: 12),
                       ),
                     ],
