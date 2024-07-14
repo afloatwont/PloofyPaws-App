@@ -143,10 +143,7 @@ class _TrainingScreenState extends State<TrainingScreen>
               child: Text('Get your answers...'),
             ),
             const FAQSection(),
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: ExpertConsultationsSection(),
-            ),
+           
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.all(16),
