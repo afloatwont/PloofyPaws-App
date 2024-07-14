@@ -26,7 +26,7 @@ import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: "assets/.env");
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   registerServices();
