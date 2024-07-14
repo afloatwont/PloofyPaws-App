@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/components/pet_list.dart';
+import 'package:ploofypaws/components/section_header.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/consultation_section.dart';
+import 'package:ploofypaws/pages/vet_video_consultation/expert_consultation_section.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/my_pets_section.dart';
+import 'package:ploofypaws/pages/vet_video_consultation/services.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/upcoming_appointments_section.dart';
 
 class VetVideoConsultationScreen extends StatelessWidget {
@@ -27,17 +30,23 @@ class VetVideoConsultationScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // MyPetsSection(),
-              PetsList(),
-              UpcomingAppointmentsSection(),
-              SizedBox(height: 16),
-              ConsultationSection(),
+              const PetsList(),
+              const UpcomingAppointmentsSection(),
+              const SizedBox(height: 16),
+              const ConsultationSection(),
+              const ExpertConsultationsSection(),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: const SectionHeader(title: "What we provide"),
+              ),
+              ServicesGrid(),
             ],
           ),
         ),

@@ -11,7 +11,7 @@ import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_pr
 import 'package:provider/provider.dart';
 import 'my_pets_section.dart';
 import 'grooming_packages_section.dart';
-import 'expert_consultation_section.dart';
+import '../vet_video_consultation/expert_consultation_section.dart';
 import 'package:ploofypaws/components/pet_list.dart';
 import 'reviews_section.dart';
 

@@ -17,6 +17,7 @@ import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
 import 'package:ploofypaws/services/repositories/auth/auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,7 @@ class _SignInPageState extends State<SignInPage> {
 
   final GetIt _getIt = GetIt.instance;
   late AuthServices _authServices;
+  late UserDatabaseService _databaseService;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -49,6 +51,7 @@ class _SignInPageState extends State<SignInPage> {
   void initState() {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
+    _databaseService = _getIt.get<UserDatabaseService>();
   }
 
   void _handleLogin(String? email) {
@@ -118,6 +121,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.read<UserProvider>();
     return Scaffold(
         body: SafeArea(
       child: Column(
@@ -213,15 +217,20 @@ class _SignInPageState extends State<SignInPage> {
                     loading: _loading,
                     onPressed: () async {
                       if (_formKey.currentState!.saveAndValidate()) {
-                        await _authServices.login(
+                        final userAuth = await _authServices.login(
                           email: _emailController.text,
                           password: _passwordController.text,
                         );
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Root(),
-                            ));
+                        if (userAuth != null) {
+                          final user = await _databaseService
+                              .getUserProfileByUID(userAuth.id!);
+                          userProvider.setUser(user);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Root(),
+                              ));
+                        }
                       }
                     },
                     variant: 'filled',
