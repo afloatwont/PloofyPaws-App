@@ -64,7 +64,7 @@ void _showScrollableBottomSheet(BuildContext context) {
                         child: Text(
                           'View all',
                           style: typography(context).body.copyWith(
-                            color: const Color(0xff1A24DE),
+                            color: Colors.black,
                             fontSize: 12,
                           ),
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/razorpay/payment_razorpay.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/adaptive_modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/button.dart';
@@ -161,7 +162,12 @@ Widget buildbutton(BuildContext context, Size screenSize) {
       width: screenSize.width,
       child: Button(
         borderRadius: BorderRadius.circular(42),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const RazorPayScreen()));
+        },
         variant: 'filled',
         label: 'Confirm',
         buttonColor: colors(context).primary.s500,
