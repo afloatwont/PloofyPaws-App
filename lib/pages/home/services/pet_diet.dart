@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/pages/home/services/diet/recipe.dart';
+import 'package:ploofypaws/pages/home/services/nutrititon.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -237,53 +239,62 @@ class FoodRecipesList extends StatelessWidget {
       child: ListView.builder(
         itemCount: 4,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xffD6D6D6)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset('assets/images/content/fish_bowl_art.png'),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, top: 10),
-                        child: Text(
-                          'Diet',
-                          style: typography(context).title3.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RecipePage(),
+                  ));
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: const Color(0xffD6D6D6)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset('assets/images/content/fish_bowl_art.png'),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 10),
+                          child: Text(
+                            'Diet',
+                            style: typography(context).title3.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, top: 10),
-                        child: Text(
-                          'Excellent support!',
-                          style: typography(context).body.copyWith(
-                                color: const Color(0xff525252),
-                                fontSize: 12,
-                              ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 10),
+                          child: Text(
+                            'Excellent support!',
+                            style: typography(context).body.copyWith(
+                                  color: const Color(0xff525252),
+                                  fontSize: 12,
+                                ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -378,7 +389,11 @@ class ShowMoreButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const NutritionScreen(),
+        ));
+      },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 24.0),
         child: Container(

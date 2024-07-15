@@ -16,6 +16,8 @@ class UserDatabaseService {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   CollectionReference? _usersCollection;
 
+
+
   UserDatabaseService() {
     setupCollectionReferences();
     _authService = _getIt.get<AuthServices>();
@@ -34,6 +36,7 @@ class UserDatabaseService {
     required UserModel userProfile,
   }) async {
     await _usersCollection?.doc(userProfile.id).set(userProfile);
+    print("User added to database");
   }
 
   Future<UserModel?> getUserProfileByUID(String uid) async {
@@ -65,8 +68,7 @@ class UserDatabaseService {
       await _usersCollection?.doc(userId).update({'photoUrl': downloadUrl});
       final userDoc = _usersCollection!.doc(userId);
       await userDoc.update({
-        'photoUrl':
-            downloadUrl, // Nesting the address fields under 'address'
+        'photoUrl': downloadUrl, // Nesting the address fields under 'address'
       });
 
       return downloadUrl;
@@ -145,6 +147,27 @@ class UserDatabaseService {
           'pets': pets.map((pet) => pet.toJson()).toList(),
         });
       }
+    }
+  }
+
+  Future<bool> isEmailAlreadyRegistered(String email) async {
+    try {
+      // Check if email exists in Firebase Authentication
+      List<String> signInMethods = await _authService.authIns.fetchSignInMethodsForEmail(email);
+      if (signInMethods.isNotEmpty) {
+        return true; // Email exists in authentication
+      }
+
+      // Check if email exists in Firestore database
+      QuerySnapshot userQuery = await _usersCollection!.where('email', isEqualTo: email).get();
+      if (userQuery.docs.isNotEmpty) {
+        return true; // Email exists in Firestore
+      }
+
+      return false; // Email does not exist in both authentication and Firestore
+    } catch (e) {
+      print(e);
+      return Future.error('Error checking email existence');
     }
   }
 }

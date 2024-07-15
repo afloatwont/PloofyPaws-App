@@ -138,6 +138,7 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
   final _getIt = GetIt.instance;
   late AuthServices _authServices;
   late UserDatabaseService _databaseService;
+  late UserProvider userProvider;
 
   final GlobalKey<FormBuilderState> _petNameFormKey =
       GlobalKey<FormBuilderState>();
@@ -162,6 +163,7 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _databaseService = _getIt.get<UserDatabaseService>();
+    userProvider = context.read<UserProvider>();
   }
 
   @override
@@ -204,7 +206,7 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
               .currentState?.fields['pet_extra_details']?.value ??
           "a";
 
-      if (_currentPage == 5) {
+      if (_currentPage > 4) {
         await _handleSubmit(petName, petType, petBreed, petSize, petGender,
             petDob, petExtraDetails);
       }
@@ -230,6 +232,9 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
           size: petSize,
           weightUnit: "");
       await _databaseService.updatePetForUser(_authServices.user!.uid, pet);
+      final updatedUser =
+          await _databaseService.getUserProfileByUID(userProvider.user!.id!);
+      userProvider.setUser(updatedUser);
       if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialWithModalsPageRoute(builder: (context) => const Root()),

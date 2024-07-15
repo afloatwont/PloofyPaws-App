@@ -8,6 +8,8 @@ class AuthServices {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  FirebaseAuth get authIns => _firebaseAuth;
+
   final _getIt = GetIt.instance;
   late AlertService _alertService;
 
@@ -95,6 +97,7 @@ class AuthServices {
         // _user = user;
 
         _alertService.showToast(text: "Login Successful");
+        print(user.displayName);
         return UserModel(
           id: user.uid,
           email: user.email ?? '',
@@ -141,7 +144,6 @@ class AuthServices {
 
   Future<bool> signOut() async {
     try {
-      await _googleSignIn.signOut();
       await _firebaseAuth.signOut();
       return true;
     } catch (e) {

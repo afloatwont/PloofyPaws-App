@@ -34,6 +34,14 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isSuffixIconVisible = false;
   bool _loading = false;
   bool _googleLoading = false;
+  late UserProvider userProvider;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userProvider = context.read<UserProvider>();
+  }
 
   void _handleSignUp(String? firstName, String? lastName) {
     setState(() {
@@ -61,20 +69,24 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       final authServices = GetIt.instance.get<AuthServices>();
       final databaseService = GetIt.instance.get<UserDatabaseService>();
+      print("Inside glogin");
       final user = await authServices.signInWithGoogle();
-      await databaseService.createUserProfile(
-          userProfile: UserModel(
-              id: user!.id,
-              displayName: user.displayName,
-              email: user.email,
-              photoUrl: user.photoUrl));
+      print("Inside glogin");
+      if (!(await databaseService.isEmailAlreadyRegistered(user!.email!))) {
+        await databaseService.createUserProfile(
+            userProfile: UserModel(
+                id: user!.id,
+                displayName: user.displayName,
+                email: user.email,
+                photoUrl: user.photoUrl));
+        print("Inside glogin");
+      }
 
+      userProvider.setUser(user);
       final storage = await SharedPreferences.getInstance();
       storage.setString('auth', jsonEncode(user));
 
       if (!mounted) return;
-
-      Provider.of<UserProvider>(context, listen: false).setUser(user!);
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(

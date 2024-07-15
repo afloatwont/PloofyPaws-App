@@ -1,4 +1,6 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/pet_adoption/adopt_me.dart';
 
 class PetAdoptionScreen extends StatefulWidget {
   const PetAdoptionScreen({super.key});
@@ -45,19 +47,8 @@ class _PetAdoptionScreenState extends State<PetAdoptionScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const Padding(
-            padding: EdgeInsets.only(left: 20.0),
-            child: Row(
-              children: [
-                Text(
-                  "Delhi",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
-                ),
-                Icon(
-                  Icons.keyboard_arrow_down_outlined,
-                  size: 12,
-                )
-              ],
-            )),
+          padding: EdgeInsets.only(left: 20.0),
+        ),
         centerTitle: true,
         title: const Text('Pet Adoption'),
         actions: const [
@@ -90,17 +81,29 @@ class _PetAdoptionScreenState extends State<PetAdoptionScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Container(
-              height: 150,
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(top: 50),
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage(
-                  "assets/images/content/adopt.png",
-                ),
-              )),
-            ),
+            child: CarouselSlider(
+                items: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 20),
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                          image: AssetImage(
+                            "assets/images/content/adopt.png",
+                          ),
+                          fit: BoxFit.contain,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ],
+                options: CarouselOptions(
+                  autoPlay: true,
+                  initialPage: 0,
+                )),
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -220,8 +223,12 @@ class _PetAdoptionScreenState extends State<PetAdoptionScreen> {
                                 ElevatedButton(
                                   onPressed: () {
                                     // Handle adoption action
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AdoptMePage(),
+                                        ));
                                   },
-                                  child: const Text('Adopt Now'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.black,
                                     foregroundColor: Colors.white,
@@ -233,6 +240,7 @@ class _PetAdoptionScreenState extends State<PetAdoptionScreen> {
                                       vertical: 12,
                                     ),
                                   ),
+                                  child: const Text('Adopt Now'),
                                 ),
                               ],
                             ),

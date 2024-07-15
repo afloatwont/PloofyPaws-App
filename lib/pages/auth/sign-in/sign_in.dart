@@ -40,6 +40,7 @@ class _SignInPageState extends State<SignInPage> {
   final GetIt _getIt = GetIt.instance;
   late AuthServices _authServices;
   late UserDatabaseService _databaseService;
+  late UserProvider userProvider;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -52,6 +53,7 @@ class _SignInPageState extends State<SignInPage> {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _databaseService = _getIt.get<UserDatabaseService>();
+    userProvider = context.read<UserProvider>();
   }
 
   void _handleLogin(String? email) {
@@ -80,13 +82,21 @@ class _SignInPageState extends State<SignInPage> {
     });
     try {
       final user = await _authServices.signInWithGoogle();
+      if (!(await _databaseService.isEmailAlreadyRegistered(user!.email!))) {
+        _databaseService.createUserProfile(
+            userProfile: UserModel(
+                id: user.id,
+                displayName: user.displayName,
+                email: user.email,
+                photoUrl: user.photoUrl));
+      }
 
       final storage = await SharedPreferences.getInstance();
       storage.setString('auth', jsonEncode(user));
 
       if (!mounted) return;
 
-      Provider.of<UserProvider>(context, listen: false).setUser(user!);
+      userProvider.setUser(user!);
 
       Navigator.of(context).pushAndRemoveUntil(
           MaterialWithModalsPageRoute(

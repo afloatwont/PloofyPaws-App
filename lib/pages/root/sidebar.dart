@@ -154,8 +154,8 @@ class _SidebarState extends State<Sidebar> {
       padding: const EdgeInsets.all(12.0),
       child: ElevatedButton(
         onPressed: () async {
-          setUser();
           bool res = await _authServices.signOut();
+          setUser();
           if (res) {
             Navigator.pushReplacement(
                 context,
