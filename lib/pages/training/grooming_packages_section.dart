@@ -164,9 +164,9 @@ class GroomingPackageCard extends StatelessWidget {
                 0.42 // Increased selected height
             : MediaQuery.sizeOf(context).height * 0.36,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isRecommended ? Colors.purple : Colors.grey.shade50,
+            color: isRecommended ? Color(0xffe4a05ba) : Colors.grey.shade50,
             width: isRecommended ? 2 : 1,
           ),
         ),
@@ -174,13 +174,13 @@ class GroomingPackageCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: isRecommended ? Colors.purple : Colors.grey[200],
+                color: isRecommended ? Color(0xffe4a05ba) : Colors.grey[200],
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(6),
-                  topRight: Radius.circular(6),
+                  topLeft: Radius.circular(18),
+                  topRight: Radius.circular(18),
                 ),
               ),
               child: Text(
@@ -221,7 +221,7 @@ class GroomingPackageCard extends StatelessWidget {
                     child: Text(
                       description,
                       style: const TextStyle(
-                        color: Colors.purple,
+                        color: Color(0xffe4a05ba),
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),

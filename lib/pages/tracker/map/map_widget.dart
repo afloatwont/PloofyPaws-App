@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,8 @@ class _MyMapWidgetState extends State<MyMapWidget> {
   mb.PointAnnotationManager? pointAnnotationManager;
   Timer? _timer;
   bool _isButtonDisabled = false;
+  DateTime? lastUpdate;
+  bool isOnline = true;
 
   @override
   void initState() {
@@ -67,9 +70,12 @@ class _MyMapWidgetState extends State<MyMapWidget> {
       final latitude = double.parse(data['lat']);
       final longitude = double.parse(data['lng']);
       final battery = double.parse(data['params']['bats']);
+      final trackerDateTime = DateTime.parse(data['dt_tracker']);
 
       setState(() {
         batteryPercentage = battery;
+        lastUpdate = trackerDateTime;
+        isOnline = DateTime.now().difference(trackerDateTime).inMinutes <= 20;
       });
 
       if (map != null) {
@@ -142,7 +148,8 @@ class _MyMapWidgetState extends State<MyMapWidget> {
             top: 50,
             left: MediaQuery.sizeOf(context).width * 0.2,
             right: MediaQuery.sizeOf(context).width * 0.2,
-            child: InfoCard(batteryPercentage: batteryPercentage),
+            child: InfoCard(
+                batteryPercentage: batteryPercentage, isOnline: isOnline),
           ),
           Positioned(
             bottom: MediaQuery.sizeOf(context).height * 0.3,
@@ -271,8 +278,14 @@ class MapView extends StatelessWidget {
 
 class InfoCard extends StatelessWidget {
   final double? batteryPercentage;
+  final DateTime? lastUpdate;
+  final bool isOnline;
 
-  const InfoCard({super.key, this.batteryPercentage});
+  const InfoCard(
+      {super.key,
+      this.batteryPercentage,
+      this.lastUpdate,
+      required this.isOnline});
 
   @override
   Widget build(BuildContext context) {
@@ -302,43 +315,35 @@ class InfoCard extends StatelessWidget {
                 child: Image.asset("assets/images/content/dog.png"),
               ),
               const SizedBox(width: 10),
-              const UserInfo(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Arlo",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    isOnline ? "Online" : "Offline",
+                    style: TextStyle(
+                      color: isOnline ? Colors.green : Colors.red,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: BatteryIndicator(percentage: batteryPercentage ?? 0),
-          ),
+              padding: const EdgeInsets.all(8.0),
+              child: isOnline
+                  ? BatteryIndicator(percentage: batteryPercentage ?? 0)
+                  : const BatteryIndicator(percentage: 0)),
         ],
       ),
-    );
-  }
-}
-
-class UserInfo extends StatelessWidget {
-  const UserInfo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Arlo",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: Colors.white,
-          ),
-        ),
-        Text(
-          "Online",
-          style: TextStyle(
-            color: Colors.green,
-            fontSize: 14,
-          ),
-        ),
-      ],
     );
   }
 }

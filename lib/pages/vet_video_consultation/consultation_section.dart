@@ -21,10 +21,10 @@ class ConsultationSection extends StatelessWidget {
           Stack(
             children: [
               Positioned(
-                top: 140,
-                bottom:
-                    0, // Adjust this value as necessary to align the cat with the button
-                right: 40,
+                bottom: MediaQuery.sizeOf(context).height *
+                    0.002, // Adjust this value as necessary to align the cat with the button
+                right: MediaQuery.sizeOf(context).width * 0.2,
+                left: MediaQuery.sizeOf(context).width * 0.2,
                 child: Opacity(
                   opacity: 1,
                   child: Image.asset(
@@ -132,6 +132,7 @@ class ConsultationSection extends StatelessWidget {
     );
   }
 }
+
 void _showScrollableBottomSheet(BuildContext context) {
   final screenSize = MediaQuery.of(context).size;
   showModalBottomSheet(
@@ -163,9 +164,9 @@ void _showScrollableBottomSheet(BuildContext context) {
                       Text(
                         'Select Doctor',
                         style: typography(context).title3.copyWith(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -181,9 +182,9 @@ void _showScrollableBottomSheet(BuildContext context) {
                           child: Text(
                             'View all',
                             style: typography(context).body.copyWith(
-                              color: const Color(0xff1A24DE),
-                              fontSize: 12,
-                            ),
+                                  color: const Color(0xff1A24DE),
+                                  fontSize: 12,
+                                ),
                           ),
                         ),
                       ),

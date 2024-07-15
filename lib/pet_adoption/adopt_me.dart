@@ -134,8 +134,8 @@ class _AdoptMePageState extends State<AdoptMePage> {
             top: MediaQuery.sizeOf(context).height * 0.05,
             right: MediaQuery.sizeOf(context).width * 0.04,
             child: const CircleAvatar(
-              backgroundColor: Colors.redAccent,
-              child: Icon(Icons.favorite, color: Colors.white),
+              backgroundColor: Colors.white,
+              child: Icon(Icons.favorite, color: Colors.redAccent),
             ),
           ),
           Positioned(

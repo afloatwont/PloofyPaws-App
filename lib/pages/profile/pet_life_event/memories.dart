@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/create_pet_memorial.dart';
 
 class Memories extends StatefulWidget {
-  const Memories({super.key});
+  const Memories({Key? key}) : super(key: key);
 
   @override
   State<Memories> createState() => _MemoriesState();
@@ -19,6 +19,8 @@ class Memories extends StatefulWidget {
 class _MemoriesState extends State<Memories> {
   final getIt = GetIt.instance;
   late UserDatabaseService userDatabaseService;
+  String? pfp;
+  bool isUploading = false; // Track whether an image upload is in progress
 
   @override
   void initState() {
@@ -57,7 +59,7 @@ class _MemoriesState extends State<Memories> {
           ],
         ),
         body: Container(
-          height: MediaQuery.sizeOf(context).height,
+          height: MediaQuery.of(context).size.height,
           width: double.maxFinite,
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -65,39 +67,47 @@ class _MemoriesState extends State<Memories> {
             children: [
               GestureDetector(
                 onTap: () async {
-                  showImageSourceActionSheet(context, userProvider.user!.id!);
+                  await showImageSourceActionSheet(
+                      context, userProvider.user!.id!);
                   final user = await userDatabaseService
                       .getUserProfileByUID(userProvider.user!.id!);
+
+                  userProvider.setUser(user!);
                   setState(() {
-                    userProvider.setUser(user!);
+                    pfp = user.photoUrl;
                   });
                 },
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                  height: 70,
-                  width: 100,
-                  child: Stack(
-                    children: [
-                      CircleAvatar(
+                child: Stack(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      height: 70,
+                      width: 100,
+                      child: CircleAvatar(
                         radius: 34,
                         backgroundColor: Colors.grey,
                         backgroundImage: userProvider.user?.photoUrl != null
                             ? NetworkImage(userProvider.user!.photoUrl!)
                             : null,
-                        child: userProvider.user?.photoUrl == null
-                            ? const Icon(Iconsax.user)
-                            : null,
+                        child: isUploading
+                            ? const CircularProgressIndicator(
+                                color: Colors.black,
+                                strokeWidth: 3,
+                              )
+                            : userProvider.user?.photoUrl == null
+                                ? const Icon(Iconsax.user)
+                                : null,
                       ),
-                      const Positioned(
-                        bottom: 0,
-                        right: 20,
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.black,
-                        ),
+                    ),
+                    const Positioned(
+                      bottom: 0,
+                      right: 5,
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.black,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -141,7 +151,8 @@ class _MemoriesState extends State<Memories> {
     );
   }
 
-  void showImageSourceActionSheet(BuildContext context, String userId) {
+  Future<void> showImageSourceActionSheet(
+      BuildContext context, String userId) async {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -175,6 +186,10 @@ class _MemoriesState extends State<Memories> {
 
   Future<void> pickAndUploadProfilePicture(
       String userId, ImageSource source) async {
+    setState(() {
+      isUploading = true; // Start showing progress indicator
+    });
+
     final ImagePicker _picker = ImagePicker();
     final XFile? pickedFile = await _picker.pickImage(source: source);
 
@@ -189,9 +204,16 @@ class _MemoriesState extends State<Memories> {
         print('Profile picture uploaded: $downloadUrl');
       } catch (e) {
         print('Failed to upload profile picture: $e');
+      } finally {
+        setState(() {
+          isUploading = false; // Stop showing progress indicator
+        });
       }
     } else {
       print('No image selected.');
+      setState(() {
+        isUploading = false; // Stop showing progress indicator
+      });
     }
   }
 }
