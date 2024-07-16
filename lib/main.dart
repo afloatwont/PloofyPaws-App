@@ -10,7 +10,6 @@ import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/controllers/calender_provider.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
-import 'package:ploofypaws/pages/profile/pet_profile/pets_card.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
@@ -19,6 +18,7 @@ import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -39,10 +39,10 @@ Future<void> main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => SelectedPlanProvider()),
       ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => PetProvider()),
       ChangeNotifierProvider(create: (_) => TimeProvider()),
       ChangeNotifierProvider(create: (_) => AddressModel()),
       ChangeNotifierProvider(create: (_) => CalendarProvider()),
-      ChangeNotifierProvider(create: (_) => PetProvider()),
     ],
     child: const MyApp(),
   ));
@@ -79,6 +79,7 @@ class _MyAppState extends State<MyApp> {
     _userDatabaseService = _getIt.get<UserDatabaseService>();
     _alertService = _getIt.get<AlertService>();
     final userProvider = context.read<UserProvider>();
+    final petProvider = context.read<PetProvider>();
 
     if (_authServices.user != null) {
       _userDatabaseService
@@ -95,6 +96,12 @@ class _MyAppState extends State<MyApp> {
           _alertService.showToast(text: e.toString());
         },
       );
+      _userDatabaseService.getAllPetsForUser(_authServices.user!.uid).then(
+            (value) => setState(() {
+              print(value[0].name);
+              petProvider.setPets(value);
+            }),
+          );
     }
     if (kDebugMode) {
       print(_authServices.user);

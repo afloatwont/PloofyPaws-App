@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ploofypaws/config/icons/pet_services/pet_services.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
-import 'package:ploofypaws/pages/doctors/about_doctor_page.dart';
 import 'package:ploofypaws/pages/home/core/data/services_data.dart';
 import 'package:ploofypaws/pages/home/services/pet_diet.dart';
-import 'package:ploofypaws/pages/home/services/vet_video_consultation.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/pages/training/training.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/vet_video_consultation.dart';
-import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/pet_walking.dart';
 
 class PetServices extends StatefulWidget {

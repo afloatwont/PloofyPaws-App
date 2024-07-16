@@ -7,7 +7,6 @@ class UserModel {
   final String? email;
   final String? photoUrl;
   final AddressModel? address;
-  final List<Pet>? pets;
 
   UserModel({
     required this.id,
@@ -15,7 +14,6 @@ class UserModel {
     required this.email,
     required this.photoUrl,
     this.address,
-    this.pets,
   });
 
   // From JSON
@@ -28,9 +26,6 @@ class UserModel {
       address: json['address'] != null
           ? AddressModel.fromJson(json['address'] as Map<String, dynamic>)
           : null,
-      pets: json['pets'] != null
-          ? List<Pet>.from(json['pets'].map((petJson) => Pet.fromJson(petJson)))
-          : null,
     );
   }
 
@@ -42,7 +37,6 @@ class UserModel {
       'email': email,
       'photoUrl': photoUrl,
       'address': address?.toJson(),
-      'pets': pets?.map((pet) => pet.toJson()).toList(),
     };
   }
 }

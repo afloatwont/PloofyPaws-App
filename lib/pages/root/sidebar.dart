@@ -5,6 +5,7 @@ import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -150,12 +151,14 @@ class _SidebarState extends State<Sidebar> {
   }
 
   Widget _buildSignOutButton(BuildContext context, VoidCallback setUser) {
+    final petProvider = context.read<PetProvider>();
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: ElevatedButton(
         onPressed: () async {
           bool res = await _authServices.signOut();
           setUser();
+          petProvider.setPets(null);
           if (res) {
             Navigator.pushReplacement(
                 context,

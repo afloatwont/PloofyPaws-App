@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,8 @@ class _PetsListState extends State<PetsList> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+    // final userProvider = Provider.of<UserProvider>(context);
+    final petsList = context.read<PetProvider>().pets;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,7 +47,7 @@ class _PetsListState extends State<PetsList> {
           height: 80,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: (userProvider.user?.pets?.length ?? 0) +
+            itemCount: (petsList?.length ?? 0) +
                 1, // +1 to include the add button
             itemBuilder: (BuildContext context, int index) {
               // Check if it's the first item (add button)
@@ -90,7 +92,7 @@ class _PetsListState extends State<PetsList> {
                       Padding(
                         padding: const EdgeInsets.only(top: 4.0, left: 8),
                         child: Text(
-                          userProvider.user!.pets?[petIndex].name! ?? "",
+                          petsList![petIndex].name!,
                         ), // Dynamic name from state
                       ),
                     ],

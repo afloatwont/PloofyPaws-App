@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/pages/home/services/diet/recipe.dart';
 import 'package:ploofypaws/pages/home/services/nutrititon.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ploofypaws/components/adaptive_app_bar.dart';
@@ -59,9 +59,9 @@ class CalorieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pets = context.read<UserProvider>().user?.pets ?? [];
-    int cal = pets[0].calculateDailyCalories();
-    int meal = pets[0].calculateNumberOfMeals();
+    final pets = context.read<PetProvider>().pets;
+    int? cal = pets?[0].calculateDailyCalories();
+    int? meal = pets?[0].calculateNumberOfMeals();
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16.0),
@@ -93,8 +93,8 @@ class CalorieCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text(
-                    cal.toString() ?? '1150',
+                  Text( cal == null ?
+                    '$cal' : 'N/A',
                     style: typography(context).title3.copyWith(
                           fontSize: 42,
                           color: Colors.white,
@@ -127,8 +127,8 @@ class CalorieCard extends StatelessWidget {
                   const MyButton(),
                   Padding(
                     padding: const EdgeInsets.only(left: 14.0),
-                    child: Text(
-                      "${meal.toString()} Meals/Day " ?? '2 Meals/Day',
+                    child: Text( meal == null ?
+                      "$meal Meals/Day " : 'N/A Meals/Day',
                       style: typography(context).title3.copyWith(
                             fontSize: 16,
                             color: Colors.white,
