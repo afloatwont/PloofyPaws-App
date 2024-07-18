@@ -22,6 +22,8 @@ import 'package:ploofypaws/services/repositories/auth/auth.dart';
 import 'package:ploofypaws/services/repositories/auth/model.dart' as models;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../services/repositories/auth/firebase/fire_assets.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -133,10 +135,26 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               Hero(
                 tag: 'sign-up-cat',
-                child: Image.asset(
-                  'assets/images/auth/sign-up.png',
-                  height: 80,
-                ),
+                child: FutureBuilder(
+                    future: getImageUrl('assets/images/auth/sign-up.png'),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                          child: Text('Error loading'),
+                        ); // Handle any errors
+                      } else if (!snapshot.hasData) {
+                        return const Center(
+                          child: Text('No data available'),
+                        ); // Handle the case where there's no data
+                      } else {
+                        return Image.asset(
+                          snapshot.data!,
+                          height: 80,
+                        );
+                      }
+                    }),
               )
             ],
           ),

@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/pet_adoption/adopt_me.dart';
 
+import '../services/repositories/auth/firebase/fire_assets.dart';
+
 class PetAdoptionScreen extends StatefulWidget {
   const PetAdoptionScreen({super.key});
 
@@ -84,21 +86,44 @@ class _PetAdoptionScreenState extends State<PetAdoptionScreen> {
             child: CarouselSlider(
                 items: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 20),
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        image: const DecorationImage(
-                          image: AssetImage(
-                            "assets/images/content/adopt.png",
-                          ),
-                          fit: BoxFit.contain,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
+                      padding: const EdgeInsets.only(
+                          left: 12.0, top: 30, right: 12, bottom: 20),
+                      child: FutureBuilder<String>(
+                        future: getImageUrl("assets/images/content/adopt.png"),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ); // Show a loading indicator while waiting
+                          } else if (snapshot.hasError) {
+                            return const Center(
+                              child: Text('Error loading'),
+                            ); // Handle any errors
+                          } else if (!snapshot.hasData) {
+                            return const Center(
+                              child: Text('No data available'),
+                            ); // Handle the case where there's no data
+                          } else {
+                            return Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(snapshot.data!),
+                                  fit: BoxFit.fill,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            );
+                          }
+                        },
+                      )),
                 ],
                 options: CarouselOptions(
                   autoPlay: true,
@@ -166,12 +191,30 @@ class _PetAdoptionScreenState extends State<PetAdoptionScreen> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              pet['image'],
-                              width: 150,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            ),
+                            child: FutureBuilder(
+                                future: getImageUrl(pet['image']),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const CircularProgressIndicator(
+                                        color: Colors.black);
+                                  } else if (snapshot.hasError) {
+                                    return const Center(
+                                      child: Text('Error loading'),
+                                    ); // Handle any errors
+                                  } else if (!snapshot.hasData) {
+                                    return const Center(
+                                      child: Text('No data available'),
+                                    ); // Handle the case where there's no data
+                                  } else {
+                                    return Image.network(
+                                      snapshot.data!,
+                                      width: 150,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    );
+                                  }
+                                }),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -226,7 +269,8 @@ class _PetAdoptionScreenState extends State<PetAdoptionScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => AdoptMePage(),
+                                          builder: (context) =>
+                                              const AdoptMePage(),
                                         ));
                                   },
                                   style: ElevatedButton.styleFrom(

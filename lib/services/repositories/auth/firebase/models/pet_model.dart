@@ -75,7 +75,7 @@ class Pet {
   double getWeightInKg() {
     if (weight == null) return 0;
     double mass = double.parse(weight!);
-    switch (weightUnit) {
+    switch (weightUnit!.toLowerCase()) {
       case 'kg':
         return mass;
       case 'lbs':
@@ -90,7 +90,7 @@ class Pet {
   int calculateDailyCalories() {
     double weightInKg = getWeightInKg();
     int ageInMonths = DateTime.now().difference(dob!).inDays ~/ 30;
-
+    print(ageInMonths);
     switch (type?.toLowerCase()) {
       case 'dog':
         if (ageInMonths < 12) {

@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +15,7 @@ class PetsList extends StatefulWidget {
 }
 
 class _PetsListState extends State<PetsList> {
-  // List<String> petNames = ['Arlo', 'Bella', 'Charlie']; // Example initial data
-  List<String> petNames = []; // Example initial data
+  List<String> petNames = [];
 
   void addPet() {
     Navigator.push(
@@ -25,10 +26,23 @@ class _PetsListState extends State<PetsList> {
     );
   }
 
+  String? placeholder;
+  @override
+  void initState() {
+    super.initState();
+    getImageUrl('assets/images/placeholders/user_avatar.png').then(
+      (value) => setState(() {
+        placeholder = value;
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final userProvider = Provider.of<UserProvider>(context);
-    final petsList = context.read<PetProvider>().pets;
+    final petProvider = context.watch<PetProvider>();
+    final petsList = petProvider.pets;
+    final selectedPet = petProvider.currentPet;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -47,10 +61,9 @@ class _PetsListState extends State<PetsList> {
           height: 80,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: (petsList?.length ?? 0) +
-                1, // +1 to include the add button
+            itemCount:
+                (petsList?.length ?? 0) + 1, // +1 to include the add button
             itemBuilder: (BuildContext context, int index) {
-              // Check if it's the first item (add button)
               if (index == 0) {
                 return Padding(
                   padding: const EdgeInsets.only(left: 16),
@@ -74,28 +87,46 @@ class _PetsListState extends State<PetsList> {
                   ),
                 );
               } else {
-                // Adjust index to account for the add button
                 final petIndex = index - 1;
+                final pet = petsList![petIndex];
+                final isSelected = selectedPet == pet;
+
                 return Padding(
                   padding: const EdgeInsets.only(left: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        radius: 26,
-                        backgroundImage: AssetImage(
-                          'assets/images/placeholders/user_avatar.png',
+                  child: GestureDetector(
+                    onTap: () {
+                      petProvider.setCurrentPet(pet);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          radius: 26,
+                          backgroundImage: placeholder != null
+                              ? CachedNetworkImageProvider(placeholder!)
+                              : null,
+                          child: isSelected
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 3.0,
+                                    ),
+                                  ),
+                                )
+                              : null,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4.0, left: 8),
-                        child: Text(
-                          petsList![petIndex].name!,
-                        ), // Dynamic name from state
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0, left: 8),
+                          child: Text(
+                            pet.name!,
+                          ), // Dynamic name from state
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }

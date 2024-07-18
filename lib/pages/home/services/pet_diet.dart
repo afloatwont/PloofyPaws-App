@@ -59,9 +59,11 @@ class CalorieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pets = context.read<PetProvider>().pets;
-    int? cal = pets?[0].calculateDailyCalories();
-    int? meal = pets?[0].calculateNumberOfMeals();
+    final pets = context.watch<PetProvider>().currentPet;
+    int? cal = pets?.calculateDailyCalories();
+    print(cal);
+    int? meal = pets?.calculateNumberOfMeals();
+    print(meal);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16.0),
@@ -93,8 +95,8 @@ class CalorieCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text( cal == null ?
-                    '$cal' : 'N/A',
+                  Text(
+                    cal != null ? '$cal' : 'N/A',
                     style: typography(context).title3.copyWith(
                           fontSize: 42,
                           color: Colors.white,
@@ -127,8 +129,8 @@ class CalorieCard extends StatelessWidget {
                   const MyButton(),
                   Padding(
                     padding: const EdgeInsets.only(left: 14.0),
-                    child: Text( meal == null ?
-                      "$meal Meals/Day " : 'N/A Meals/Day',
+                    child: Text(
+                      meal != null ? "$meal Meals/Day " : 'N/A Meals/Day',
                       style: typography(context).title3.copyWith(
                             fontSize: 16,
                             color: Colors.white,

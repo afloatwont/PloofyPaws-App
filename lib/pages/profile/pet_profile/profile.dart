@@ -5,6 +5,7 @@ import 'package:ploofypaws/components/gradient_header.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/profile/app_settings/app_settings.dart';
+import 'package:ploofypaws/pages/profile/pet_profile/pets_card.dart';
 import 'package:ploofypaws/pages/profile/widgets/pet_card.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
@@ -74,7 +75,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final petsList = Provider.of<PetProvider>(context).pets ;
+    final petsList = Provider.of<PetProvider>(context).pets;
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
@@ -84,8 +85,8 @@ class _ProfileState extends State<Profile> {
             height: MediaQuery.of(context).size.height * 0.6,
             child: PageView.builder(
               controller: _controller,
-              itemCount: (petsList?.length ?? 0) +
-                  1, // +1 for the 'Add a pet' card
+              itemCount:
+                  (petsList?.length ?? 0) + 1, // +1 for the 'Add a pet' card
               itemBuilder: (context, index) {
                 return AnimatedBuilder(
                   animation: _controller,
@@ -108,7 +109,12 @@ class _ProfileState extends State<Profile> {
                             MediaQuery.of(context).size.width *
                             0.8,
                         child: index < (petsList?.length ?? 1)
-                            ? PetCard(pet: petsList![index], scale: scale)
+                            ? GestureDetector(
+                                child: PetCard(
+                                  pet: petsList![index],
+                                  scale: scale,
+                                ),
+                              )
                             : GestureDetector(
                                 onTap: () {
                                   Navigator.push(

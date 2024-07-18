@@ -24,6 +24,8 @@ import 'package:provider/provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 import 'package:ploofypaws/location/map_location.dart';
 
+import '../../../services/repositories/auth/firebase/fire_assets.dart';
+
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
@@ -306,10 +308,26 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
           ),
-          Image.asset(
-            'assets/images/auth/sign-in.png',
-            scale: 2.0,
-          ),
+          FutureBuilder(
+              future: getImageUrl('assets/images/auth/sign-in.png'),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const LinearProgressIndicator(color: Colors.black);
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('Error loading'),
+                  ); // Handle any errors
+                } else if (!snapshot.hasData) {
+                  return const Center(
+                    child: Text('No data available'),
+                  ); // Handle the case where there's no data
+                } else {
+                  return Image.network(
+                    snapshot.data!,
+                    scale: 2.0,
+                  );
+                }
+              }),
         ],
       ),
     ));
