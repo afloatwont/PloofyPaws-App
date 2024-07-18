@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
@@ -15,8 +16,7 @@ class UserDatabaseService {
   late AuthServices _authService;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   CollectionReference? _usersCollection;
-
-
+  CollectionReference? _petsCollection;
 
   UserDatabaseService() {
     setupCollectionReferences();
@@ -30,6 +30,11 @@ class UserDatabaseService {
                   UserModel.fromJson(snapshots.data()!),
               toFirestore: (userprofile, _) => userprofile.toJson(),
             );
+
+    _petsCollection = _firebaseFirestore.collection('pets').withConverter<Pet>(
+          fromFirestore: (snapshots, _) => Pet.fromJson(snapshots.data()!),
+          toFirestore: (pet, _) => pet.toJson(),
+        );
   }
 
   Future<void> createUserProfile({
@@ -87,79 +92,86 @@ class UserDatabaseService {
     print("Address saved to cloud");
   }
 
+  Future<bool> doesPetExistForUser(String userId, Pet pet) async {
+    QuerySnapshot querySnapshot = await _petsCollection!
+        .where('ownerId', isEqualTo: userId)
+        .where('name', isEqualTo: pet.name)
+        .where('breeds', isEqualTo: pet.breeds)
+        .where('dob', isEqualTo: pet.dob.toString())
+        .where('type', isEqualTo: pet.type)
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  // Add a new pet to the pets collection and link it to the user by ownerId
   Future<void> addPetToUser(String userId, Pet pet) async {
-    DocumentReference userDoc = _usersCollection!.doc(userId);
-    await userDoc.update({
-      'pets': FieldValue.arrayUnion([pet.toJson()]),
-    });
-  }
+    bool petExists = await doesPetExistForUser(userId, pet);
 
-  Future<void> updatePetForUser(String userId, Pet updatedPet) async {
-    DocumentReference userDoc = _usersCollection!.doc(userId);
-    DocumentSnapshot docSnapshot = await userDoc.get();
-
-    try {
-      if (docSnapshot.exists) {
-        UserModel user = (docSnapshot.data() as UserModel);
-        List<Pet>? pets =
-            user.pets ?? []; // Initialize with an empty list if pets is null
-
-        int petIndex = pets.indexWhere((pet) => pet.name == updatedPet.name);
-        if (petIndex != -1) {
-          pets[petIndex] = updatedPet;
-        } else {
-          pets.add(updatedPet);
-        }
-
-        await userDoc.update({
-          'pets': pets.map((pet) => pet.toJson()).toList(),
-        });
-        print("Pet added");
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<List<Pet>> getAllPetsForUser(String userId) async {
-    DocumentSnapshot docSnapshot = await _usersCollection!.doc(userId).get();
-
-    if (docSnapshot.exists) {
-      UserModel user = docSnapshot.data() as UserModel;
-      return user.pets ?? [];
+    if (!petExists) {
+      await _petsCollection?.add(pet.toJson());
+      print("Pet added to database");
     } else {
-      return [];
+      AlertService().showToast(text: "Pet already exists!");
+      print("Pet already exists for this user");
     }
   }
 
-  Future<void> deletePetFromUser(String userId, String petName) async {
+  // Update an existing pet's details in the pets collection
+  Future<void> updatePetForUser(String petId, Pet updatedPet) async {
+    DocumentReference petDoc = _petsCollection!.doc(petId);
+    await petDoc.update(updatedPet.toJson());
+    print("Pet $petId updated");
+  }
+
+  // Retrieve all pets for a specific user
+  Future<List<Pet>> getAllPetsForUser(String userId) async {
+    QuerySnapshot querySnapshot =
+        await _petsCollection!.where('ownerId', isEqualTo: userId).get();
+    print(querySnapshot.docs.first.runtimeType);
+    return querySnapshot.docs.map((doc) => doc.data() as Pet).toList();
+    // return Pet.fromJson(querySnapshot.docs as Map<String, dynamic>);
+  }
+
+  // Delete a pet from the pets collection
+  Future<void> deletePetFromUser(String petId) async {
+    DocumentReference petDoc = _petsCollection!.doc(petId);
+    await petDoc.delete();
+    print("Pet $petId deleted");
+  }
+
+  // When a user is deleted, delete their associated pets
+  Future<void> deleteUserAndPets(String userId) async {
+    // Delete user
     DocumentReference userDoc = _usersCollection!.doc(userId);
-    DocumentSnapshot docSnapshot = await userDoc.get();
+    await userDoc.delete();
 
-    if (docSnapshot.exists) {
-      UserModel user =
-          UserModel.fromJson(docSnapshot.data() as Map<String, dynamic>);
-      List<Pet>? pets = user.pets;
+    // Delete associated pets
+    QuerySnapshot petSnapshot =
+        await _petsCollection!.where('ownerId', isEqualTo: userId).get();
 
-      if (pets != null) {
-        pets.removeWhere((pet) => pet.name == petName);
-        await userDoc.update({
-          'pets': pets.map((pet) => pet.toJson()).toList(),
-        });
-      }
+    WriteBatch batch = _firebaseFirestore.batch();
+
+    for (DocumentSnapshot doc in petSnapshot.docs) {
+      batch.delete(doc.reference);
     }
+
+    await batch.commit();
+    print("User $userId and associated pets deleted");
   }
 
   Future<bool> isEmailAlreadyRegistered(String email) async {
     try {
       // Check if email exists in Firebase Authentication
-      List<String> signInMethods = await _authService.authIns.fetchSignInMethodsForEmail(email);
+      List<String> signInMethods =
+          await _authService.authIns.fetchSignInMethodsForEmail(email);
       if (signInMethods.isNotEmpty) {
         return true; // Email exists in authentication
       }
 
       // Check if email exists in Firestore database
-      QuerySnapshot userQuery = await _usersCollection!.where('email', isEqualTo: email).get();
+      QuerySnapshot userQuery =
+          await _usersCollection!.where('email', isEqualTo: email).get();
       if (userQuery.docs.isNotEmpty) {
         return true; // Email exists in Firestore
       }

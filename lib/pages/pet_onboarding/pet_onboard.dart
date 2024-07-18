@@ -18,6 +18,7 @@ import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/pet_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/model.dart';
 import 'package:provider/provider.dart';
@@ -139,6 +140,7 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
   late AuthServices _authServices;
   late UserDatabaseService _databaseService;
   late UserProvider userProvider;
+  late PetProvider petProvider;
 
   final GlobalKey<FormBuilderState> _petNameFormKey =
       GlobalKey<FormBuilderState>();
@@ -159,11 +161,11 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _databaseService = _getIt.get<UserDatabaseService>();
     userProvider = context.read<UserProvider>();
+    petProvider = context.read<PetProvider>();
   }
 
   @override
@@ -193,8 +195,9 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
       final petType =
           _petTypeFormKey.currentState?.fields['pet_type']?.value ?? "Dog";
       final petBreed = selectedBreed?.name ?? "";
-      final petSize = _petSizeFormKey.currentState?.fields['pet_size']?.value;
-      print(petSize);
+      final petWeight = _petSizeFormKey.currentState?.fields['pet_size']?.value;
+      final weightUnit =
+          _petSizeFormKey.currentState?.fields['weight_unit']?.value;
       final petDob =
           _petDobFormKey.currentState?.fields['pet_date_of_birth']?.value;
       print(petDob);
@@ -207,8 +210,8 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
           "a";
 
       if (_currentPage > 4) {
-        await _handleSubmit(petName, petType, petBreed, petSize, petGender,
-            petDob, petExtraDetails);
+        await _handleSubmit(petName, petType, petBreed, petWeight, weightUnit,
+            petGender, petDob, petExtraDetails);
       }
 
       _pageController.nextPage(
@@ -218,23 +221,32 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
     }
   }
 
-  _handleSubmit(String petName, String petType, String petBreed, String petSize,
-      String petGender, DateTime petDob, List<String> petExtraDetails) async {
+  _handleSubmit(
+      String petName,
+      String petType,
+      String petBreed,
+      String petWeight,
+      String weightUnit,
+      String petGender,
+      DateTime petDob,
+      List<String> petExtraDetails) async {
     try {
       final storage = await SharedPreferences.getInstance();
       storage.setBool('pet_onboarding', true);
       final pet = Pet(
           name: petName,
+          ownerId: _authServices.user!.uid,
           type: petType,
           dob: petDob,
           gender: petGender,
+          breeds: petBreed,
           extraDetails: petExtraDetails,
-          size: petSize,
-          weightUnit: "");
-      await _databaseService.updatePetForUser(_authServices.user!.uid, pet);
-      final updatedUser =
-          await _databaseService.getUserProfileByUID(userProvider.user!.id!);
-      userProvider.setUser(updatedUser);
+          weight: petWeight,
+          weightUnit: weightUnit);
+      await _databaseService.addPetToUser(_authServices.user!.uid, pet);
+      final updatedPets =
+          await _databaseService.getAllPetsForUser(userProvider.user!.id!);
+      petProvider.setPets(updatedPets);
       if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialWithModalsPageRoute(builder: (context) => const Root()),
@@ -366,7 +378,7 @@ class _AddUpdatePetInfoState extends State<AddUpdatePetInfo> {
                         if (user != null) {
                           userProvider.setUser(user);
                         }
-                        print(user?.pets!.last.name);
+                        print(petProvider.pets?.last.name);
                       }
                     },
                     variant: 'filled',

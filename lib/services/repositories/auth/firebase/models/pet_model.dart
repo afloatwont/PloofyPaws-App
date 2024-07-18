@@ -6,14 +6,14 @@ enum WeightUnit { kg, lbs, gms }
 
 class Pet {
   final String? name;
+  final String? ownerId;
   final String? description;
   final List<String>? characteristics;
-  final String? size;
   final String? aggression;
   final String? diet;
   final String? type;
   final String? breeds;
-  final double? weight;
+  final String? weight;
   final String? weightUnit;
   final DateTime? dob;
   final String? gender;
@@ -22,13 +22,13 @@ class Pet {
   Pet({
     required this.name,
     this.description,
+    required this.ownerId,
     this.characteristics,
-    required this.size,
+    required this.weight,
     this.aggression,
     this.diet,
     required this.type,
     this.breeds,
-    this.weight,
     required this.weightUnit,
     required this.dob,
     required this.gender,
@@ -38,10 +38,10 @@ class Pet {
   factory Pet.fromJson(Map<String, dynamic> json) {
     return Pet(
       name: json['name'],
+      ownerId: json['ownerId'],
       description: json['description'],
       characteristics:
           List<String>.from(json['characteristics'] ?? <String>[""]),
-      size: json['size'],
       aggression: json['aggression'],
       diet: json['diet'],
       type: json['type'],
@@ -58,8 +58,8 @@ class Pet {
     return {
       'name': name,
       'description': description,
+      'ownerId': ownerId,
       'characteristics': characteristics,
-      'size': size,
       'aggression': aggression,
       'diet': diet,
       'type': type,
@@ -73,17 +73,17 @@ class Pet {
   }
 
   double getWeightInKg() {
-    if (size == null) return 0;
-    double weight = double.parse(size!);
+    if (weight == null) return 0;
+    double mass = double.parse(weight!);
     switch (weightUnit) {
       case 'kg':
-        return weight;
+        return mass;
       case 'lbs':
-        return weight * 0.453592;
+        return mass * 0.453592;
       case 'gms':
-        return weight / 1000;
+        return mass / 1000;
       default:
-        return weight;
+        return mass;
     }
   }
 

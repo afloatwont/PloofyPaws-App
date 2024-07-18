@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/pet_model.dart';
 
 class PetProvider with ChangeNotifier {
-  final List<Pet?> _pets = [];
+  List<Pet>? _pets = [];
   Pet? _currentPet;
 
-  List<Pet?> get pets => _pets;
+  List<Pet>? get pets => _pets;
   Pet? get currentPet => _currentPet;
 
   void startAddingPet() {
     _currentPet = Pet(
       name: '',
       description: '',
+      ownerId: '',
       characteristics: [],
-      size: "Not Specified",
       aggression: '',
       diet: '',
       type: "dog", // default value
       breeds: '',
-      weight: 0,
+      weight: '0',
       weightUnit: "Kg", // default value
       dob: DateTime.now(),
       gender: 'Not Specified', // default value
@@ -27,16 +27,21 @@ class PetProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setPets(List<Pet>? petss) {
+    _pets = petss;
+    notifyListeners();
+  }
+
   void updatePet({
     String? name,
+    String? ownerId,
     String? description,
     List<String>? characteristics,
-    String? size,
     String? aggression,
     String? diet,
     String? type,
     String? breeds,
-    double? weight,
+    String? weight,
     String? weightUnit,
     DateTime? dob,
     String? gender,
@@ -46,8 +51,8 @@ class PetProvider with ChangeNotifier {
       _currentPet = Pet(
         name: name ?? _currentPet!.name,
         description: description ?? _currentPet!.description,
+        ownerId: ownerId,
         characteristics: characteristics ?? _currentPet!.characteristics,
-        size: size ?? _currentPet!.size,
         aggression: aggression ?? _currentPet!.aggression,
         diet: diet ?? _currentPet!.diet,
         type: type ?? _currentPet!.type,
@@ -64,7 +69,7 @@ class PetProvider with ChangeNotifier {
 
   void finalizeAddingPet() {
     if (_currentPet != null) {
-      _pets.add(_currentPet!);
+      _pets!.add(_currentPet!);
       _currentPet = null;
       notifyListeners();
     }

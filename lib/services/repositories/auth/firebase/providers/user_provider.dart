@@ -1,8 +1,5 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 

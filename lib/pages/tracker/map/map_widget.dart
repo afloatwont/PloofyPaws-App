@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -24,6 +25,9 @@ class _MyMapWidgetState extends State<MyMapWidget> {
   bool _isButtonDisabled = false;
   DateTime? lastUpdate;
   bool isOnline = true;
+  double bottomSheetHeightFactor = 0.27;
+  String street = 'Street Name';
+  String city = 'City Name';
 
   @override
   void initState() {
@@ -61,6 +65,22 @@ class _MyMapWidgetState extends State<MyMapWidget> {
     });
   }
 
+  Future<Map<String, dynamic>> getPlace(LatLng location) async {
+    Object res = {"": "Unknown place"};
+    final url = Uri.parse(
+        "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${location.latitude}&lon=${location.longitude}");
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      return data;
+    } else {
+      print('Failed to get place: ${response.statusCode}');
+    }
+
+    return {};
+  }
+
   Future<void> _updateLocation() async {
     final response = await http.get(Uri.parse(
         'https://vahantrack.com/api/api.php?api=user&ver=1.0&key=E43FEC932566D9E32F1CD2DC3F5CAE01&cmd=OBJECT_GET_LOCATIONS,861261029438534'));
@@ -75,7 +95,7 @@ class _MyMapWidgetState extends State<MyMapWidget> {
       setState(() {
         batteryPercentage = battery;
         lastUpdate = trackerDateTime;
-        isOnline = DateTime.now().difference(trackerDateTime).inMinutes <= 20;
+        isOnline = DateTime.now().difference(trackerDateTime).inSeconds <= 40;
       });
 
       if (map != null) {
@@ -94,6 +114,12 @@ class _MyMapWidgetState extends State<MyMapWidget> {
           geometry: mb.Point(coordinates: mb.Position(longitude, latitude)),
           image: list,
         ));
+        final x = await getPlace(LatLng(latitude, longitude));
+        setState(() {
+          street = x['display_name'];
+          street = street.split(',')[0];
+          city = x['address']['state_district'];
+        });
       }
     } else {
       throw Exception('Failed to load location');
@@ -151,8 +177,11 @@ class _MyMapWidgetState extends State<MyMapWidget> {
             child: InfoCard(
                 batteryPercentage: batteryPercentage, isOnline: isOnline),
           ),
-          Positioned(
-            bottom: MediaQuery.sizeOf(context).height * 0.3,
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 50),
+            bottom:
+                MediaQuery.sizeOf(context).height * bottomSheetHeightFactor +
+                    10,
             right: 10,
             child: FloatingActionButton(
               onPressed: _navigateToGoogleMaps,
@@ -169,87 +198,174 @@ class _MyMapWidgetState extends State<MyMapWidget> {
         minChildSize: 0.27,
         maxChildSize: 0.7,
         builder: (BuildContext context, ScrollController scrollController) {
-          return Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+          return NotificationListener<DraggableScrollableNotification>(
+            onNotification: (notification) {
+              setState(() {
+                bottomSheetHeightFactor = notification.extent;
+              });
+              return true;
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
               ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: 60,
-                    height: 5,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade900,
-                      borderRadius: BorderRadius.circular(10),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 60,
+                      height: 5,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade900,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: ListView(
-                    controller: scrollController,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(left: 16),
-                        height: MediaQuery.sizeOf(context).height * 0.14,
-                        child: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.my_location_outlined),
-                                SizedBox(width: 10),
-                                Text(
-                                  "Street Name",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              "\t\t121/136, Pocket 8",
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              "\t\tUpdated 1 min ago",
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: ElevatedButton(
-                          onPressed: _isButtonDisabled
-                              ? null
-                              : _onUpdateLocationPressed,
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              fixedSize:
-                                  const Size.fromWidth(double.maxFinite)),
-                          child: const Text(
-                            "Update Location",
-                            style: TextStyle(color: Colors.white),
+                  Expanded(
+                    child: ListView(
+                      controller: scrollController,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left: 16),
+                          height: MediaQuery.sizeOf(context).height * 0.14,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.my_location_outlined),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    street,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                "\t\t$city",
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                "\t\tUpdated 1 min ago",
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      // Add more widgets here as needed
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ElevatedButton(
+                            onPressed: _isButtonDisabled
+                                ? null
+                                : _onUpdateLocationPressed,
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black,
+                                fixedSize:
+                                    const Size.fromWidth(double.maxFinite)),
+                            child: const Text(
+                              "Update Location",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        // Add more widgets here as needed
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.lightbulb_outline),
+                                title: const Text('Light'),
+                                subtitle: const Text(
+                                    'Turn Lights on and off of the tracker'),
+                                trailing: Switch(
+                                    value: true,
+                                    focusColor: Colors.yellow,
+                                    activeColor: Colors.orangeAccent,
+                                    activeTrackColor: Colors.yellow.shade300,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        value = !value;
+                                      });
+                                    }),
+                              ),
+                              const ListTile(
+                                leading: Icon(Icons.volume_off),
+                                title: Text('Sound'),
+                                subtitle: Text(
+                                    'Turn sound on and off of the tracker'),
+                                trailing: TextButton(
+                                    onPressed: null, child: Text('Mute')),
+                              ),
+                              const ListTile(
+                                leading: Icon(Icons.map_outlined),
+                                title: Text('Open in maps'),
+                                subtitle: Text('View latest location in maps'),
+                              ),
+                              const ListTile(
+                                leading: Icon(Icons.notifications_outlined),
+                                title: Text('Map Alerts'),
+                                subtitle: Text('Control what you see on map'),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(
+                                  'Recents',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              const ListTile(
+                                leading:
+                                    Icon(Icons.location_on, color: Colors.red),
+                                title: Text('129/136, Pocket 8'),
+                                subtitle: Text('Updated 1 minute ago'),
+                              ),
+                              const ListTile(
+                                leading:
+                                    Icon(Icons.location_on, color: Colors.red),
+                                title: Text('129/136, Pocket 8'),
+                                subtitle: Text('Updated 1 minute ago'),
+                              ),
+                              const ListTile(
+                                leading:
+                                    Icon(Icons.location_on, color: Colors.red),
+                                title: Text('129/136, Pocket 8'),
+                                subtitle: Text('Updated 1 minute ago'),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    // Handle 'More' button press
+                                  },
+                                  child: const Text('More'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
