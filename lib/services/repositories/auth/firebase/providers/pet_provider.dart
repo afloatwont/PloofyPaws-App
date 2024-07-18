@@ -29,6 +29,13 @@ class PetProvider with ChangeNotifier {
 
   void setPets(List<Pet>? petss) {
     _pets = petss;
+    _currentPet = _pets?[0];
+    notifyListeners();
+  }
+
+  void setCurrentPet(Pet? newpet) {
+    _currentPet = newpet;
+    print("Pet Selected");
     notifyListeners();
   }
 

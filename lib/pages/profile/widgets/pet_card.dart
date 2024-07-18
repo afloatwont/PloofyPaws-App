@@ -1,11 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/profile/records/pet_records.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/pet_model.dart';
 
-class PetCard extends StatelessWidget {
+class PetCard extends StatefulWidget {
   final Pet pet;
   final double scale;
 
@@ -15,6 +17,11 @@ class PetCard extends StatelessWidget {
     required this.scale,
   });
 
+  @override
+  State<PetCard> createState() => _PetCardState();
+}
+
+class _PetCardState extends State<PetCard> {
   String getElapsedTime(DateTime dob) {
     DateTime now = DateTime.now();
 
@@ -41,6 +48,18 @@ class PetCard extends StatelessWidget {
     }
   }
 
+  String? imageUrl;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getImageUrl("assets/images/placeholders/pet_card_placeholder.png").then(
+      (value) => setState(() {
+        imageUrl = value;
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,20 +81,57 @@ class PetCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                "assets/images/placeholders/pet_card_placeholder.png",
-                height: scale * MediaQuery.of(context).size.height * 0.35,
+              // child: FutureBuilder(
+              //     future: getImageUrl(
+              //         "assets/images/placeholders/pet_card_placeholder.png"),
+              //     builder: (context, snapshot) {
+              //       if (snapshot.connectionState == ConnectionState.waiting) {
+              //         return const Center(
+              //           child: LinearProgressIndicator(
+              //               color: Colors.white, backgroundColor: Colors.grey),
+              //         );
+              //       } else if (snapshot.hasError) {
+              //         return const Center(
+              //           child: Text('Error loading'),
+              //         ); // Handle any errors
+              //       } else if (!snapshot.hasData) {
+              //         return const Center(
+              //           child: Text('No data available'),
+              //         ); // Handle the case where there's no data
+              //       } else {
+              //         return CachedNetworkImage(
+              //           imageUrl: snapshot.data!,
+              //           height: widget.scale *
+              //               MediaQuery.of(context).size.height *
+              //               0.35,
+              //           width: double.infinity,
+              //           fit: BoxFit.cover,
+              //           imageBuilder: (context, imageProvider) =>
+              //               Image(image: imageProvider, fit: BoxFit.cover),
+              //         );
+              //       }
+              //     }),
+              child: CachedNetworkImage(
+                imageUrl: imageUrl ?? "",
+                height:
+                    widget.scale * MediaQuery.of(context).size.height * 0.35,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                errorWidget: (context, url, error) =>
+                    const LinearProgressIndicator(
+                        color: Colors.black, backgroundColor: Colors.black87),
+                placeholder: (context, url) => const LinearProgressIndicator(
+                    color: Colors.black, backgroundColor: Colors.black87),
+                imageBuilder: (context, imageProvider) =>
+                    Image(image: imageProvider, fit: BoxFit.cover),
               ),
             ),
-            
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Text(pet.name!,
+                Text(widget.pet.name!,
                     style: typography(context)
                         .ploofypawsTitle
                         .copyWith(color: Colors.amber)),
@@ -94,23 +150,23 @@ class PetCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            Text(pet.type ?? "",
+            Text(widget.pet.type ?? "",
                 style: typography(context).body.copyWith(color: Colors.white)),
             const SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(pet.breeds?[0] ?? "",
+                Text(widget.pet.breeds ?? "",
                     textAlign: TextAlign.end,
                     style: typography(context)
                         .smallBody
                         .copyWith(color: Colors.white)),
-                Text(pet.gender ?? "",
+                Text(widget.pet.gender ?? "",
                     textAlign: TextAlign.end,
                     style: typography(context)
                         .smallBody
                         .copyWith(color: Colors.white)),
-                Text(getElapsedTime(pet.dob!),
+                Text(getElapsedTime(widget.pet.dob!),
                     textAlign: TextAlign.end,
                     style: typography(context)
                         .smallBody

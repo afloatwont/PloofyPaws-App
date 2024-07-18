@@ -37,6 +37,8 @@ class UserDatabaseService {
         );
   }
 
+// ======================= USER ======================== //
+
   Future<void> createUserProfile({
     required UserModel userProfile,
   }) async {
@@ -83,6 +85,31 @@ class UserDatabaseService {
     }
   }
 
+  Future<bool> isEmailAlreadyRegistered(String email) async {
+    try {
+      // Check if email exists in Firebase Authentication
+      List<String> signInMethods =
+          await _authService.authIns.fetchSignInMethodsForEmail(email);
+      if (signInMethods.isNotEmpty) {
+        return true; // Email exists in authentication
+      }
+
+      // Check if email exists in Firestore database
+      QuerySnapshot userQuery =
+          await _usersCollection!.where('email', isEqualTo: email).get();
+      if (userQuery.docs.isNotEmpty) {
+        return true; // Email exists in Firestore
+      }
+
+      return false; // Email does not exist in both authentication and Firestore
+    } catch (e) {
+      print(e);
+      return Future.error('Error checking email existence');
+    }
+  }
+
+// ================= ADDRESS ================== //
+
   Future<void> updateAddress(String uid, AddressModel address) async {
     print(address.toJson());
     final userDoc = _usersCollection!.doc(uid);
@@ -91,6 +118,8 @@ class UserDatabaseService {
     });
     print("Address saved to cloud");
   }
+
+// ==================== PETS ================== //
 
   Future<bool> doesPetExistForUser(String userId, Pet pet) async {
     QuerySnapshot querySnapshot = await _petsCollection!
@@ -109,7 +138,7 @@ class UserDatabaseService {
     bool petExists = await doesPetExistForUser(userId, pet);
 
     if (!petExists) {
-      await _petsCollection?.add(pet.toJson());
+      await _petsCollection?.add(pet);
       print("Pet added to database");
     } else {
       AlertService().showToast(text: "Pet already exists!");
@@ -158,28 +187,5 @@ class UserDatabaseService {
 
     await batch.commit();
     print("User $userId and associated pets deleted");
-  }
-
-  Future<bool> isEmailAlreadyRegistered(String email) async {
-    try {
-      // Check if email exists in Firebase Authentication
-      List<String> signInMethods =
-          await _authService.authIns.fetchSignInMethodsForEmail(email);
-      if (signInMethods.isNotEmpty) {
-        return true; // Email exists in authentication
-      }
-
-      // Check if email exists in Firestore database
-      QuerySnapshot userQuery =
-          await _usersCollection!.where('email', isEqualTo: email).get();
-      if (userQuery.docs.isNotEmpty) {
-        return true; // Email exists in Firestore
-      }
-
-      return false; // Email does not exist in both authentication and Firestore
-    } catch (e) {
-      print(e);
-      return Future.error('Error checking email existence');
-    }
   }
 }

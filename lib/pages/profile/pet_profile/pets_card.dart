@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:provider/provider.dart';
 
 class PetScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class PetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pet = Provider.of<PetProvider>(context).pet;
+    final pet = Provider.of<PetProvider>(context).currentPet;
 
     return Scaffold(
         body: Stack(children: [
@@ -38,13 +39,13 @@ class PetScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('About ${pet.name}',
+                  Text('About ${pet?.name}',
                       style: typography(context)
                           .title3
                           .copyWith(fontWeight: FontWeight.bold, fontSize: 20)),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                   Text(
-                    pet.description,
+                    pet?.description ?? "",
                     style: typography(context).smallBody.copyWith(
                           fontSize: 13,
                         ),
@@ -57,24 +58,29 @@ class PetScreen extends StatelessWidget {
                   const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   Wrap(
                     spacing: 18.0,
-                    children: pet.characteristics
-                        .map((char) => Chip(
-                            backgroundColor: Colors.black,
-                            elevation: 2,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(18)),
-                            ),
-                            labelStyle: typography(context).preTitle.copyWith(
-                                color: colors(context).common.white?.s300,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600),
-                            label: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(char),
-                            )))
-                        .toList(),
+                    children: pet?.characteristics != null
+                        ? pet!.characteristics!
+                            .map((char) => Chip(
+                                backgroundColor: Colors.black,
+                                elevation: 2,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(18)),
+                                ),
+                                labelStyle: typography(context)
+                                    .preTitle
+                                    .copyWith(
+                                        color:
+                                            colors(context).common.white?.s300,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600),
+                                label: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Text(char),
+                                )))
+                            .toList()
+                        : [],
                   ),
 
                   // -----------------------------------------------
@@ -94,7 +100,7 @@ class PetScreen extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                     ),
                     trailing: Text(
-                      '${pet.size} KG',
+                      '${pet?.weight} KG',
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -106,7 +112,7 @@ class PetScreen extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                     ),
                     trailing: Text(
-                      pet.aggression,
+                      pet?.aggression ?? "N/A",
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -121,7 +127,7 @@ class PetScreen extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                     ),
                     trailing: Text(
-                      pet.diet,
+                      pet?.diet ?? "",
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -175,7 +181,8 @@ class GradientText extends StatelessWidget {
   final TextStyle style;
   final Gradient gradient;
 
-  GradientText(this.text, {required this.style, required this.gradient});
+  const GradientText(this.text,
+      {super.key, required this.style, required this.gradient});
 
   @override
   Widget build(BuildContext context) {
@@ -193,46 +200,46 @@ class GradientText extends StatelessWidget {
   }
 }
 
-class Pet {
-  final String name;
-  final String description;
-  final List<String> characteristics;
-  final double size;
-  final String aggression;
-  final String diet;
+// class Pet {
+//   final String name;
+//   final String description;
+//   final List<String> characteristics;
+//   final double size;
+//   final String aggression;
+//   final String diet;
 
-  Pet({
-    required this.name,
-    required this.description,
-    required this.characteristics,
-    required this.size,
-    required this.aggression,
-    required this.diet,
-  });
+//   Pet({
+//     required this.name,
+//     required this.description,
+//     required this.characteristics,
+//     required this.size,
+//     required this.aggression,
+//     required this.diet,
+//   });
 
-  static fromJson(Map<String, dynamic> petJson) {}
-}
+//   static fromJson(Map<String, dynamic> petJson) {}
+// }
 
-class PetProvider with ChangeNotifier {
-  Pet _pet = Pet(
-    name: "Arlo",
-    description:
-        "Muscles begin to emerge subtly around the lower back and abdomen, adding a slight definition to the physique. However, abdomen, adding a slight definition to the physique.",
-    characteristics: [
-      "Something",
-      "Something",
-      "Something",
-      "Something",
-    ],
-    size: 15.0,
-    aggression: "Low",
-    diet: "Non-veg",
-  );
+// class PetProvider with ChangeNotifier {
+//   Pet _pet = Pet(
+//     name: "Arlo",
+//     description:
+//         "Muscles begin to emerge subtly around the lower back and abdomen, adding a slight definition to the physique. However, abdomen, adding a slight definition to the physique.",
+//     characteristics: [
+//       "Something",
+//       "Something",
+//       "Something",
+//       "Something",
+//     ],
+//     size: 15.0,
+//     aggression: "Low",
+//     diet: "Non-veg",
+//   );
 
-  Pet get pet => _pet;
+//   Pet get pet => _pet;
 
-  void setPet(Pet pet) {
-    _pet = pet;
-    notifyListeners();
-  }
-}
+//   void setPet(Pet pet) {
+//     _pet = pet;
+//     notifyListeners();
+//   }
+// }
