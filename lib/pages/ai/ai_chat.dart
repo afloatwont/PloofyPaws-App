@@ -44,9 +44,11 @@ class _AiScreenState extends State<AiScreen> {
     _userDatabaseService
         .getUserProfileByUID(_authServices.user!.uid)
         .then((value) {
-      setState(() {
-        currUser = value!;
-      });
+      if (mounted) {
+        setState(() {
+          currUser = value!;
+        });
+      }
     });
   }
 
@@ -57,9 +59,11 @@ class _AiScreenState extends State<AiScreen> {
 
   void _loadInitialMessages() {
     bot.getResponse("Hey!!!").then((value) {
-      setState(() {
-        messages.add(Message(text: value, id: "ploofypaws"));
-      });
+      if (mounted) {
+        setState(() {
+          messages.add(Message(text: value, id: "ploofypaws"));
+        });
+      }
     });
   }
 
@@ -79,9 +83,11 @@ class _AiScreenState extends State<AiScreen> {
         _controller.clear();
       });
       String response = await bot.getResponse(text);
-      setState(() {
-        messages.add(Message(text: response, id: "ploofypaws"));
-      });
+      if (mounted) {
+        setState(() {
+          messages.add(Message(text: response, id: "ploofypaws"));
+        });
+      }
     }
   }
 

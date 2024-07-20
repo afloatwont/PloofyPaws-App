@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/pages/home/services/diet/recipe.dart';
 import 'package:ploofypaws/pages/home/services/nutrititon.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -181,6 +183,9 @@ class NutritionalEnhancementsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.watch<UrlProvider>();
+    final imageUrl =
+        urlProvider.urlMap['assets/images/content/fish_bowl_art.png'];
     return Padding(
       padding: const EdgeInsets.only(top: 22.0),
       child: Container(
@@ -201,7 +206,15 @@ class NutritionalEnhancementsCard extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Image.asset('assets/images/content/fish_bowl_art.png'),
+              child: imageUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    )
+                  : const SizedBox(),
             ),
             Flexible(
               child: Column(
@@ -236,18 +249,24 @@ class FoodRecipesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.watch<UrlProvider>();
+
     return SizedBox(
       height: 400,
       child: ListView.builder(
         itemCount: 4,
         itemBuilder: (context, index) {
+          final imageUrl =
+              urlProvider.urlMap['assets/images/content/fish_bowl_art.png'];
+
           return GestureDetector(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RecipePage(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RecipePage(),
+                ),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
@@ -269,7 +288,16 @@ class FoodRecipesList extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset('assets/images/content/fish_bowl_art.png'),
+                    imageUrl != null
+                        ? CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(
+                                    color: Colors.black),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          )
+                        : const SizedBox(),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

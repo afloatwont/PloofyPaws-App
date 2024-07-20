@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/pet_model.dart';
 
 class PetProvider with ChangeNotifier {
   List<Pet>? _pets = [];
   Pet? _currentPet;
-
+  final _getIt = GetIt.instance;
   List<Pet>? get pets => _pets;
   Pet? get currentPet => _currentPet;
 
@@ -30,6 +32,18 @@ class PetProvider with ChangeNotifier {
   void setPets(List<Pet>? petss) {
     _pets = petss;
     _currentPet = _pets?[0];
+    notifyListeners();
+  }
+
+  Future<void> update(String userid) async {
+    final dbService = _getIt.get<UserDatabaseService>();
+    _pets = await dbService.getAllPetsForUser(userid);
+    notifyListeners();
+  }
+
+  void clear() {
+    _pets = null;
+    _currentPet = null;
     notifyListeners();
   }
 

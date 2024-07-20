@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
 import 'package:ploofypaws/components/body_with_action.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/config/theme/placebo_colors.dart';
 
-class AddDietScreen extends ConsumerWidget {
+class AddDietScreen extends StatelessWidget {
   const AddDietScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final dietProvider = ref.watch(dietProviderNotifier);
+  Widget build(BuildContext context) {
+    final dietProvider = Provider.of<DietProvider>(context);
     return AdaptivePageScaffold(
       automaticallyImplyLeading: true,
       title: const Text("Add diet"),
@@ -36,9 +36,7 @@ class AddDietScreen extends ConsumerWidget {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            ref
-                                .read(dietProviderNotifier.notifier)
-                                .setVeg(true);
+                            dietProvider.setVeg(true);
                           },
                           child: Container(
                             height: 32,
@@ -68,9 +66,7 @@ class AddDietScreen extends ConsumerWidget {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            ref
-                                .read(dietProviderNotifier.notifier)
-                                .setVeg(false);
+                            dietProvider.setVeg(false);
                           },
                           child: Container(
                             height: 32,
@@ -104,9 +100,7 @@ class AddDietScreen extends ConsumerWidget {
                     'Morning',
                     dietProvider.morningTime,
                     (value) {
-                      ref
-                          .read(dietProviderNotifier.notifier)
-                          .setMorningTime(value);
+                      dietProvider.setMorningTime(value);
                     },
                     dietProvider.morningFeedController,
                   ),
@@ -116,9 +110,7 @@ class AddDietScreen extends ConsumerWidget {
                     'Midday',
                     dietProvider.middayTime,
                     (value) {
-                      ref
-                          .read(dietProviderNotifier.notifier)
-                          .setMiddayTime(value);
+                      dietProvider.setMiddayTime(value);
                     },
                     dietProvider.middayFeedController,
                   ),
@@ -128,9 +120,7 @@ class AddDietScreen extends ConsumerWidget {
                     'Night',
                     dietProvider.nightTime,
                     (value) {
-                      ref
-                          .read(dietProviderNotifier.notifier)
-                          .setNightTime(value);
+                      dietProvider.setNightTime(value);
                     },
                     dietProvider.nightFeedController,
                   ),
@@ -143,9 +133,7 @@ class AddDietScreen extends ConsumerWidget {
                       Checkbox(
                         value: dietProvider.allMeals,
                         onChanged: (bool? value) {
-                          ref
-                              .read(dietProviderNotifier.notifier)
-                              .setAllMeals(value!);
+                          dietProvider.setAllMeals(value!);
                         },
                       ),
                     ],
@@ -211,78 +199,40 @@ class AddDietScreen extends ConsumerWidget {
   }
 }
 
-class DietProvider extends StateNotifier<DietState> {
-  DietProvider() : super(DietState());
+class DietProvider with ChangeNotifier {
+  bool isVeg = true;
+  bool allMeals = false;
+  String morningTime = 'Add time';
+  String middayTime = '4:00 pm';
+  String nightTime = '8:00 pm';
+  final TextEditingController morningFeedController = TextEditingController();
+  final TextEditingController middayFeedController = TextEditingController();
+  final TextEditingController nightFeedController = TextEditingController();
 
   void setVeg(bool value) {
-    state = state.copyWith(isVeg: value);
+    isVeg = value;
+    notifyListeners();
   }
 
   void setAllMeals(bool value) {
-    state = state.copyWith(allMeals: value);
+    allMeals = value;
+    notifyListeners();
   }
 
   void setMorningTime(String value) {
-    state = state.copyWith(morningTime: value);
+    morningTime = value;
+    notifyListeners();
   }
 
   void setMiddayTime(String value) {
-    state = state.copyWith(middayTime: value);
+    middayTime = value;
+    notifyListeners();
   }
 
   void setNightTime(String value) {
-    state = state.copyWith(nightTime: value);
+    nightTime = value;
+    notifyListeners();
   }
 }
 
-class DietState {
-  final bool isVeg;
-  final bool allMeals;
-  final String morningTime;
-  final String middayTime;
-  final String nightTime;
-  final TextEditingController morningFeedController;
-  final TextEditingController middayFeedController;
-  final TextEditingController nightFeedController;
 
-  DietState({
-    this.isVeg = true,
-    this.allMeals = false,
-    this.morningTime = 'Add time',
-    this.middayTime = '4:00 pm',
-    this.nightTime = '8:00 pm',
-    TextEditingController? morningFeedController,
-    TextEditingController? middayFeedController,
-    TextEditingController? nightFeedController,
-  })  : morningFeedController =
-            morningFeedController ?? TextEditingController(),
-        middayFeedController = middayFeedController ?? TextEditingController(),
-        nightFeedController = nightFeedController ?? TextEditingController();
-
-  DietState copyWith({
-    bool? isVeg,
-    bool? allMeals,
-    String? morningTime,
-    String? middayTime,
-    String? nightTime,
-    TextEditingController? morningFeedController,
-    TextEditingController? middayFeedController,
-    TextEditingController? nightFeedController,
-  }) {
-    return DietState(
-      isVeg: isVeg ?? this.isVeg,
-      allMeals: allMeals ?? this.allMeals,
-      morningTime: morningTime ?? this.morningTime,
-      middayTime: middayTime ?? this.middayTime,
-      nightTime: nightTime ?? this.nightTime,
-      morningFeedController:
-          morningFeedController ?? this.morningFeedController,
-      middayFeedController: middayFeedController ?? this.middayFeedController,
-      nightFeedController: nightFeedController ?? this.nightFeedController,
-    );
-  }
-}
-
-final dietProviderNotifier = StateNotifierProvider<DietProvider, DietState>(
-  (ref) => DietProvider(),
-);

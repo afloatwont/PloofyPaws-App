@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -99,6 +102,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   }
 
   Widget buildAppBar(BuildContext context, double appBarHeight) {
+    final urlProvider = context.read<UrlProvider>();
     return Stack(
       children: [
         Container(
@@ -118,12 +122,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   radius: 35,
-                  backgroundImage: AssetImage("assets/images/content/logo.png"),
+                  backgroundImage: CachedNetworkImageProvider(
+                      urlProvider.urlMap["assets/images/content/logo.png"]!),
                 ),
               ),
               const Padding(
@@ -321,13 +326,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   Widget buildFeatureContainer(BuildContext context, String imagePath,
       String title, String description) {
+    final urlProvider = context.read<UrlProvider>();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset(
-          imagePath,
+        CachedNetworkImage(
+          imageUrl: urlProvider.urlMap[imagePath]!,
           height: MediaQuery.sizeOf(context).width * 0.1,
           width: MediaQuery.sizeOf(context).width * 0.1,
+          placeholder: null,
+          errorWidget: null,
         ),
         SizedBox(width: MediaQuery.sizeOf(context).width * 0.06),
         Expanded(
@@ -362,7 +370,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return AspectRatio(
-              aspectRatio: 16 / 9, 
+              aspectRatio: 16 / 9,
               child: VideoPlayer(_controller),
             );
           } else {

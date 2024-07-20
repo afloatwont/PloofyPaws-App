@@ -70,4 +70,25 @@ class AddressModel with ChangeNotifier {
     saveAs = value;
     notifyListeners();
   }
+
+  // Returns address as a formatted string
+  String getAddress() {
+    List<String> addressParts = [];
+    if (flatNo != null && flatNo!.isNotEmpty) {
+      addressParts.add(flatNo!);
+    }
+    if (area != null && area!.isNotEmpty) {
+      addressParts.add(area!);
+    }
+    if (landmark != null && landmark!.isNotEmpty) {
+      addressParts.add(landmark!);
+    }
+    if (location != null && location!.isNotEmpty) {
+      addressParts.add(location!);
+    }
+    if (isForMyself != null) {
+      addressParts.add(isForMyself! ? "For Myself" : "For Someone Else");
+    }
+    return addressParts.join(', ');
+  }
 }

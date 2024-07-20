@@ -154,12 +154,11 @@ class UserDatabaseService {
   }
 
   // Retrieve all pets for a specific user
-  Future<List<Pet>> getAllPetsForUser(String userId) async {
+  Future<List<Pet>?> getAllPetsForUser(String userId) async {
     QuerySnapshot querySnapshot =
         await _petsCollection!.where('ownerId', isEqualTo: userId).get();
-    print(querySnapshot.docs.first.runtimeType);
+
     return querySnapshot.docs.map((doc) => doc.data() as Pet).toList();
-    // return Pet.fromJson(querySnapshot.docs as Map<String, dynamic>);
   }
 
   // Delete a pet from the pets collection

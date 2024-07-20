@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/navigation.dart';
@@ -21,6 +22,11 @@ import 'package:ploofypaws/pages/tracker/app_bar.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pet_adoption/new_adoption.dart';
+import 'package:ploofypaws/services/alert/alert_service.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -92,6 +98,10 @@ class _RootState extends State<Root> {
     });
   }
 
+  final GetIt _getIt = GetIt.instance;
+  late AuthServices _authServices;
+  late UserDatabaseService _userDatabaseService;
+
   @override
   void initState() {
     Provider.of<UserProvider>(context, listen: false);
@@ -100,8 +110,19 @@ class _RootState extends State<Root> {
       systemNavigationBarColor: Colors.black,
       systemNavigationBarDividerColor: Colors.black,
     ));
-
     super.initState();
+    _authServices = _getIt.get<AuthServices>();
+    _userDatabaseService = _getIt.get<UserDatabaseService>();
+    final petProvider = context.read<PetProvider>();
+    _userDatabaseService
+        .getAllPetsForUser(_authServices.user!.uid)
+        .then((value) {
+      if (value!.isNotEmpty) {
+        setState(() {
+          petProvider.setPets(value);
+        });
+      }
+    });
   }
 
   @override

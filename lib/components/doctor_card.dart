@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/config/theme/placebo_colors.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class DoctorCard extends StatelessWidget {
   final String name;
@@ -20,6 +23,9 @@ class DoctorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+     final urlProvider = context.read<UrlProvider>();
+  final imageUrl = urlProvider.urlMap['assets/images/services/cardimg.png'];
     return Card(
       elevation: 5,
       surfaceTintColor: Colors.white,
@@ -34,12 +40,17 @@ class DoctorCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 children: <Widget>[
                   ClipOval(
-                    child: Image.asset(
-                      'assets/images/services/cardimg.png',
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                    ),
+                    child: imageUrl != null
+                      ? CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                        )
+                      : const CircularProgressIndicator(),
                   ),
                   Positioned(
                     top: -3,

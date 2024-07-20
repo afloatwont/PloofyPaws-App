@@ -59,8 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Row(
           children: [
             const CircleAvatar(
-                // backgroundImage:
-                // AssetImage('assets/avatar.png'), // Add your avatar image here
+              backgroundColor: Colors.black,
                 ),
             const SizedBox(width: 10),
             Column(

@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/dot_indicator.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/home/core/data/more_from_ploofypaws_services.dart';
-import 'package:ploofypaws/pages/home/core/data/more_from_restoe_services.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class MoreFromPloofyPaws extends StatefulWidget {
   const MoreFromPloofyPaws({super.key});
@@ -35,15 +37,18 @@ class _MoreFromPloofyPawsState extends State<MoreFromPloofyPaws> {
   void _startAutoScroll() {
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
       if (_currentPageIndex < moreServices.length - 1) {
-        _pageController.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.ease);
+        _pageController.nextPage(
+            duration: const Duration(milliseconds: 500), curve: Curves.ease);
       } else {
-        _pageController.animateToPage(0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+        _pageController.animateToPage(0,
+            duration: const Duration(milliseconds: 500), curve: Curves.ease);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,15 +79,17 @@ class _MoreFromPloofyPawsState extends State<MoreFromPloofyPaws> {
                   ),
                   child: Stack(
                     children: [
-                      const Positioned(top: 16, right: 16, child: Icon(Iconsax.medal_star)),
+                      const Positioned(
+                          top: 16, right: 16, child: Icon(Iconsax.medal_star)),
                       Positioned(
-                        bottom: 0,
-                        right: -10,
-                        child: Image.asset(
-                          data.image ?? "",
-                          height: 80,
-                        ),
-                      ),
+                          bottom: 0,
+                          right: -10,
+                          child: CachedNetworkImage(
+                            imageUrl: urlProvider.urlMap[data.image]!,
+                            placeholder: null,
+                            errorWidget: null,
+                            height: 80,
+                          )),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -116,7 +123,12 @@ class _MoreFromPloofyPawsState extends State<MoreFromPloofyPaws> {
                                     'Tap to know more',
                                     style: typography(context)
                                         .smallBody
-                                        .copyWith(color: colors(context).common.white?.s200, fontSize: 10),
+                                        .copyWith(
+                                            color: colors(context)
+                                                .common
+                                                .white
+                                                ?.s200,
+                                            fontSize: 10),
                                   ),
                                 ),
                               )
@@ -132,7 +144,8 @@ class _MoreFromPloofyPawsState extends State<MoreFromPloofyPaws> {
           ),
         ),
         const SizedBox(height: 16),
-        AnimatedDotIndicator(count: moreServices.length, currentIndex: _currentPageIndex),
+        AnimatedDotIndicator(
+            count: moreServices.length, currentIndex: _currentPageIndex),
       ],
     );
   }

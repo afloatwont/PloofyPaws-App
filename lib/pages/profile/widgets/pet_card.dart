@@ -6,6 +6,7 @@ import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/profile/records/pet_records.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/pet_model.dart';
+import 'package:provider/provider.dart';
 
 class PetCard extends StatefulWidget {
   final Pet pet;
@@ -48,20 +49,13 @@ class _PetCardState extends State<PetCard> {
     }
   }
 
-  String? imageUrl;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getImageUrl("assets/images/placeholders/pet_card_placeholder.png").then(
-      (value) => setState(() {
-        imageUrl = value;
-      }),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final imageUrl = context
+            .read<UrlProvider>()
+            .urlMap["assets/images/placeholders/pet_card_placeholder.png"] ??
+        "";
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.black,
@@ -71,7 +65,7 @@ class _PetCardState extends State<PetCard> {
             color: Colors.black.withOpacity(0.25),
             blurRadius: 30,
             offset: const Offset(0, 10),
-          )
+          ),
         ],
       ),
       child: Padding(
@@ -81,49 +75,18 @@ class _PetCardState extends State<PetCard> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              // child: FutureBuilder(
-              //     future: getImageUrl(
-              //         "assets/images/placeholders/pet_card_placeholder.png"),
-              //     builder: (context, snapshot) {
-              //       if (snapshot.connectionState == ConnectionState.waiting) {
-              //         return const Center(
-              //           child: LinearProgressIndicator(
-              //               color: Colors.white, backgroundColor: Colors.grey),
-              //         );
-              //       } else if (snapshot.hasError) {
-              //         return const Center(
-              //           child: Text('Error loading'),
-              //         ); // Handle any errors
-              //       } else if (!snapshot.hasData) {
-              //         return const Center(
-              //           child: Text('No data available'),
-              //         ); // Handle the case where there's no data
-              //       } else {
-              //         return CachedNetworkImage(
-              //           imageUrl: snapshot.data!,
-              //           height: widget.scale *
-              //               MediaQuery.of(context).size.height *
-              //               0.35,
-              //           width: double.infinity,
-              //           fit: BoxFit.cover,
-              //           imageBuilder: (context, imageProvider) =>
-              //               Image(image: imageProvider, fit: BoxFit.cover),
-              //         );
-              //       }
-              //     }),
               child: CachedNetworkImage(
-                imageUrl: imageUrl ?? "",
+                imageUrl: imageUrl,
                 height:
                     widget.scale * MediaQuery.of(context).size.height * 0.35,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                errorWidget: (context, url, error) =>
-                    const LinearProgressIndicator(
-                        color: Colors.black, backgroundColor: Colors.black87),
-                placeholder: (context, url) => const LinearProgressIndicator(
-                    color: Colors.black, backgroundColor: Colors.black87),
-                imageBuilder: (context, imageProvider) =>
-                    Image(image: imageProvider, fit: BoxFit.cover),
+                placeholder: null,
+                errorWidget: null,
+                imageBuilder: (context, imageProvider) => Image(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -131,46 +94,58 @@ class _PetCardState extends State<PetCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Text(widget.pet.name!,
-                    style: typography(context)
-                        .ploofypawsTitle
-                        .copyWith(color: Colors.amber)),
+                Text(
+                  widget.pet.name ?? 'Unknown',
+                  style: typography(context)
+                      .ploofypawsTitle
+                      .copyWith(color: Colors.amber),
+                ),
                 Button(
                   padding: EdgeInsets.zero,
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialWithModalsPageRoute(
-                            builder: (context) => const PetRecords()));
+                      context,
+                      MaterialWithModalsPageRoute(
+                        builder: (context) => const PetRecords(),
+                      ),
+                    );
                   },
                   variant: 'text',
                   label: 'View Records',
                   buttonColor: Colors.white,
-                )
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(widget.pet.type ?? "",
-                style: typography(context).body.copyWith(color: Colors.white)),
+            Text(
+              widget.pet.type ?? "Unknown type",
+              style: typography(context).body.copyWith(color: Colors.white),
+            ),
             const SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(widget.pet.breeds ?? "",
-                    textAlign: TextAlign.end,
-                    style: typography(context)
-                        .smallBody
-                        .copyWith(color: Colors.white)),
-                Text(widget.pet.gender ?? "",
-                    textAlign: TextAlign.end,
-                    style: typography(context)
-                        .smallBody
-                        .copyWith(color: Colors.white)),
-                Text(getElapsedTime(widget.pet.dob!),
-                    textAlign: TextAlign.end,
-                    style: typography(context)
-                        .smallBody
-                        .copyWith(color: Colors.white)),
+                Text(
+                  widget.pet.breeds ?? "Unknown breeds",
+                  textAlign: TextAlign.end,
+                  style: typography(context)
+                      .smallBody
+                      .copyWith(color: Colors.white),
+                ),
+                Text(
+                  widget.pet.gender ?? "Unknown gender",
+                  textAlign: TextAlign.end,
+                  style: typography(context)
+                      .smallBody
+                      .copyWith(color: Colors.white),
+                ),
+                Text(
+                  getElapsedTime(widget.pet.dob ?? DateTime.now()),
+                  textAlign: TextAlign.end,
+                  style: typography(context)
+                      .smallBody
+                      .copyWith(color: Colors.white),
+                ),
               ],
             ),
           ],

@@ -1,15 +1,16 @@
 import 'dart:convert';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/components/input_label.dart';
 import 'package:ploofypaws/config/icons/google.dart';
@@ -20,8 +21,6 @@ import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
 import 'package:ploofypaws/services/repositories/auth/auth.dart';
 import 'package:ploofypaws/services/repositories/auth/model.dart' as models;
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../services/repositories/auth/firebase/fire_assets.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -40,7 +39,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userProvider = context.read<UserProvider>();
   }
@@ -117,6 +115,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
+    final signUpImageUrl = urlProvider.urlMap['assets/images/auth/sign-up.png'];
+
     return Scaffold(
         body: SafeArea(
       child: Column(
@@ -135,26 +136,16 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               Hero(
                 tag: 'sign-up-cat',
-                child: FutureBuilder(
-                    future: getImageUrl('assets/images/auth/sign-up.png'),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('Error loading'),
-                        ); // Handle any errors
-                      } else if (!snapshot.hasData) {
-                        return const Center(
-                          child: Text('No data available'),
-                        ); // Handle the case where there's no data
-                      } else {
-                        return Image.asset(
-                          snapshot.data!,
-                          height: 80,
-                        );
-                      }
-                    }),
+                child: signUpImageUrl != null
+                    ? CachedNetworkImage(
+                        imageUrl: signUpImageUrl,
+                        height: 80,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )
+                    : const CircularProgressIndicator(),
               )
             ],
           ),

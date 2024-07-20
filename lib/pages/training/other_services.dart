@@ -1,9 +1,17 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
-class OtherServices extends StatelessWidget {
+class OtherServices extends StatefulWidget {
   OtherServices({super.key});
 
+  @override
+  State<OtherServices> createState() => _OtherServicesState();
+}
+
+class _OtherServicesState extends State<OtherServices> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,15 +49,16 @@ class OtherServices extends StatelessWidget {
   ];
 
   Widget _buildServiceItem(String title, double width, double height) {
+    final urlProvider = context.read<UrlProvider>();
     return Container(
       height: height * 0.6,
       width: width * 0.8,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        image: const DecorationImage(
-          image: AssetImage(
-              'assets/images/content/memories_bg.png'), // Add your image path
+        image:  DecorationImage(
+          image: CachedNetworkImageProvider(urlProvider.urlMap[ 'assets/images/content/memories_bg.png']!),
+          
           fit: BoxFit.cover,
         ),
       ),

@@ -1,14 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/components/walker_modal_sheet.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/bottom_sheet.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 import 'Veternian.dart';
 
-class ConsultationSection extends StatelessWidget {
+class ConsultationSection extends StatefulWidget {
   const ConsultationSection({super.key});
 
   @override
+  State<ConsultationSection> createState() => _ConsultationSectionState();
+}
+
+class _ConsultationSectionState extends State<ConsultationSection> {
+  @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.53,
       padding: const EdgeInsets.all(16),
@@ -27,10 +36,12 @@ class ConsultationSection extends StatelessWidget {
                 left: MediaQuery.sizeOf(context).width * 0.2,
                 child: Opacity(
                   opacity: 1,
-                  child: Image.asset(
-                    'assets/images/content/doodle_cat.png',
-                    // width: 500,
+                  child: CachedNetworkImage(
+                    imageUrl: urlProvider
+                        .urlMap['assets/images/content/doodle_cat.png']!,
                     height: 500,
+                    placeholder: null,
+                    errorWidget: null,
                   ),
                 ),
               ),
@@ -84,6 +95,7 @@ class ConsultationSection extends StatelessWidget {
   }
 
   Widget _buildHeader() {
+    final urlProvider = context.read<UrlProvider>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -91,9 +103,14 @@ class ConsultationSection extends StatelessWidget {
           height: 60,
           width: 60,
           child: ClipRRect(
-              borderRadius: BorderRadius.circular(13),
-              child: Image.asset('assets/images/content/puppy.jpeg',
-                  fit: BoxFit.fitHeight)),
+            borderRadius: BorderRadius.circular(13),
+            child: CachedNetworkImage(
+              imageUrl: urlProvider.urlMap['assets/images/content/puppy.jpeg']!,
+              fit: BoxFit.fitHeight,
+              placeholder: null,
+              errorWidget: null,
+            ),
+          ),
         ),
         const SizedBox(width: 16),
         const Text('video call',

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/auth/sign-in/sign_in.dart';
 import 'package:ploofypaws/pages/onboarding/onboarding.dart';
@@ -90,12 +93,16 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
   }
 
   Widget _buildPage(String title, String description, int imageIndex) {
+    final imageUrl = context.read<UrlProvider>().urlMap['assets/images/onboarding/onboarding_$imageIndex.png'] ?? '';
+
     return Stack(
       children: [
         Positioned.fill(
-          child: Image.asset(
-            'assets/images/onboarding/onboarding_$imageIndex.png',
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
             fit: BoxFit.cover,
+            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
           ),
         ),
         Positioned(
