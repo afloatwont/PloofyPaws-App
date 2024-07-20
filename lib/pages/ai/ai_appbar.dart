@@ -1,6 +1,10 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/pages/root/root.dart';
+
 
 class AiAppBar extends StatelessWidget {
   final double appBarHeight;
@@ -9,6 +13,11 @@ class AiAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
+
+    final backgroundUrl = urlProvider.urlMap['assets/images/content/ai_bg.png'];
+    final avatarUrl = urlProvider.urlMap['assets/images/content/dog_with_coat.jpeg'];
+
     return SliverAppBar(
       collapsedHeight: appBarHeight,
       expandedHeight: appBarHeight,
@@ -20,10 +29,16 @@ class AiAppBar extends StatelessWidget {
         background: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              'assets/images/content/ai_bg.png', // Replace with your image asset path
-              fit: BoxFit.fill,
-            ),
+            if (backgroundUrl != null)
+              CachedNetworkImage(
+                imageUrl: backgroundUrl,
+                placeholder: (context, url) => const LinearProgressIndicator(
+                  color: Colors.black,
+                  backgroundColor: Colors.grey,
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                fit: BoxFit.cover,
+              ),
             BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 25, sigmaY: 15),
               child: Container(
@@ -32,27 +47,35 @@ class AiAppBar extends StatelessWidget {
             ),
           ],
         ),
-        title: const Column(
+        title: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CircleAvatar(
               radius: 32,
-              backgroundImage: AssetImage(
-                "assets/images/content/dog_with_coat.jpeg",
+              backgroundImage: avatarUrl != null
+                  ? CachedNetworkImageProvider(avatarUrl)
+                  : null,
+              child: avatarUrl == null
+                  ? const Icon(Icons.person)
+                  : null,
+            ),
+            const SizedBox(height: 36),
+            const Text(
+              "PloofyBot",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
               ),
             ),
-            SizedBox(height: 36),
-            Text("PloofyBot",
-                style: TextStyle(
-                    fontWeight: FontWeight.w900, color: Colors.white)),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               "A live chat interface that allows for seamless, natural communication and connection.",
               style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white),
+                fontSize: 10,
+                fontWeight: FontWeight.w300,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
@@ -66,10 +89,11 @@ class AiAppBar extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Root(),
-                ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Root(),
+              ),
+            );
           },
         ),
       ],

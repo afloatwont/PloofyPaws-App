@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class NutritionScreen extends StatefulWidget {
@@ -13,14 +16,14 @@ class _NutritionScreenState extends State<NutritionScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _controller =
-        VideoPlayerController.asset('assets/images/content/CREATE_YOUR.mp4')
-          ..initialize().then((_) {
-            _controller.setLooping(true);
-            _controller.play();
-          });
+    final urlProvider = context.read<UrlProvider>();
+    final url = urlProvider.urlMap['assets/images/content/CREATE_YOUR.mp4'];
+    // _controller = VideoPlayerController.networkUrl(Uri.parse(url ?? ""))
+    //   ..initialize().then((_) => setState(() {
+    //         _controller.setLooping(true);
+    //         _controller.play();
+    //       }));
   }
 
   @override
@@ -118,13 +121,23 @@ class _NutritionScreenState extends State<NutritionScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   radius: 35,
-                  backgroundImage:
-                      AssetImage("assets/images/content/logo_yellow.png"),
+                  // backgroundImage: AssetImage("assets/images/content/logo_yellow.png"),
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl: context
+                          .read<UrlProvider>()
+                          .urlMap['assets/images/content/logo_yellow.png']!,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  ),
                 ),
               ),
               const Padding(

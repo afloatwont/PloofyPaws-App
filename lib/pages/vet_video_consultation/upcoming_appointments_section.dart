@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class UpcomingAppointmentsSection extends StatelessWidget {
   const UpcomingAppointmentsSection({super.key});
@@ -6,6 +9,7 @@ class UpcomingAppointmentsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,11 +47,11 @@ class UpcomingAppointmentsSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(
-                        radius: 24,
-                        backgroundColor: Colors.blueGrey[50],
-                        backgroundImage: const AssetImage(
-                            'assets/images/services/cardimg.png'),
-                      ),
+                          radius: 24,
+                          backgroundColor: Colors.blueGrey[50],
+                          backgroundImage: CachedNetworkImageProvider(
+                              urlProvider.urlMap[
+                                  'assets/images/services/cardimg.png']!)),
                       const SizedBox(width: 16),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,11 +104,13 @@ class UpcomingAppointmentsSection extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: Image.asset(
-                  "assets/images/content/doctor_and_dog.png",
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
+                  child: CachedNetworkImage(
+                imageUrl: urlProvider
+                    .urlMap["assets/images/content/doctor_and_dog.png"]!,
+                placeholder: null,
+                errorWidget: null,
+                fit: BoxFit.fitHeight,
+              )),
             ],
           ),
         ),

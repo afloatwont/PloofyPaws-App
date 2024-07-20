@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class RecipePage extends StatefulWidget {
   const RecipePage({super.key});
@@ -11,6 +14,7 @@ class RecipePage extends StatefulWidget {
 class _RecipePageState extends State<RecipePage> {
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
     return Scaffold(
       backgroundColor: const Color(0xffe2c2d30),
       body: Stack(
@@ -29,10 +33,11 @@ class _RecipePageState extends State<RecipePage> {
                 items: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/content/recipe.png',
+                        image: CachedNetworkImageProvider(
+                          urlProvider
+                              .urlMap['assets/images/content/recipe.png']!,
                         ),
                         fit: BoxFit.cover,
                       ),

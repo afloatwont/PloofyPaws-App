@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -15,14 +16,12 @@ import 'package:ploofypaws/pages/auth/sign-up/sign_up.dart';
 import 'package:ploofypaws/pages/pet_onboarding/pet_onboard.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
-import 'package:ploofypaws/services/repositories/auth/auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
-import 'package:ploofypaws/location/map_location.dart';
 
 import '../../../services/repositories/auth/firebase/fire_assets.dart';
 
@@ -134,202 +133,205 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.read<UserProvider>();
-    return Scaffold(
-        body: SafeArea(
-      child: Column(
-        children: [
-          const SizedBox(height: 24),
-          FormBuilder(
-            key: _formKey,
-            child: Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  Text('Sign In', style: typography(context).title1),
-                  const SizedBox(height: 24),
-                  const InputLabel(label: 'Email'),
-                  FormBuilderTextField(
-                    autofocus: true,
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) {
-                      setSuffixIconVisibility(value!);
-                      email = value;
-                    },
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                        hintText: "Enter Email",
-                        suffixIcon: isSuffixIconVisible
-                            ? GestureDetector(
-                                onTap: () {
-                                  _formKey.currentState!.fields['email']!
-                                      .didChange('');
-                                  _emailController.clear();
-                                },
-                                child: const Icon(
-                                  Iconsax.close_circle,
-                                  color: Colors.black,
-                                ),
-                              )
-                            : null),
-                    autofillHints: const [
-                      AutofillHints.email,
-                      AutofillHints.telephoneNumber
-                    ],
-                    name: 'email',
-                    validator: FormBuilderValidators.email(
-                      errorText: 'Please enter a valid email address',
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  const InputLabel(label: 'Password'),
-                  FormBuilderTextField(
-                    autofocus: true,
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.visiblePassword,
-                    onChanged: (value) {
-                      password = value;
-                    },
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                        hintText: "Enter Password",
-                        suffixIcon: isSuffixIconVisible
-                            ? GestureDetector(
-                                onTap: () {
-                                  _formKey.currentState!.fields['password']!
-                                      .didChange('');
-                                  _passwordController.clear();
-                                },
-                                child: const Icon(
-                                  Iconsax.close_circle,
-                                  color: Colors.black,
-                                ),
-                              )
-                            : null),
-                    autofillHints: const [
-                      AutofillHints.password,
-                    ],
-                    name: 'password',
-                    validator: FormBuilderValidators.required(
-                      errorText: 'Please enter your password',
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                const ResetPasswordInstructions()));
+    return ChangeNotifierProvider(
+      create: (_) => UrlProvider(),
+      child: Scaffold(
+          body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 24),
+            FormBuilder(
+              key: _formKey,
+              child: Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: [
+                    Text('Sign In', style: typography(context).title1),
+                    const SizedBox(height: 24),
+                    const InputLabel(label: 'Email'),
+                    FormBuilderTextField(
+                      autofocus: true,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (value) {
+                        setSuffixIconVisibility(value!);
+                        email = value;
                       },
-                      child: const Text('Forgot password?'),
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                          hintText: "Enter Email",
+                          suffixIcon: isSuffixIconVisible
+                              ? GestureDetector(
+                                  onTap: () {
+                                    _formKey.currentState!.fields['email']!
+                                        .didChange('');
+                                    _emailController.clear();
+                                  },
+                                  child: const Icon(
+                                    Iconsax.close_circle,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : null),
+                      autofillHints: const [
+                        AutofillHints.email,
+                        AutofillHints.telephoneNumber
+                      ],
+                      name: 'email',
+                      validator: FormBuilderValidators.email(
+                        errorText: 'Please enter a valid email address',
+                      ),
                     ),
-                  ),
-                  Button(
-                    loading: _loading,
-                    onPressed: () async {
-                      if (_formKey.currentState!.saveAndValidate()) {
-                        final userAuth = await _authServices.login(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        );
-                        if (userAuth != null) {
-                          final user = await _databaseService
-                              .getUserProfileByUID(userAuth.id!);
-                          userProvider.setUser(user);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Root(),
-                              ));
-                        }
-                      }
-                    },
-                    variant: 'filled',
-                    label: 'Next',
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: Divider(color: colors(context).onSurface.s400),
+                    const SizedBox(height: 40),
+                    const InputLabel(label: 'Password'),
+                    FormBuilderTextField(
+                      autofocus: true,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.visiblePassword,
+                      onChanged: (value) {
+                        password = value;
+                      },
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                          hintText: "Enter Password",
+                          suffixIcon: isSuffixIconVisible
+                              ? GestureDetector(
+                                  onTap: () {
+                                    _formKey.currentState!.fields['password']!
+                                        .didChange('');
+                                    _passwordController.clear();
+                                  },
+                                  child: const Icon(
+                                    Iconsax.close_circle,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : null),
+                      autofillHints: const [
+                        AutofillHints.password,
+                      ],
+                      name: 'password',
+                      validator: FormBuilderValidators.required(
+                        errorText: 'Please enter your password',
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text('OR', style: typography(context).body),
-                      ),
-                      Expanded(
-                        child: Divider(color: colors(context).onSurface.s400),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  Button(
-                    loading: _googleLoading,
-                    onPressed: _handleGoogleLogin,
-                    variant: 'outlined',
-                    label: 'Continue with Google',
-                    iconAsset: const GoogleIcon(
-                      height: 24,
                     ),
-                    buttonColor: Colors.black,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        textAlign: TextAlign.center,
-                        "Don't have an account?",
-                        style: typography(context).smallBody.copyWith(
-                              color: Colors.grey.shade600,
-                            ),
-                      ),
-                      TextButton(
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpPage(),
-                            ),
-                          );
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const ResetPasswordInstructions()));
                         },
-                        child: Text(
+                        child: const Text('Forgot password?'),
+                      ),
+                    ),
+                    Button(
+                      loading: _loading,
+                      onPressed: () async {
+                        if (_formKey.currentState!.saveAndValidate()) {
+                          final userAuth = await _authServices.login(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                          if (userAuth != null) {
+                            final user = await _databaseService
+                                .getUserProfileByUID(userAuth.id!);
+                            userProvider.setUser(user);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Root(),
+                                ));
+                          }
+                        }
+                      },
+                      variant: 'filled',
+                      label: 'Next',
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Divider(color: colors(context).onSurface.s400),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text('OR', style: typography(context).body),
+                        ),
+                        Expanded(
+                          child: Divider(color: colors(context).onSurface.s400),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Button(
+                      loading: _googleLoading,
+                      onPressed: _handleGoogleLogin,
+                      variant: 'outlined',
+                      label: 'Continue with Google',
+                      iconAsset: const GoogleIcon(
+                        height: 24,
+                      ),
+                      buttonColor: Colors.black,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
                           textAlign: TextAlign.center,
-                          'Sign up for free',
-                          style: typography(context).strong.copyWith(
-                                decoration: TextDecoration.underline,
+                          "Don't have an account?",
+                          style: typography(context).smallBody.copyWith(
+                                color: Colors.grey.shade600,
                               ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const SignUpPage(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            'Sign up for free',
+                            style: typography(context).strong.copyWith(
+                                  decoration: TextDecoration.underline,
+                                ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          FutureBuilder(
-              future: getImageUrl('assets/images/auth/sign-in.png'),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const LinearProgressIndicator(color: Colors.black);
-                } else if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Error loading'),
-                  ); // Handle any errors
-                } else if (!snapshot.hasData) {
-                  return const Center(
-                    child: Text('No data available'),
-                  ); // Handle the case where there's no data
-                } else {
-                  return Image.network(
-                    snapshot.data!,
-                    scale: 2.0,
+            Consumer<UrlProvider>(
+              builder: (context, urlProvider, child) {
+                final imageUrl =
+                    urlProvider.urlMap['assets/images/auth/sign-in.png'];
+                if (imageUrl != null) {
+                  return CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    placeholder: (context, url) =>
+                        const LinearProgressIndicator(color: Colors.black),
+                    errorWidget: (context, url, error) =>
+                        const Center(child: Text('Error loading')),
+                    // scale: 2.0,
+                    useOldImageOnUrlChange: true,
+                    height: MediaQuery.sizeOf(context).height * 0.15,
                   );
+                } else {
+                  return const LinearProgressIndicator(color: Colors.black);
                 }
-              }),
-        ],
-      ),
-    ));
+              },
+            ),
+          ],
+        ),
+      )),
+    );
   }
 }

@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class AdoptMePage extends StatefulWidget {
   const AdoptMePage({super.key});
@@ -12,6 +15,7 @@ class AdoptMePage extends StatefulWidget {
 class _AdoptMePageState extends State<AdoptMePage> {
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -26,12 +30,30 @@ class _AdoptMePageState extends State<AdoptMePage> {
                   autoPlay: true,
                 ),
                 items: [
-                  Image.asset('assets/images/content/adoptme.png',
-                      fit: BoxFit.cover, width: double.infinity),
-                  Image.asset('assets/images/content/adoptme.png',
-                      fit: BoxFit.cover, width: double.infinity),
-                  Image.asset('assets/images/content/adoptme.png',
-                      fit: BoxFit.cover, width: double.infinity),
+                  CachedNetworkImage(
+                    imageUrl: urlProvider
+                        .urlMap['assets/images/content/adoptme.png']!,
+                    placeholder: null,
+                    errorWidget: null,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: urlProvider
+                        .urlMap['assets/images/content/adoptme.png']!,
+                    placeholder: null,
+                    errorWidget: null,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: urlProvider
+                        .urlMap['assets/images/content/adoptme.png']!,
+                    placeholder: null,
+                    errorWidget: null,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
                 ],
               ),
             ],

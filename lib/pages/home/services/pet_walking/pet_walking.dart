@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/adaptive_app_bar.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
 import 'package:ploofypaws/components/pet_list.dart';
@@ -312,9 +314,14 @@ class _FAQSectionState extends State<FAQSection> {
   }
 }
 
-class OtherServices extends StatelessWidget {
+class OtherServices extends StatefulWidget {
   OtherServices({super.key});
 
+  @override
+  State<OtherServices> createState() => _OtherServicesState();
+}
+
+class _OtherServicesState extends State<OtherServices> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -352,15 +359,15 @@ class OtherServices extends StatelessWidget {
   ];
 
   Widget _buildServiceItem(String title, double width, double height) {
+    final urlProvider = context.read<UrlProvider>();
     return Container(
       height: height * 0.6,
       width: width * 0.8,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        image: const DecorationImage(
-          image: AssetImage(
-              'assets/images/content/memories_bg.png'), // Add your image path
+        image:  DecorationImage(
+          image: CachedNetworkImageProvider(urlProvider.urlMap['assets/images/content/memories_bg.png']!),
           fit: BoxFit.cover,
         ),
       ),
@@ -509,11 +516,17 @@ class ServicesGrid extends StatelessWidget {
   }
 }
 
-class Offers extends StatelessWidget {
+class Offers extends StatefulWidget {
   const Offers({super.key});
 
   @override
+  State<Offers> createState() => _OffersState();
+}
+
+class _OffersState extends State<Offers> {
+  @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: SingleChildScrollView(
@@ -538,7 +551,7 @@ class Offers extends StatelessWidget {
                         Iconsax.percentage_circle,
                         color: Colors.white,
                       ),
-                      const Column(
+                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -557,7 +570,11 @@ class Offers extends StatelessWidget {
                       ),
                       Flexible(
                           child:
-                              Image.asset("assets/images/content/offer.png")),
+                          CachedNetworkImage(imageUrl: urlProvider.urlMap["assets/images/content/offer.png"]!,
+                          placeholder: null,
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+                              ),
                     ],
                   )),
             ),
@@ -595,7 +612,12 @@ class Offers extends StatelessWidget {
                       ],
                     ),
                     Flexible(
-                        child: Image.asset("assets/images/content/offer.png")),
+                        child:
+                          CachedNetworkImage(imageUrl: urlProvider.urlMap["assets/images/content/offer.png"]!,
+                          placeholder: null,
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+                              ),
                   ],
                 )),
           ],

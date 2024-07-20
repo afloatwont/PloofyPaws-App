@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/gradient_border.dart';
 import 'package:ploofypaws/config/icons/ai.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
@@ -45,7 +48,24 @@ class AICard extends StatelessWidget {
               Positioned(
                 bottom: 3,
                 right: 16,
-                child: Image.asset('assets/images/placeholders/ai_pets_card.png', height: 80),
+                child: Consumer<UrlProvider>(
+                  builder: (context, urlProvider, child) {
+                    final url = urlProvider
+                        .urlMap['assets/images/placeholders/ai_pets_card.png'];
+                    return url != null
+                        ? CachedNetworkImage(
+                            imageUrl: url,
+                            height: 80,
+                            placeholder: null,
+                            errorWidget: null,
+                          )
+                        : const SizedBox(
+                            height: 80,
+                            width: 80,
+                            child: CircularProgressIndicator(),
+                          );
+                  },
+                ),
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -57,9 +77,9 @@ class AICard extends StatelessWidget {
                     children: [
                       Text(
                         "AI Pawsitive Support",
-                        style: typography(context)
-                            .title2
-                            .copyWith(color: colors(context).common.white?.s200, fontSize: 16),
+                        style: typography(context).title2.copyWith(
+                            color: colors(context).common.white?.s200,
+                            fontSize: 16),
                       ),
                       const SizedBox(height: 4),
                       Text(

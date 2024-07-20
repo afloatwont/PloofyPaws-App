@@ -9,11 +9,13 @@ import 'package:ploofypaws/chat/services/chat_database_service.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/controllers/calender_provider.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/pages/home/services/add_diet.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
 import 'package:ploofypaws/services/navigation/navigation.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
@@ -43,6 +45,9 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => TimeProvider()),
       ChangeNotifierProvider(create: (_) => AddressModel()),
       ChangeNotifierProvider(create: (_) => CalendarProvider()),
+      ChangeNotifierProvider(create: (_) => UrlProvider()),
+      ChangeNotifierProvider(create: (_) => DietProvider()),
+
     ],
     child: const MyApp(),
   ));
@@ -80,6 +85,16 @@ class _MyAppState extends State<MyApp> {
     _alertService = _getIt.get<AlertService>();
     final userProvider = context.read<UserProvider>();
     final petProvider = context.read<PetProvider>();
+  // final urlProvider = context.read<UrlProvider>();
+    // urlProvider.loadUrlMap().then(
+    //   (value) {
+    //     setState(() {
+    //       urlProvider.preloadUrls().then(
+    //             (value) => setState(() {}),
+    //           );
+    //     });
+    //   },
+    // );
 
     if (_authServices.user != null) {
       _userDatabaseService
@@ -96,12 +111,16 @@ class _MyAppState extends State<MyApp> {
           _alertService.showToast(text: e.toString());
         },
       );
-      _userDatabaseService.getAllPetsForUser(_authServices.user!.uid).then(
-            (value) => setState(() {
-              print(value[0].name);
-              petProvider.setPets(value);
-            }),
-          );
+      _userDatabaseService
+          .getAllPetsForUser(_authServices.user!.uid)
+          .then((value) {
+        if (value!.isNotEmpty) {
+          setState(() {
+            print(value[0].name);
+            petProvider.setPets(value);
+          });
+        }
+      });
     }
     if (kDebugMode) {
       print(_authServices.user);

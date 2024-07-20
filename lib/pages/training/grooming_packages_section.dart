@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/pages/training/explore.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class GroomingPackagesSection extends StatefulWidget {
   const GroomingPackagesSection({super.key});
@@ -150,6 +153,7 @@ class GroomingPackageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -197,12 +201,14 @@ class GroomingPackageCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: double.infinity,
-                    child: Image.asset(
-                      'assets/images/placeholders/ai_pets_card.png',
-                      height: 80,
-                    ),
-                  ),
+                      width: double.infinity,
+                      child: CachedNetworkImage(
+                        imageUrl: urlProvider.urlMap[
+                            'assets/images/placeholders/ai_pets_card.png']!,
+                        height: 80,
+                        placeholder: null,
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      )),
                   const SizedBox(height: 8),
                   SizedBox(
                     width: double.infinity,

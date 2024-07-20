@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/components/tag.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class PetEventDetails extends StatefulWidget {
   const PetEventDetails({super.key});
@@ -15,6 +18,7 @@ class PetEventDetails extends StatefulWidget {
 class _PetEventDetailsState extends State<PetEventDetails> {
   @override
   Widget build(BuildContext context) {
+  final urlProvider = context.read<UrlProvider>();
     return Scaffold(
       backgroundColor: const Color(0xffF1F1F1),
       bottomNavigationBar: BottomAppBar(
@@ -34,8 +38,10 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                   pinned: true,
                   collapsedHeight: 60,
                   expandedHeight: 350,
-                  title:
-                      isScrolled ? Text('Pet shop Founders Meet and greet', style: typography(context).title3) : null,
+                  title: isScrolled
+                      ? Text('Pet shop Founders Meet and greet',
+                          style: typography(context).title3)
+                      : null,
                   automaticallyImplyLeading: true,
                   leading: CupertinoButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -53,7 +59,14 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                     ),
                   ),
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image.asset('assets/images/placeholders/pet_card_placeholder.png', fit: BoxFit.cover),
+                    background: CachedNetworkImage(
+                      imageUrl: urlProvider.urlMap[ 'assets/images/placeholders/pet_card_placeholder.png']!,
+                      fit: BoxFit.cover,
+                      placeholder: null,
+                      errorWidget:(context, url, error) =>  const Icon(Icons.error),
+                    ),
+                    
+                    
                   ),
                 )
               ],
@@ -71,7 +84,8 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                         left: 16,
                         top: 8,
                       ),
-                      title: Text('Pet shop Founders Meet and greet', style: typography(context).title3),
+                      title: Text('Pet shop Founders Meet and greet',
+                          style: typography(context).title3),
                       // subtitle: Text('Something', style: typography(context).smallBody),
                       trailing: Button(
                         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -96,7 +110,8 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                               ),
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
-                                child: Icon(Iconsax.calendar_1, size: 10, color: Colors.white),
+                                child: Icon(Iconsax.calendar_1,
+                                    size: 10, color: Colors.white),
                               )),
                           const SizedBox(width: 8),
                           Text('24 May ', style: typography(context).smallBody),
@@ -115,10 +130,12 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                               ),
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
-                                child: Icon(Iconsax.clock, size: 10, color: Colors.white),
+                                child: Icon(Iconsax.clock,
+                                    size: 10, color: Colors.white),
                               )),
                           const SizedBox(width: 8),
-                          Text('10:00 AM - 12:00 PM', style: typography(context).smallBody),
+                          Text('10:00 AM - 12:00 PM',
+                              style: typography(context).smallBody),
                         ],
                       ),
                     ),
@@ -134,17 +151,23 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                               ),
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
-                                child: Icon(Iconsax.location, size: 10, color: Colors.white),
+                                child: Icon(Iconsax.location,
+                                    size: 10, color: Colors.white),
                               )),
                           const SizedBox(width: 8),
-                          Text('Lodhi Garden, New Delhi', style: typography(context).smallBody),
+                          Text('Lodhi Garden, New Delhi',
+                              style: typography(context).smallBody),
                           const Spacer(),
                           CupertinoButton(
                               child: Row(
                                 children: [
                                   Text("Directions",
-                                      style:
-                                          typography(context).smallBody.copyWith(color: colors(context).primary.s500)),
+                                      style: typography(context)
+                                          .smallBody
+                                          .copyWith(
+                                              color: colors(context)
+                                                  .primary
+                                                  .s500)),
                                   const SizedBox(width: 8),
                                   const Icon(
                                     Icons.directions,
@@ -164,11 +187,15 @@ class _PetEventDetailsState extends State<PetEventDetails> {
               Container(
                 color: Colors.white,
                 child: ListTile(
-                  contentPadding: const EdgeInsets.only(left: 16, right: 0, top: 8, bottom: 8),
-                  title: Text('Invite your friends', style: typography(context).title3),
-                  subtitle: Text('Share this event with your friends', style: typography(context).smallBody),
+                  contentPadding: const EdgeInsets.only(
+                      left: 16, right: 0, top: 8, bottom: 8),
+                  title: Text('Invite your friends',
+                      style: typography(context).title3),
+                  subtitle: Text('Share this event with your friends',
+                      style: typography(context).smallBody),
                   trailing: Button(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     onPressed: () {},
                     variant: 'text',
                     buttonColor: Colors.black,
@@ -198,7 +225,8 @@ class _PetEventDetailsState extends State<PetEventDetails> {
               Container(
                 color: Colors.white,
                 child: ExpansionTile(
-                  title: Text('Terms and Conditions', style: typography(context).body),
+                  title: Text('Terms and Conditions',
+                      style: typography(context).body),
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -241,11 +269,15 @@ class _PetEventDetailsState extends State<PetEventDetails> {
               Container(
                 color: Colors.white,
                 child: ListTile(
-                  contentPadding: const EdgeInsets.only(left: 16, right: 0, top: 8, bottom: 8),
-                  title: Text('Need help? Chat with us', style: typography(context).title3),
-                  subtitle: Text('We are here to help you', style: typography(context).smallBody),
+                  contentPadding: const EdgeInsets.only(
+                      left: 16, right: 0, top: 8, bottom: 8),
+                  title: Text('Need help? Chat with us',
+                      style: typography(context).title3),
+                  subtitle: Text('We are here to help you',
+                      style: typography(context).smallBody),
                   trailing: Button(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     onPressed: () {},
                     variant: 'text',
                     buttonColor: Colors.black,
@@ -261,7 +293,8 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text('More events like these', style: typography(context).title3),
+                      child: Text('More events like these',
+                          style: typography(context).title3),
                     ),
                     SizedBox(
                       height: 300,
@@ -276,17 +309,20 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                               children: [
                                 Container(
                                     height: 200,
-                                    width: MediaQuery.of(context).size.width * 0.8,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(7),
-                                      image: const DecorationImage(
-                                        image: AssetImage('assets/images/placeholders/pet_card_placeholder.png'),
+                                      image: DecorationImage(
+                                        image: CachedNetworkImageProvider(urlProvider.urlMap['assets/images/placeholders/pet_card_placeholder.png']!),
+                                        
                                         fit: BoxFit.cover,
                                       ),
                                     )),
                                 Container(
                                   height: 50,
-                                  width: MediaQuery.of(context).size.width * 0.8,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       boxShadow: [
@@ -297,10 +333,12 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                                           offset: const Offset(0, 4),
                                         ),
                                       ],
-                                      borderRadius: const BorderRadius.all(Radius.circular(7))),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(7))),
                                   child: Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    child: Text('Event', style: typography(context).body),
+                                    child: Text('Event',
+                                        style: typography(context).body),
                                   ),
                                 ),
                               ],

@@ -26,23 +26,14 @@ class _PetsListState extends State<PetsList> {
     );
   }
 
-  String? placeholder;
-  @override
-  void initState() {
-    super.initState();
-    getImageUrl('assets/images/placeholders/user_avatar.png').then(
-      (value) => setState(() {
-        placeholder = value;
-      }),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final petProvider = context.watch<PetProvider>();
     final petsList = petProvider.pets;
     final selectedPet = petProvider.currentPet;
-
+    final urlProvider = Provider.of<UrlProvider>(context);
+    final imageUrl =
+        urlProvider.urlMap['assets/images/placeholders/user_avatar.png'];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -104,8 +95,8 @@ class _PetsListState extends State<PetsList> {
                         CircleAvatar(
                           backgroundColor: Colors.transparent,
                           radius: 26,
-                          backgroundImage: placeholder != null
-                              ? CachedNetworkImageProvider(placeholder!)
+                          backgroundImage: imageUrl != null
+                              ? CachedNetworkImageProvider(imageUrl)
                               : null,
                           child: isSelected
                               ? Container(

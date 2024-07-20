@@ -83,24 +83,24 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/app_icon/
-    - assets/images/
+    # - assets/images/
     - assets/images/content/
-    - assets/images/auth/
-    - assets/images/onboarding/
-    - assets/images/pet_onboarding/
-    - assets/images/placeholders/
-    - assets/images/services/
+    # - assets/images/auth/
+    # - assets/images/onboarding/
+    # - assets/images/pet_onboarding/
+    # - assets/images/placeholders/
+    # - assets/images/services/
     - assets/lottie/
     - assets/svg/
     - assets/svg/breakfastCard.png
-    - assets/images/placeholders/user_avatar.png
-    - assets/images/content/fish_bowl_art.png
-    - assets/images/content/doctor_and_dog.png
-    - assets/images/content/puppy.jpeg
-    - assets/images/content/doodle_cat.png
-    - assets/images/content/dog_with_coat.jpeg
-    - assets/images/content/ai_bg.png
-    - assets/.env
+    # - assets/images/placeholders/user_avatar.png
+    # - assets/images/content/fish_bowl_art.png
+    # - assets/images/content/doctor_and_dog.png
+    # - assets/images/content/puppy.jpeg
+    # - assets/images/content/doodle_cat.png
+    # - assets/images/content/dog_with_coat.jpeg
+    # - assets/images/content/ai_bg.png
+    - .env
 
 
 

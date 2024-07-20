@@ -1,12 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/pet_onboarding/widgets/calender_widget.dart';
 import 'package:ploofypaws/razorpay/payment_razorpay.dart';
-
 
 class AboutDoctorPage extends StatefulWidget {
   const AboutDoctorPage({super.key});
@@ -16,6 +17,14 @@ class AboutDoctorPage extends StatefulWidget {
 }
 
 class _AboutDoctorPageState extends State<AboutDoctorPage> {
+  late UrlProvider urlProvider;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    urlProvider = context.read<UrlProvider>();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -38,7 +47,12 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
       height: screenSize.height * 0.3, // Responsive height
       width: screenSize.width,
       child: Center(
-        child: Image.asset('assets/images/placeholders/women_doctor.png'),
+        child: CachedNetworkImage(
+          imageUrl: urlProvider.urlMap[
+              'assets/images/placeholders/women_doctor.png']!, // Replace with actual image URL
+          placeholder: (context, url) => const CircularProgressIndicator(),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
       ),
     );
   }
@@ -122,9 +136,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
       child: Text(
         title,
         style: typography(context).title2.copyWith(
-          fontSize: 16,
-          color: const Color(0xff1E1C61),
-        ),
+              fontSize: 16,
+              color: const Color(0xff1E1C61),
+            ),
       ),
     );
   }
@@ -148,14 +162,14 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
       ),
       child: Stack(
         children: [
-          const Positioned(
+          Positioned(
             top: 18,
             left: 10,
             child: CircleAvatar(
               radius: 15,
               backgroundColor: Color(0xffDEE6F8),
-              backgroundImage:
-                  AssetImage('assets/images/placeholders/user_avatar.png'),
+              backgroundImage: CachedNetworkImageProvider(urlProvider
+                  .urlMap['assets/images/placeholders/user_avatar.png']!),
             ),
           ),
           Positioned(
@@ -164,9 +178,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
             child: Text(
               'Dr. Samira Sharma',
               style: typography(context).title2.copyWith(
-                fontSize: 14,
-                color: const Color(0xff000000),
-              ),
+                    fontSize: 14,
+                    color: const Color(0xff000000),
+                  ),
             ),
           ),
           Positioned(
@@ -175,9 +189,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
             child: Text(
               'Veterinarian (Animal welfare)',
               style: typography(context).body.copyWith(
-                fontSize: 10,
-                color: const Color(0xff000000),
-              ),
+                    fontSize: 10,
+                    color: const Color(0xff000000),
+                  ),
             ),
           ),
           Positioned(
@@ -193,9 +207,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
                 Text(
                   '4.8',
                   style: typography(context).body.copyWith(
-                    fontSize: 10,
-                    color: const Color(0xff000000),
-                  ),
+                        fontSize: 10,
+                        color: const Color(0xff000000),
+                      ),
                 ),
               ],
             ),
@@ -218,9 +232,9 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
                   Text(
                     'Tues, 28 May 2024, 10:00 am IST',
                     style: typography(context).body.copyWith(
-                      fontSize: 10,
-                      color: Colors.white,
-                    ),
+                          fontSize: 10,
+                          color: Colors.white,
+                        ),
                   ),
                 ],
               ),
@@ -228,17 +242,31 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
           ),
           Positioned(
             left: 240,
-            child: Image.asset('assets/images/content/Ellipse_253.png'),
+            child: CachedNetworkImage(
+            imageUrl: urlProvider.urlMap['assets/images/content/Ellipse_253.png']!, // Replace with actual image URL
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
+
           ),
           Positioned(
             left: screenSize.width * 0.48,
-            child: Image.asset('assets/images/content/Ellipse_254.png'),
+            child: CachedNetworkImage(
+            imageUrl: urlProvider.urlMap['assets/images/content/Ellipse_254.png']!, // Replace with actual image URL
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
+
           ),
           Positioned(
             top: 10,
             left: 230,
-            child:
-                Image.asset('assets/images/placeholders/doctor_with_pet.png'),
+            child: CachedNetworkImage(
+              imageUrl: urlProvider.urlMap[
+                  'assets/images/placeholders/doctor_with_pet.png']!, // Replace with actual image URL
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
         ],
       ),

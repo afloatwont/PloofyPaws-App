@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 
 class Footer extends StatelessWidget {
@@ -69,27 +72,28 @@ class Footer extends StatelessWidget {
               child: ClipRRect(
                 // Add rounded corners to the image (optional)
                 borderRadius: BorderRadius.circular(10.0),
-                child: Image.asset(
-                  "assets/images/placeholders/share_app_gradient.png",
-                  height: 150.0,
-                  // Adjust image height as needed
+                child: Consumer<UrlProvider>(
+                  builder: (context, urlProvider, child) {
+                    final url = urlProvider.urlMap['assets/images/placeholders/share_app_gradient.png'];
+                    return url != null
+                        ? CachedNetworkImage(
+                            imageUrl: url,
+                            height: 150.0,
+                            placeholder:  null,
+                            
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                          )
+                        : const SizedBox(
+                            height: 150.0,
+                            width: 150.0,
+                            child: CircularProgressIndicator(),
+                          );
+                  },
                 ),
               ),
             ),
           ],
         ),
-        // Text(
-        //   "Unlocking \npawters",
-        //   style: typography(context)
-        //       .largeTitle
-        //       .copyWith(fontSize: 26, color: Colors.grey.shade400, fontWeight: FontWeight.w900, height: 1.2),
-        // ),
-        // Text(
-        //   "Realm!",
-        //   style: typography(context)
-        //       .largeTitle
-        //       .copyWith(fontSize: 56, color: Colors.grey.shade400, fontWeight: FontWeight.w900),
-        // ),
         const SizedBox(height: 32),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

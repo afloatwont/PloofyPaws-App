@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:ploofypaws/components/dot_indicator.dart' as components;
 import 'package:ploofypaws/pages/home/core/data/more_from_ploofypaws_services.dart';
 
@@ -74,7 +74,11 @@ class _MoreFromPloofyPawsState extends State<MoreFromPloofyPaws> {
                 return Card(
                   child: Column(
                     children: [
-                      Image.asset(data.image ?? 'assets/images/default.png'),
+                      CachedNetworkImage(
+                        imageUrl: data.image ?? 'assets/images/default.png',
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),
                       Text(data.title ?? 'No title'),
                       Text(data.description ?? 'No description'),
                     ],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/button.dart';
@@ -37,13 +38,18 @@ class PetEventsCard extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(eventItem.imageAsset),
-                fit: BoxFit.cover,
-              ),
               borderRadius: BorderRadius.circular(24),
+              image: DecorationImage(
+                image: CachedNetworkImageProvider(eventItem.imageAsset),
+              ),
             ),
             height: 400,
+            // child: CachedNetworkImage(
+            //   imageUrl: eventItem.imageAsset, // Use the URL directly
+            //   fit: BoxFit.cover,
+            //   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            //   errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
+            // ),
           ),
           Container(
             height: MediaQuery.of(context).size.height * 0.2,
@@ -86,9 +92,9 @@ class PetEventsCard extends StatelessWidget {
                           const SizedBox(width: 8), // adjust as needed
                           Text(
                             eventItem.dateTime,
-                            style: typography(context)
-                                .smallBody
-                                .copyWith(color: colors(context).common.black?.s600, fontSize: 10),
+                            style: typography(context).smallBody.copyWith(
+                                color: colors(context).common.black?.s600,
+                                fontSize: 10),
                           ),
                         ],
                       ),
@@ -111,14 +117,18 @@ class PetEventsCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(eventItem.price, style: typography(context).body.copyWith(fontWeight: FontWeight.bold)),
+                      Text(eventItem.price,
+                          style: typography(context)
+                              .body
+                              .copyWith(fontWeight: FontWeight.bold)),
                       Button(
                         onPressed: () {},
                         variant: 'filled',
                         label: "Register",
                         buttonColor: Colors.black,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 8),
                       )
                     ],
                   )

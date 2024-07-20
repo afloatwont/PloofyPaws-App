@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+
 
 ImageProvider<Object> getAvatarImage(String? src) {
   if (src == null) {

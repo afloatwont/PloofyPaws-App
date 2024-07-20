@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ploofypaws/pages/appointment/appointment.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
@@ -29,6 +30,7 @@ class _SidebarState extends State<Sidebar> {
 
   final List<Widget> pages = [
     const Memories(),
+    const Appointment(),
   ];
 
   final GetIt _getIt = GetIt.instance;
@@ -104,6 +106,7 @@ class _SidebarState extends State<Sidebar> {
             children: [
               CircleAvatar(
                 radius: 24,
+                backgroundColor: Colors.black,
                 backgroundImage: (user.photoUrl?.isNotEmpty ?? false)
                     ? NetworkImage(user.photoUrl!)
                     : null,
@@ -144,6 +147,11 @@ class _SidebarState extends State<Sidebar> {
           ),
           onTap: () {
             // Handle item tap
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => pages[1],
+                ));
           },
         ),
       ),

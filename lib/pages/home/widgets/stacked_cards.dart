@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 import 'package:ploofypaws/pages/home/widgets/dot_background.dart';
 import 'package:ploofypaws/pages/home/widgets/swipeable_cards/swiper.dart';
 
@@ -48,8 +51,14 @@ class _EventStackedCardsState extends State<EventStackedCards> {
                 cardBuilder: (BuildContext context, int index) {
                   return Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: DecorationImage(image: AssetImage(widget.image[index]), fit: BoxFit.cover)),
+                      borderRadius: BorderRadius.circular(16),
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                          context.read<UrlProvider>().urlMap[widget.image[index]] ?? '',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   );
                 },
               ),
