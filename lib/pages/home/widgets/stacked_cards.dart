@@ -54,9 +54,9 @@ class _EventStackedCardsState extends State<EventStackedCards> {
                   return Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      image: urlProvider.urlMap[widget.image[index]]!= null ? DecorationImage(
+                      image: urlProvider.urlMap[widget.image[index]] != null ? DecorationImage(
                         image: CachedNetworkImageProvider(
-                         urlProvider.urlMap[widget.image[index]]! ,
+                         urlProvider.urlMap[widget.image[index]]!   ,
                         ),
                         fit: BoxFit.cover,
                       ) : null,

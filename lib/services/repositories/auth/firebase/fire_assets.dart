@@ -12,11 +12,11 @@ class UrlProvider with ChangeNotifier {
   }
 
   final List<String> folders = [
-    "placeholders",
     "auth",
     "content",
     "onboarding",
     "pet_onboarding",
+    "placeholders",
     "services",
   ];
 
