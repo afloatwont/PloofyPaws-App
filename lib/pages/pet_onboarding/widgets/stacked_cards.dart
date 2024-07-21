@@ -18,6 +18,9 @@ class StackOfCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final placeholder = context
+        .read<UrlProvider>()
+        .urlMap['assets/images/placeholders/pet_type_placeholder.png'];
     final imageUrl = imageAsset != null
         ? context.read<UrlProvider>().urlMap[imageAsset]
         : null;
@@ -49,16 +52,16 @@ class StackOfCards extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+            padding: const EdgeInsets.only(
+                right: 16.0, left: 16.0, top: 16, bottom: 16),
             child: Container(
-              height: 200,
-              decoration: const BoxDecoration(
+              height: 180,
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                    'assets/images/placeholders/pet_type_placeholder.png',
-                  ),
-                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(placeholder!),
+                  fit: BoxFit.fill,
                 ),
+                // borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
                 children: [
@@ -82,7 +85,7 @@ class StackOfCards extends StatelessWidget {
                         imageUrl != null
                             ? CachedNetworkImage(
                                 imageUrl: imageUrl,
-                                height: 200,
+                                height: 180,
                                 placeholder: (context, url) => const Center(
                                   child: CircularProgressIndicator(),
                                 ),

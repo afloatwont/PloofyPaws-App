@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class PetEventItem {
   final String imageAsset;
@@ -32,6 +34,7 @@ class PetEventsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.watch<UrlProvider>();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -39,17 +42,19 @@ class PetEventsCard extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-              image: DecorationImage(
-                image: CachedNetworkImageProvider(eventItem.imageAsset),
-              ),
+              // image: DecorationImage(
+              //   image: CachedNetworkImageProvider(
+              //     urlProvider.urlMap[eventItem.imageAsset]!,
+              //   ),
+              // ),
             ),
             height: 400,
-            // child: CachedNetworkImage(
-            //   imageUrl: eventItem.imageAsset, // Use the URL directly
-            //   fit: BoxFit.cover,
-            //   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-            //   errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
-            // ),
+            child: CachedNetworkImage(
+              imageUrl: eventItem.imageAsset, // Use the URL directly
+              fit: BoxFit.cover,
+              placeholder: null,
+              errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
+            ),
           ),
           Container(
             height: MediaQuery.of(context).size.height * 0.2,

@@ -76,7 +76,7 @@ class _MoreFromPloofyPawsState extends State<MoreFromPloofyPaws> {
                     children: [
                       CachedNetworkImage(
                         imageUrl: data.image ?? 'assets/images/default.png',
-                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        placeholder: null,
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                       Text(data.title ?? 'No title'),

@@ -12,7 +12,7 @@ class FeaturedEvents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final urlProvider = context.read<UrlProvider>();
+    final urlProvider = context.watch<UrlProvider>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,7 +48,7 @@ class FeaturedEvents extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                           image: DecorationImage(
                             image: CachedNetworkImageProvider(urlProvider.urlMap[items[index]
-                                .imageAsset]!), // Use CachedNetworkImageProvider here
+                                .imageAsset]!), 
                             fit: BoxFit.cover,
                           ),
                         ),

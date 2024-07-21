@@ -18,7 +18,7 @@ class PetEventDetails extends StatefulWidget {
 class _PetEventDetailsState extends State<PetEventDetails> {
   @override
   Widget build(BuildContext context) {
-  final urlProvider = context.read<UrlProvider>();
+  final urlProvider = context.watch<UrlProvider>();
     return Scaffold(
       backgroundColor: const Color(0xffF1F1F1),
       bottomNavigationBar: BottomAppBar(
@@ -315,6 +315,7 @@ class _PetEventDetailsState extends State<PetEventDetails> {
                                       borderRadius: BorderRadius.circular(7),
                                       image: DecorationImage(
                                         image: CachedNetworkImageProvider(urlProvider.urlMap['assets/images/placeholders/pet_card_placeholder.png']!),
+                                        
                                         
                                         fit: BoxFit.cover,
                                       ),

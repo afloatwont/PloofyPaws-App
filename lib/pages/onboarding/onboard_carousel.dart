@@ -25,6 +25,13 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
   Offset offset = const Offset(0, 0);
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.transparent,
@@ -93,7 +100,10 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
   }
 
   Widget _buildPage(String title, String description, int imageIndex) {
-    final imageUrl = context.read<UrlProvider>().urlMap['assets/images/onboarding/onboarding_$imageIndex.png'] ?? '';
+    final urlProvider = context.watch<UrlProvider>();
+    final imageUrl = urlProvider
+            .urlMap['assets/images/onboarding/onboarding_$imageIndex.png'] ??
+        '';
 
     return Stack(
       children: [
@@ -101,8 +111,9 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
           child: CachedNetworkImage(
             imageUrl: imageUrl,
             fit: BoxFit.cover,
-            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-            errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
+            placeholder: null,
+            errorWidget: (context, url, error) =>
+                const Center(child: Icon(Icons.error)),
           ),
         ),
         Positioned(
