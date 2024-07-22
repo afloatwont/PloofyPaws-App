@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/razorpay/payment_razorpay.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/models/doctor_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/adaptive_modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/button.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/doctors/about_doctor_page.dart';
 import 'package:ploofypaws/pages/pet_onboarding/widgets/calender_widget.dart';
-
 
 class ModalSheet extends StatefulWidget {
   const ModalSheet({super.key});
@@ -19,6 +21,7 @@ class ModalSheet extends StatefulWidget {
 class _ModalSheetState extends State<ModalSheet> {
   void _showScrollableBottomSheet(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final docProvider = context.watch<VeterinaryDoctorProvider>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -72,7 +75,7 @@ class _ModalSheetState extends State<ModalSheet> {
                             scrollDirection: Axis.horizontal,
                             itemCount: 4,
                             itemBuilder: (context, index) {
-                              return const VetOption(label: 'Dr.Angad Singh');
+                              return VetOption(doctor: docProvider.docs![0]);
                             }),
                       ),
                     ),
@@ -109,46 +112,69 @@ class _ModalSheetState extends State<ModalSheet> {
 }
 
 class VetOption extends StatelessWidget {
-  final String label;
+  final VeterinaryDoctor doctor;
 
-  const VetOption({super.key, required this.label});
+  const VetOption({super.key, required this.doctor});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20),
-      child: Column(
-        children: [
-          Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Align(
-              alignment: Alignment.topRight,
+    final docProvider = context.watch<VeterinaryDoctorProvider>();
+    return GestureDetector(
+      onTap: () {
+        docProvider.setDoctor(doctor);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0, right: 20),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 20,
-                width: 20,
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle,
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  color: doctor == docProvider.doctor
+                      ? Colors.grey
+                      : Colors.grey[300],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    height: 20,
+                    width: 20,
+                    decoration: BoxDecoration(
+                      color: doctor == docProvider.doctor
+                          ? Colors.black
+                          : Colors.grey,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 4),
+                    ),
+                    child: doctor == docProvider.doctor
+                        ? const Center(
+                            child: Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 8,
+                            ),
+                          )
+                        : null,
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 10,
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                doctor.name!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 10,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -163,10 +189,8 @@ Widget buildbutton(BuildContext context, Size screenSize) {
       child: Button(
         borderRadius: BorderRadius.circular(42),
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const RazorPayScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const RazorPayScreen()));
         },
         variant: 'filled',
         label: 'Confirm',
@@ -192,39 +216,51 @@ Widget buildCalenderPart(Size screenSize) {
 }
 
 Widget buildtime(Size screenSize) {
+  // Helper function to format time
+  String formatTime(DateTime dateTime) {
+    return DateFormat.jm().format(dateTime);
+  }
+
+  // Generate a list of times incremented by 1 hour
+  List<String> generateTimes(int count, DateTime startTime) {
+    return List.generate(count, (index) {
+      DateTime time = startTime.add(Duration(hours: index));
+      return formatTime(time);
+    });
+  }
+
+  // Starting time (you can change this to whatever start time you prefer)
+  DateTime startTime =
+      DateTime(2024, 7, 23, 6, 30); // Example start time: 6:30 AM
+
   return Consumer<TimeProvider>(builder: (context, timeProvider, child) {
-    final time = timeProvider.time;
+    List<String> times = generateTimes(9, startTime);
+
     return Padding(
       padding: EdgeInsets.all(screenSize.width * 0.03),
       child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-                3,
-                (_) => TimeTile(
-                      time: time,
-                    )),
-          ),
-          const SizedBox(height: 14.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-                3,
-                (_) => TimeTile(
-                      time: time,
-                    )),
-          ),
-          const SizedBox(height: 14.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-                3,
-                (_) => TimeTile(
-                      time: time,
-                    )),
-          ),
-        ],
+        children: List.generate(
+          3,
+          (rowIndex) {
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    3,
+                    (colIndex) {
+                      int index = rowIndex * 3 + colIndex;
+                      return TimeTile(
+                        time: times[index],
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 14.0), // Add spacing between rows
+              ],
+            );
+          },
+        ),
       ),
     );
   });

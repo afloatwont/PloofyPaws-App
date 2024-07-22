@@ -20,6 +20,7 @@ import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +48,8 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => CalendarProvider()),
       ChangeNotifierProvider(create: (_) => UrlProvider()),
       ChangeNotifierProvider(create: (_) => DietProvider()),
-
+      ChangeNotifierProvider(create: (_) => VeterinaryDoctorProvider()),
+      ChangeNotifierProvider(create: (_) => TimeProvider()),
     ],
     child: const MyApp(),
   ));

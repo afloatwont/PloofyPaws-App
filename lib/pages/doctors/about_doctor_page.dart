@@ -357,17 +357,27 @@ class TimeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: 100,
-      height: 35,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(41.0),
-      ),
-      child: Text(
-        time,
-        style: const TextStyle(fontSize: 16.0),
+    final timeProvider = context.watch<TimeProvider>();
+    return GestureDetector(
+      onTap: () {
+        timeProvider.setTime(time);
+      },
+      child: Container(
+        alignment: Alignment.center,
+        width: 100,
+        height: 35,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(41.0),
+          color: timeProvider.time == time ? Colors.black : Colors.white,
+        ),
+        child: Text(
+          time,
+          style: TextStyle(
+            fontSize: 16.0,
+            color: timeProvider.time == time ? Colors.white : Colors.black,
+          ),
+        ),
       ),
     );
   }

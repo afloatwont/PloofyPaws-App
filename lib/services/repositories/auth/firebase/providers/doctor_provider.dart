@@ -3,7 +3,37 @@ import 'package:ploofypaws/services/repositories/auth/firebase/models/doctor_mod
 
 class VeterinaryDoctorProvider with ChangeNotifier {
   VeterinaryDoctor? _doctor;
+  List<VeterinaryDoctor>? docs = [
+    VeterinaryDoctor(
+      name: "Dr. Angad Singh",
+      contactInfo: "angad@gmail.com",
+      experience: 5,
+      position: "Specialist",
+      specialization: "",
+    ),
+    VeterinaryDoctor(
+      name: "Dr. Ayush Ambatkar",
+      contactInfo: "ayush@gmail.com",
+      experience: 5,
+      position: "Doctor",
+      specialization: "",
+    ),
+    VeterinaryDoctor(
+      name: "Dr. Angad Singh",
+      contactInfo: "angad@gmail.com",
+      experience: 5,
+      position: "Specialist",
+      specialization: "",
+    ),
+    VeterinaryDoctor(
+      name: "Dr. Ayush Ambatkar",
+      contactInfo: "ayush@gmail.com",
+      experience: 5,
+      position: "Doctor",
+      specialization: "",
+    ),
 
+  ];
   VeterinaryDoctor? get doctor => _doctor;
 
   void setDoctor(VeterinaryDoctor? doctor) {
