@@ -44,7 +44,7 @@ class DoctorListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptivePageScaffold(
-      title: const Text('veterinarian'),
+      title: const Text('Veterinarian'),
       automaticallyImplyLeading: true,
       appBarTrailing: IconButton(
         icon: const Icon(Icons.notifications),

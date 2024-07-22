@@ -1,5 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:ploofypaws/components/divider_with_text.dart';
+import 'package:ploofypaws/components/feature_container.dart';
+import 'package:ploofypaws/components/property_row.dart';
+import 'package:ploofypaws/components/property_row_2.dart';
+import 'package:ploofypaws/components/top_bar.dart';
+import 'package:ploofypaws/components/video_box.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -12,25 +19,39 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
-  late VideoPlayerController _controller;
+  final List<Map<String, String>> features = [
+    {
+      'imagePath': 'assets/images/content/pt1.png',
+      'title': "Weight Tracking:",
+      'description':
+          "Allows you to track your pet's weight over time to monitor progress and make adjustments to the diet plan as needed.",
+    },
+    {
+      'imagePath': 'assets/images/content/pt2.png',
+      'title': "Food Recommendations:",
+      'description':
+          "Provide a list of recommended pet foods or recipes tailored to the pet's nutritional needs.",
+    },
+    {
+      'imagePath': 'assets/images/content/pt3.png',
+      'title': "Reminders and Notifications:",
+      'description':
+          "You can set up a feeding schedule with reminders to ensure regular and timely meals.",
+    },
+  ];
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _controller =
-        VideoPlayerController.asset('assets/images/content/CREATE_YOUR.mp4')
-          ..initialize().then((_) {
-            _controller.setLooping(true);
-            _controller.play();
-          });
-  }
+  final Map<String, IconData> properties = {
+    "Professional Expertise": Icons.pets,
+    "Clean as before": Icons.cleaning_services,
+    "Hygiene": Icons.local_hospital,
+    "Authentic Products": Icons.restaurant,
+  };
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  final Map<String, Widget> whyPloofy = {
+    'Affordable Packages': const Icon(Iconsax.money),
+    'Pet-Friendly Products': const Icon(Iconsax.pet),
+    'Pet Pampering': const Icon(Icons.spa_outlined),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +64,20 @@ class _ExploreScreenState extends State<ExploreScreen> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: buildAppBar(context, appBarHeight),
+                  TopBar(
+                    appBarHeight: appBarHeight,
+                    gradient: const Color(0xff7d66c1),
+                    textColor: const Color(0xff462c90),
+                    image: 'assets/images/content/logo_grey.png',
+                    title: "Ploofy Grooming",
+                    subtitle: "your pets' grooming companion",
                   ),
                   buildDividerWithText(context, "For your companion!"),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        buildIconRow(context),
+                        PropertyRow(properties: properties),
                         const Padding(
                           padding: EdgeInsets.only(top: 16.0, bottom: 8),
                           child: Text(
@@ -61,9 +86,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
-                        buildFeatureContainerGroup(context),
+                        FeatureContainer(
+                            color: const Color(0xff5A3CB0),
+                            features: features,
+                            textColor: Colors.white),
                         const SizedBox(height: 40), // Increased spacing
-                        buildVideo(),
+                        const VideoWidget(
+                            url: 'assets/images/content/CREATE_YOUR.mp4'),
                         const SizedBox(height: 40), // Increased spacing
                         const Text(
                           "Why Ploofy Nutrition?",
@@ -73,7 +102,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           ),
                         ),
                         const SizedBox(height: 40), // Increased spacing
-                        buildIconRow(context),
+                        PropertyRow2(properties: whyPloofy),
                         SizedBox(
                             height: MediaQuery.sizeOf(context).height * 0.1),
                       ],
@@ -97,286 +126,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildAppBar(BuildContext context, double appBarHeight) {
-    final urlProvider = context.read<UrlProvider>();
-    return Stack(
-      children: [
-        Container(
-          height: appBarHeight * 0.98,
-          padding: const EdgeInsets.all(2),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xffe7d66c1), Colors.white],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(12),
-              bottomRight: Radius.circular(12),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: 35,
-                  backgroundImage: CachedNetworkImageProvider(
-                      urlProvider.urlMap["assets/images/content/logo.png"]!),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  "Ploofy Grooming",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xffe462c90),
-                  ),
-                ),
-              ),
-              const Text(
-                "your pets' grooming companions",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "RS. 399/-",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xffe462c90),
-                      ),
-                    ),
-                    Text(
-                      " for 3 months",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xffe462c90),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xffe462c90),
-                  foregroundColor: Colors.white,
-                  fixedSize: Size(
-                    MediaQuery.sizeOf(context).width * 0.6,
-                    MediaQuery.sizeOf(context).height * 0.07,
-                  ),
-                ),
-                child: const Text("Buy Now"),
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        ),
-        Positioned(
-          top: MediaQuery.sizeOf(context).height * 0.05,
-          left: MediaQuery.sizeOf(context).width * 0.03,
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildDividerWithText(BuildContext context, String text) {
-    return Row(
-      children: [
-        Expanded(
-          child: Divider(
-            indent: MediaQuery.sizeOf(context).width * 0.03,
-            endIndent: MediaQuery.sizeOf(context).width * 0.03,
-            thickness: 1,
-            color: Colors.black,
-          ),
-        ),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        Expanded(
-          child: Divider(
-            indent: MediaQuery.sizeOf(context).width * 0.03,
-            endIndent: MediaQuery.sizeOf(context).width * 0.03,
-            thickness: 1,
-            color: Colors.black,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildIconRow(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.22,
-          child: const Column(
-            children: [
-              Icon(Icons.pets),
-              Text(
-                "Professional Expertise",
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.22,
-          child: const Column(
-            children: [
-              Icon(Icons.cleaning_services),
-              Text(
-                "Clean as before",
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.22,
-          child: const Column(
-            children: [
-              Icon(Icons.local_hospital),
-              Text(
-                "Hygiene",
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.22,
-          child: const Column(
-            children: [
-              Icon(Icons.restaurant),
-              Text(
-                "Authentic Products",
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildFeatureContainerGroup(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(194, 64, 38, 137),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        children: [
-          buildFeatureContainer(
-            context,
-            'assets/images/content/pt1.png',
-            "Weight Tracking:",
-            "Allows you to track your pet's weight over time to monitor progress and make adjustments to the diet plan as needed.",
-          ),
-          SizedBox(height: MediaQuery.sizeOf(context).width * 0.04),
-          buildFeatureContainer(
-            context,
-            'assets/images/content/pt2.png',
-            "Food Recommendations:",
-            "Provide a list of recommended pet foods or recipes tailored to the pet's nutritional needs.",
-          ),
-          SizedBox(height: MediaQuery.sizeOf(context).width * 0.04),
-          buildFeatureContainer(
-            context,
-            'assets/images/content/pt3.png',
-            "Reminders and Notifications:",
-            "You can set up a feeding schedule with reminders to ensure regular and timely meals.",
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildFeatureContainer(BuildContext context, String imagePath,
-      String title, String description) {
-    final urlProvider = context.read<UrlProvider>();
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CachedNetworkImage(
-          imageUrl: urlProvider.urlMap[imagePath]!,
-          height: MediaQuery.sizeOf(context).width * 0.1,
-          width: MediaQuery.sizeOf(context).width * 0.1,
-          placeholder: null,
-          errorWidget: null,
-        ),
-        SizedBox(width: MediaQuery.sizeOf(context).width * 0.06),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                description,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildVideo() {
-    return Container(
-      height: MediaQuery.sizeOf(context).height * 0.24,
-      color: Colors.grey.shade300,
-      child: FutureBuilder(
-        future: _controller.initialize(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return AspectRatio(
-              aspectRatio: 16 / 9,
-              child: VideoPlayer(_controller),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
       ),
     );
   }

@@ -243,20 +243,20 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
           Positioned(
             left: 240,
             child: CachedNetworkImage(
-            imageUrl: urlProvider.urlMap['assets/images/content/Ellipse_253.png']!, // Replace with actual image URL
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-          ),
-
+              imageUrl: urlProvider.urlMap[
+                  'assets/images/content/Ellipse_253.png']!, // Replace with actual image URL
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
           Positioned(
             left: screenSize.width * 0.48,
             child: CachedNetworkImage(
-            imageUrl: urlProvider.urlMap['assets/images/content/Ellipse_254.png']!, // Replace with actual image URL
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-          ),
-
+              imageUrl: urlProvider.urlMap[
+                  'assets/images/content/Ellipse_254.png']!, // Replace with actual image URL
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
           Positioned(
             top: 10,
@@ -362,7 +362,7 @@ class TimeTile extends StatelessWidget {
       width: 100,
       height: 35,
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xff2828FF)),
+        border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(41.0),
       ),
       child: Text(
