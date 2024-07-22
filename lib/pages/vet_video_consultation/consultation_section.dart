@@ -4,6 +4,7 @@ import 'package:ploofypaws/components/walker_modal_sheet.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/bottom_sheet.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_provider.dart';
 import 'package:provider/provider.dart';
 import 'Veternian.dart';
 
@@ -152,6 +153,7 @@ class _ConsultationSectionState extends State<ConsultationSection> {
 
 void _showScrollableBottomSheet(BuildContext context) {
   final screenSize = MediaQuery.of(context).size;
+  final docProvider = context.read<VeterinaryDoctorProvider>();
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -213,9 +215,9 @@ void _showScrollableBottomSheet(BuildContext context) {
                       height: 100,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 4,
+                          itemCount: docProvider.docs!.length,
                           itemBuilder: (context, index) {
-                            return const VetOption(label: 'Dr.Angad Singh');
+                            return VetOption(doctor: docProvider.docs![index]);
                           }),
                     ),
                   ),

@@ -28,13 +28,15 @@ class _EventStackedCardsState extends State<EventStackedCards> {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.watch<UrlProvider>();
     return Stack(
       children: [
         SizedBox(
           height: 450,
           width: double.infinity,
           child: CustomPaint(
-            painter: FilledDotPainter(color: Colors.black12, dotSize: 2.0, gap: 15.0),
+            painter: FilledDotPainter(
+                color: Colors.black12, dotSize: 2.0, gap: 15.0),
           ),
         ),
         Positioned.fill(
@@ -52,12 +54,12 @@ class _EventStackedCardsState extends State<EventStackedCards> {
                   return Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      image: DecorationImage(
+                      image: urlProvider.urlMap[widget.image[index]] != null ? DecorationImage(
                         image: CachedNetworkImageProvider(
-                          context.read<UrlProvider>().urlMap[widget.image[index]] ?? '',
+                         urlProvider.urlMap[widget.image[index]]!   ,
                         ),
                         fit: BoxFit.cover,
-                      ),
+                      ) : null,
                     ),
                   );
                 },

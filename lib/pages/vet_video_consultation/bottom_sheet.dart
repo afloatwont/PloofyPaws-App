@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/components/walker_modal_sheet.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_provider.dart';
+import 'package:provider/provider.dart';
 import 'Veternian.dart';
 
 class VetBottomSheet extends StatefulWidget {
@@ -19,6 +21,7 @@ class _VetBottomSheetState extends State<VetBottomSheet> {
 
 void _showScrollableBottomSheet(BuildContext context) {
   final screenSize = MediaQuery.of(context).size;
+  final docProvider = context.watch<VeterinaryDoctorProvider>();
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -48,9 +51,9 @@ void _showScrollableBottomSheet(BuildContext context) {
                       Text(
                         'Select walker',
                         style: typography(context).title3.copyWith(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -64,9 +67,9 @@ void _showScrollableBottomSheet(BuildContext context) {
                         child: Text(
                           'View all',
                           style: typography(context).body.copyWith(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
                         ),
                       ),
                     ],
@@ -79,7 +82,7 @@ void _showScrollableBottomSheet(BuildContext context) {
                           scrollDirection: Axis.horizontal,
                           itemCount: 4,
                           itemBuilder: (context, index) {
-                            return const VetOption(label: 'Dr.Angad Singh');
+                            return VetOption(doctor: docProvider.docs![0]);
                           }),
                     ),
                   ),

@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/adaptive_app_bar.dart';
+import 'package:ploofypaws/components/faq_section.dart';
+import 'package:ploofypaws/components/other_services.dart';
+import 'package:ploofypaws/components/our_services.dart';
+import 'package:ploofypaws/components/video_box.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
@@ -12,7 +16,6 @@ import 'package:ploofypaws/components/pet_list.dart';
 import 'package:ploofypaws/components/section_header.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
-import 'package:video_player/video_player.dart';
 
 class PetWalkingScreen extends StatefulWidget {
   const PetWalkingScreen({super.key});
@@ -140,12 +143,12 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: SectionHeader(title: 'What we Provide'),
                 ),
-                ServicesGrid(),
+                ServicesGrid(titles: ourServices),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: SectionHeader(title: 'Our Walking Specialists'),
                 ),
-                const VideoWidget(),
+                const VideoWidget(url: 'assets/images/content/CREATE_YOUR.mp4'),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -166,7 +169,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                           image: SvgPicture.asset(
                             'assets/svg/dog1.svg',
                             width: 45,
-                            height: 60,
+                            height: 50,
                           ),
                           color: Colors.brown,
                         ),
@@ -189,7 +192,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: SectionHeader(title: 'Other Services'),
                 ),
-                OtherServices(),
+                OtherServices(titles: otherServices),
                 const Icon(Icons.lightbulb_outline_rounded, size: 100),
                 Padding(
                   padding:
@@ -203,7 +206,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text('Get your answers...'),
                 ),
-                const FAQSection(),
+                FAQSection(faqs: faqs),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -232,16 +235,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
       ),
     );
   }
-}
 
-class FAQSection extends StatefulWidget {
-  const FAQSection({super.key});
-
-  @override
-  _FAQSectionState createState() => _FAQSectionState();
-}
-
-class _FAQSectionState extends State<FAQSection> {
   final List<Map<String, String>> faqs = [
     {
       "question": "What is included in the pet walking package?",
@@ -259,236 +253,15 @@ class _FAQSectionState extends State<FAQSection> {
           "Yes, all our walkers are trained and certified to handle pets of all sizes and breeds."
     },
   ];
-  List<bool> _expanded = [];
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _expanded = List.filled(faqs.length, false);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: faqs.length,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                child: ExpansionTile(
-                  title: Text(
-                    faqs[index]["question"]!,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  trailing: Icon(
-                    _expanded[index]
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
-                    color: Colors.grey[600],
-                  ),
-                  onExpansionChanged: (bool expanded) {
-                    setState(() {
-                      _expanded[index] = expanded;
-                    });
-                  },
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(faqs[index]["answer"]!),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class OtherServices extends StatefulWidget {
-  OtherServices({super.key});
-
-  @override
-  State<OtherServices> createState() => _OtherServicesState();
-}
-
-class _OtherServicesState extends State<OtherServices> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          // Calculate the size for each item based on the available width
-          double itemWidth = (constraints.maxWidth - 24.0) / 2;
-          double itemHeight = itemWidth * 0.6; // Adjust height as needed
-
-          return GridView.builder(
-            shrinkWrap: true,
-            itemCount: 4,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 8.0, // Adjust spacing as needed
-              mainAxisSpacing: 8.0, // Adjust spacing as needed
-              childAspectRatio: itemWidth / itemHeight,
-            ),
-            itemBuilder: (context, index) {
-              return _buildServiceItem(_titles[index], itemWidth, itemHeight);
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  // List of titles
-  final List<String> _titles = [
+  final List<String> otherServices = [
     "Pet Grooming",
     "Ploofy-Diet",
     "Behaviourist",
     "Vet Video Call",
   ];
 
-  Widget _buildServiceItem(String title, double width, double height) {
-    final urlProvider = context.read<UrlProvider>();
-    return Container(
-      height: height * 0.6,
-      width: width * 0.8,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        image:  DecorationImage(
-          image: CachedNetworkImageProvider(urlProvider.urlMap['assets/images/content/memories_bg.png']!),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Column(
-        children: [
-          const SizedBox(height: 8.0),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
-          ),
-          OutlinedButton(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              fixedSize: Size(width * 0.8, height * 0.2),
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)),
-            ),
-            child: const Text(
-              'Explore services',
-              style: TextStyle(fontSize: 10),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class VideoWidget extends StatefulWidget {
-  const VideoWidget({super.key});
-
-  @override
-  State<VideoWidget> createState() => _VideoWidgetState();
-}
-
-class _VideoWidgetState extends State<VideoWidget> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller =
-        VideoPlayerController.asset('assets/images/content/CREATE_YOUR.mp4')
-          ..initialize().then((_) {
-            _controller.setLooping(true);
-            _controller.play();
-            setState(
-                () {}); // To refresh the widget after the video has initialized
-          });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.24,
-        color: Colors.transparent,
-        child: FutureBuilder(
-          future: _controller.initialize(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return AspectRatio(
-                aspectRatio: 16 / 9,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: VideoPlayer(_controller)),
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class ServicesGrid extends StatelessWidget {
-  ServicesGrid({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          // Calculate the size for each item based on the available width
-          double itemWidth = (constraints.maxWidth - 24.0) / 3;
-          double itemHeight = itemWidth;
-
-          return GridView.builder(
-            shrinkWrap: true,
-            itemCount: 6,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 12.0,
-              mainAxisSpacing: 10.0,
-              childAspectRatio: itemWidth / itemHeight,
-            ),
-            itemBuilder: (context, index) {
-              return _buildServiceItem(_titles[index], itemWidth, itemHeight);
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  // List of titles
-  final List<String> _titles = [
+  final List<String> ourServices = [
     "Real-Time Tracking",
     "Paw Cleaning",
     "Poop Scooping",
@@ -496,24 +269,6 @@ class ServicesGrid extends StatelessWidget {
     "Fixed Walker",
     "Pet Exercised",
   ];
-
-  Widget _buildServiceItem(String title, double width, double height) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          height: height * 0.5,
-          width: width * 0.5,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        const SizedBox(height: 8.0),
-        Text(title, textAlign: TextAlign.center),
-      ],
-    );
-  }
 }
 
 class Offers extends StatefulWidget {
@@ -551,7 +306,7 @@ class _OffersState extends State<Offers> {
                         Iconsax.percentage_circle,
                         color: Colors.white,
                       ),
-                       Column(
+                      const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -569,12 +324,14 @@ class _OffersState extends State<Offers> {
                         ],
                       ),
                       Flexible(
-                          child:
-                          CachedNetworkImage(imageUrl: urlProvider.urlMap["assets/images/content/offer.png"]!,
+                        child: CachedNetworkImage(
+                          imageUrl: urlProvider
+                              .urlMap["assets/images/content/offer.png"]!,
                           placeholder: null,
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-                          ),
-                              ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
                     ],
                   )),
             ),
@@ -612,12 +369,14 @@ class _OffersState extends State<Offers> {
                       ],
                     ),
                     Flexible(
-                        child:
-                          CachedNetworkImage(imageUrl: urlProvider.urlMap["assets/images/content/offer.png"]!,
-                          placeholder: null,
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-                          ),
-                              ),
+                      child: CachedNetworkImage(
+                        imageUrl: urlProvider
+                            .urlMap["assets/images/content/offer.png"]!,
+                        placeholder: null,
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    ),
                   ],
                 )),
           ],
@@ -740,45 +499,13 @@ class ServiceCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
-                Text(
-                  title,
-                  style: typography(context).title1.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                      ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
-                GestureDetector(
-                  onTap: () {
-                    // Add your onTap action here!
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        child: Text(
-                          'Explore services',
-                          style: typography(context)
-                              .smallBody
-                              .copyWith(color: Colors.white, fontSize: 9),
-                        ),
-                      ),
-                    ),
+            Text(
+              title,
+              style: typography(context).title1.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 16,
                   ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-              ],
             ),
             const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
             image,

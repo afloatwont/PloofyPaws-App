@@ -316,8 +316,7 @@ class _SignInPageState extends State<SignInPage> {
                 if (imageUrl != null) {
                   return CachedNetworkImage(
                     imageUrl: imageUrl,
-                    placeholder: (context, url) =>
-                        const LinearProgressIndicator(color: Colors.black),
+                    placeholder: null,
                     errorWidget: (context, url, error) =>
                         const Center(child: Text('Error loading')),
                     // scale: 2.0,

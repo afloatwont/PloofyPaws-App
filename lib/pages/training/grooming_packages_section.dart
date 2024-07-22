@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/pages/training/explore.dart';
+import 'package:ploofypaws/pages/training/training_details.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:provider/provider.dart';
 
@@ -207,7 +208,8 @@ class GroomingPackageCard extends StatelessWidget {
                             'assets/images/placeholders/ai_pets_card.png']!,
                         height: 80,
                         placeholder: null,
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       )),
                   const SizedBox(height: 8),
                   SizedBox(
@@ -263,7 +265,7 @@ class GroomingPackageCard extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ExploreScreen(),
+                      builder: (context) => TrainingDetails(),
                     ));
               },
               child: Padding(

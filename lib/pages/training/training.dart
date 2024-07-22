@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ploofypaws/components/faq_section.dart';
+import 'package:ploofypaws/components/other_services.dart';
+import 'package:ploofypaws/components/our_services.dart';
 import 'package:ploofypaws/components/section_header.dart';
+import 'package:ploofypaws/components/video_box.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
-import 'package:ploofypaws/pages/training/how_it_works.dart';
-import 'package:ploofypaws/pages/training/other_services.dart';
-import 'package:ploofypaws/pages/training/services.dart';
-import 'package:ploofypaws/pages/training/video.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'my_pets_section.dart';
 import 'grooming_packages_section.dart';
-import '../vet_video_consultation/expert_consultation_section.dart';
 import 'package:ploofypaws/components/pet_list.dart';
 import 'reviews_section.dart';
 
@@ -26,7 +24,6 @@ class _TrainingScreenState extends State<TrainingScreen>
     with WidgetsBindingObserver {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkAndShowAddressModal();
@@ -50,6 +47,40 @@ class _TrainingScreenState extends State<TrainingScreen>
       },
     );
   }
+
+  final List<Map<String, String>> faqs = [
+    {
+      "question": "What is included in the pet walking package?",
+      "answer":
+          "The pet walking package includes daily walks, feeding, and playtime."
+    },
+    {
+      "question": "How long are the walks?",
+      "answer":
+          "Each walk lasts for about 30 minutes to an hour, depending on your pet's needs."
+    },
+    {
+      "question": "Are the walkers trained and certified?",
+      "answer":
+          "Yes, all our walkers are trained and certified to handle pets of all sizes and breeds."
+    },
+  ];
+
+  final List<String> otherServices = [
+    "Pet Grooming",
+    "Ploofy-Diet",
+    "Behaviourist",
+    "Vet Video Call",
+  ];
+
+  final List<String> ourServices = [
+    "Real-Time Tracking",
+    "Paw Cleaning",
+    "Poop Scooping",
+    "Flexible Time",
+    "Fixed Walker",
+    "Pet Exercised",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +108,7 @@ class _TrainingScreenState extends State<TrainingScreen>
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PetsList(),
+            const PetsList(),
             const SizedBox(height: 8),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -87,13 +118,16 @@ class _TrainingScreenState extends State<TrainingScreen>
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: SectionHeader(title: 'What we Provide'),
             ),
-            ServicesGrid(),
+            ServicesGrid(titles: ourServices),
             const SizedBox(height: 16),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: SectionHeader(title: 'Our Grooming Specialists'),
             ),
-            const VideoWidget(),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+              child: VideoWidget(url: 'assets/images/content/CREATE_YOUR.mp4'),
+            ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
@@ -106,7 +140,7 @@ class _TrainingScreenState extends State<TrainingScreen>
                       image: SvgPicture.asset(
                         'assets/svg/dog1.svg',
                         width: 45,
-                        height: 60,
+                        height: 50,
                       ),
                       color: Colors.brown,
                     ),
@@ -129,7 +163,7 @@ class _TrainingScreenState extends State<TrainingScreen>
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: SectionHeader(title: 'Other Services'),
             ),
-            OtherServices(),
+            OtherServices(titles: otherServices),
             const Icon(Icons.lightbulb_outline_rounded, size: 100),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -142,8 +176,7 @@ class _TrainingScreenState extends State<TrainingScreen>
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: Text('Get your answers...'),
             ),
-            const FAQSection(),
-           
+            FAQSection(faqs: faqs),
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.all(16),
@@ -182,45 +215,13 @@ class ServiceCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
-                Text(
-                  title,
-                  style: typography(context).title1.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                      ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
-                GestureDetector(
-                  onTap: () {
-                    // Add your onTap action here!
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        child: Text(
-                          'Explore services',
-                          style: typography(context)
-                              .smallBody
-                              .copyWith(color: Colors.white, fontSize: 9),
-                        ),
-                      ),
-                    ),
+            Text(
+              title,
+              style: typography(context).title1.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 16,
                   ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-              ],
             ),
             const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
             image,
