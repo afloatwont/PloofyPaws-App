@@ -13,7 +13,6 @@ import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.da
 import 'package:ploofypaws/pages/appointment/summary.dart';
 import 'package:ploofypaws/pages/home/services/add_diet.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
-import 'package:ploofypaws/pages/payment/payment_packages.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
@@ -32,7 +31,7 @@ import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: "assets/.env");
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   registerServices();
@@ -90,17 +89,6 @@ class _MyAppState extends State<MyApp> {
     _alertService = _getIt.get<AlertService>();
     final userProvider = context.read<UserProvider>();
     final petProvider = context.read<PetProvider>();
-    // final urlProvider = context.read<UrlProvider>();
-    // urlProvider.loadUrlMap().then(
-    //   (value) {
-    //     setState(() {
-    //       urlProvider.preloadUrls().then(
-    //             (value) => setState(() {}),
-    //           );
-    //     });
-    //   },
-    // );
-
     if (_authServices.user != null) {
       _userDatabaseService
           .getUserProfileByUID(_authServices.user!.uid)
@@ -143,8 +131,9 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home:
-          _authServices.user != null ? const Root() : const InitApp(),
+      home: _authServices.user != null
+          ? const AppointmentConfirmation()
+          : const InitApp(),
     );
   }
 }

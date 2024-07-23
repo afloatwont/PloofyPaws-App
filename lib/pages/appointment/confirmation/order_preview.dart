@@ -16,6 +16,7 @@ class OrderPreview extends StatelessWidget {
       // height: MediaQuery.sizeOf(context).height * 0.3,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
       ),
       alignment: Alignment.center,
       padding: const EdgeInsets.all(20),

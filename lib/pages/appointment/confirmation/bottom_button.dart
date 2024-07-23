@@ -8,7 +8,7 @@ class BottomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        bottom: 0,
+        bottom: -MediaQuery.sizeOf(context).height * 0.02,
         child: ElevatedButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
