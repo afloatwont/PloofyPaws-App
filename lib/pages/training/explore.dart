@@ -56,11 +56,25 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final appBarHeight = MediaQuery.sizeOf(context).height * 0.41;
+    final urlProvider = context.watch<UrlProvider>();
     return SafeArea(
       top: false,
       child: Scaffold(
         body: Stack(
           children: [
+            Positioned.fill(
+              child: CachedNetworkImage(
+                imageUrl: urlProvider
+                    .urlMap['assets/images/content/grooming_bg.png']!,
+                placeholder: null,
+                errorWidget: null,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+            Positioned.fill(
+                child: Container(
+              color: Color.fromARGB(191, 255, 255, 255),
+            )),
             SingleChildScrollView(
               child: Column(
                 children: [
