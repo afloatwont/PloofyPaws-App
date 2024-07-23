@@ -9,6 +9,7 @@ import 'package:ploofypaws/chat/services/chat_database_service.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/controllers/calender_provider.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/pages/appointment/summary.dart';
 import 'package:ploofypaws/pages/home/services/add_diet.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
@@ -87,7 +88,7 @@ class _MyAppState extends State<MyApp> {
     _alertService = _getIt.get<AlertService>();
     final userProvider = context.read<UserProvider>();
     final petProvider = context.read<PetProvider>();
-  // final urlProvider = context.read<UrlProvider>();
+    // final urlProvider = context.read<UrlProvider>();
     // urlProvider.loadUrlMap().then(
     //   (value) {
     //     setState(() {
@@ -140,7 +141,8 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null ? const Root() : const InitApp(),
+      home:
+          _authServices.user != null ? const SummaryScreen() : const InitApp(),
     );
   }
 }

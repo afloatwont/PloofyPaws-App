@@ -20,6 +20,7 @@ class TopBar extends StatelessWidget {
   final String image;
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.watch<UrlProvider>();
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Stack(
@@ -42,7 +43,7 @@ class TopBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(top: 8.0),
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
                     radius: 50,
@@ -50,10 +51,8 @@ class TopBar extends StatelessWidget {
                     child: ClipOval(
                       child: CachedNetworkImage(
                         imageUrl: context.watch<UrlProvider>().urlMap[image]!,
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        placeholder: null,
+                        errorWidget: null,
                       ),
                     ),
                   ),
