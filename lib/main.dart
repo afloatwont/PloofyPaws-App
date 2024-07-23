@@ -29,7 +29,7 @@ import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "assets/.env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   registerServices();
@@ -87,16 +87,6 @@ class _MyAppState extends State<MyApp> {
     _alertService = _getIt.get<AlertService>();
     final userProvider = context.read<UserProvider>();
     final petProvider = context.read<PetProvider>();
-  // final urlProvider = context.read<UrlProvider>();
-    // urlProvider.loadUrlMap().then(
-    //   (value) {
-    //     setState(() {
-    //       urlProvider.preloadUrls().then(
-    //             (value) => setState(() {}),
-    //           );
-    //     });
-    //   },
-    // );
 
     if (_authServices.user != null) {
       _userDatabaseService
