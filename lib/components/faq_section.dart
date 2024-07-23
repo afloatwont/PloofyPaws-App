@@ -1,16 +1,20 @@
-
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 
 class FAQSection extends StatefulWidget {
-  const FAQSection({super.key, required this.faqs,});
+  const FAQSection({
+    super.key,
+    required this.faqs,
+    this.showTitle = false,
+  });
   final List<Map<String, String>> faqs;
+  final bool showTitle;
 
   @override
   _FAQSectionState createState() => _FAQSectionState();
 }
 
 class _FAQSectionState extends State<FAQSection> {
-  
   List<bool> _expanded = [];
 
   @override
@@ -26,14 +30,25 @@ class _FAQSectionState extends State<FAQSection> {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
+          if (widget.showTitle) ...[
+            const Icon(Icons.lightbulb_outline_rounded, size: 100),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Text('Most Asked Questions',
+                  style: typography(context)
+                      .title3
+                      .copyWith(fontWeight: FontWeight.bold, fontSize: 18)),
+            ),
+            const Text('Get your answers...'),
+          ],
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: widget.faqs.length,
             itemBuilder: (context, index) {
               return Card(
-                margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                margin: const EdgeInsets.symmetric(vertical: 8),
                 child: ExpansionTile(
                   title: Text(
                     widget.faqs[index]["question"]!,

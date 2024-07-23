@@ -46,14 +46,14 @@ class UrlProvider with ChangeNotifier {
 
     // List all files in the directory
     final listResult = await ref.listAll();
-    print(listResult.items.length);
+    // print(listResult.items.length);
     // Iterate through the list of files and get their download URLs
     for (var item in listResult.items) {
       final path = item.fullPath;
-      debugPrint("path: $path");
+      // debugPrint("path: $path");
       if (!_urlMap.containsKey(path)) {
         final url = await item.getDownloadURL();
-        print(url);
+        // print(url);
         _urlMap[path] = url;
       }
     }}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-Widget buildDividerWithText(BuildContext context, String text) {
+Widget buildDividerWithText(BuildContext context, String text,
+    {Color? color = Colors.black}) {
   return Row(
     children: [
       Expanded(
@@ -8,22 +9,22 @@ Widget buildDividerWithText(BuildContext context, String text) {
           indent: MediaQuery.sizeOf(context).width * 0.03,
           endIndent: MediaQuery.sizeOf(context).width * 0.03,
           thickness: 1,
-          color: Colors.black,
+          color: color ?? Colors.black,
         ),
       ),
       Text(
         text,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-        ),
+        style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: color ?? Colors.black),
       ),
       Expanded(
         child: Divider(
           indent: MediaQuery.sizeOf(context).width * 0.03,
           endIndent: MediaQuery.sizeOf(context).width * 0.03,
           thickness: 1,
-          color: Colors.black,
+          color: color ?? Colors.black,
         ),
       ),
     ],
