@@ -9,6 +9,7 @@ import 'package:ploofypaws/chat/services/chat_database_service.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/controllers/calender_provider.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.dart';
 import 'package:ploofypaws/pages/appointment/summary.dart';
 import 'package:ploofypaws/pages/home/services/add_diet.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
@@ -142,7 +143,7 @@ class _MyAppState extends State<MyApp> {
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
       home:
-          _authServices.user != null ? const SummaryScreen() : const InitApp(),
+          _authServices.user != null ? const AppointmentConfirmation() : const InitApp(),
     );
   }
 }
