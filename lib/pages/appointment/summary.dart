@@ -198,14 +198,15 @@ class _SummaryState extends State<SummaryScreen> {
         ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              fixedSize: Size.fromWidth(MediaQuery.sizeOf(context).width * 0.4),
+              fixedSize:
+                  Size.fromWidth(MediaQuery.sizeOf(context).width * 0.42),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
             ),
-            child: const Text("Schedule for Later")),
+            child: const Flexible(child: Text("Schedule for later"))),
         ElevatedButton(
             onPressed: () {
               // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AppointmentDetails()));
@@ -215,8 +216,8 @@ class _SummaryState extends State<SummaryScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              backgroundColor: Colors.transparent,
-              foregroundColor: Colors.black,
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
             ),
             child: const Text("Request Now")),
       ],
@@ -228,12 +229,13 @@ class _SummaryState extends State<SummaryScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: Container(
-        height: mq.height * 0.36,
+        // height: mq.height * 0.45,
         width: mq.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: const Color(0xffeF3F3F3), width: 1),
         ),
+        padding: EdgeInsets.only(bottom: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,10 +255,11 @@ class _SummaryState extends State<SummaryScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
-                  child: _buildOffer("Paytm UPI"),
+                  child: _buildOffer(),
                 ),
               ],
             ),
+            _buildBottom(),
           ],
         ),
       ),
@@ -323,7 +326,7 @@ class _SummaryState extends State<SummaryScreen> {
     );
   }
 
-  Widget _buildOffer(String method) {
+  Widget _buildOffer() {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
