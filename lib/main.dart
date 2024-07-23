@@ -144,7 +144,7 @@ class _MyAppState extends State<MyApp> {
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
       home:
-          _authServices.user != null ? const PaymentPackage() : const InitApp(),
+          _authServices.user != null ? const Root() : const InitApp(),
     );
   }
 }
