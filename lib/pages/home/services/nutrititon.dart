@@ -55,11 +55,26 @@ class _NutritionScreenState extends State<NutritionScreen> {
   @override
   Widget build(BuildContext context) {
     final appBarHeight = MediaQuery.sizeOf(context).height * 0.41;
+    final urlProvider = context.watch<UrlProvider>();
     return SafeArea(
       top: false,
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Stack(
           children: [
+            Positioned.fill(
+              child: CachedNetworkImage(
+                imageUrl: urlProvider
+                    .urlMap['assets/images/content/nutrition_bg.png']!,
+                placeholder: null,
+                errorWidget: null,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+            Positioned.fill(
+                child: Container(
+              color: Color.fromARGB(191, 255, 255, 255),
+            )),
             SingleChildScrollView(
               child: Column(
                 children: [
@@ -86,8 +101,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                           ),
                         ),
                         FeatureContainer(
-                            color: const Color(0xfff5b96e),
-                            features: features),
+                            color: const Color(0xfff5b96e), features: features),
                         const SizedBox(height: 40), // Increased spacing
                         const VideoWidget(
                             url: 'assets/images/content/CREATE_YOUR.mp4'),
@@ -128,5 +142,4 @@ class _NutritionScreenState extends State<NutritionScreen> {
       ),
     );
   }
-
 }

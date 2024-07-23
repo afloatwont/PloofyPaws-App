@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/divider_with_text.dart';
@@ -6,6 +7,8 @@ import 'package:ploofypaws/components/property_row.dart';
 import 'package:ploofypaws/components/property_row_2.dart';
 import 'package:ploofypaws/components/top_bar.dart';
 import 'package:ploofypaws/components/video_box.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:provider/provider.dart';
 
 class TrainingDetails extends StatefulWidget {
   const TrainingDetails({super.key});
@@ -52,11 +55,25 @@ class _TrainingDetailsState extends State<TrainingDetails> {
   @override
   Widget build(BuildContext context) {
     final appBarHeight = MediaQuery.sizeOf(context).height * 0.41;
+    final urlProvider = context.watch<UrlProvider>();
     return SafeArea(
       top: false,
       child: Scaffold(
         body: Stack(
           children: [
+            Positioned.fill(
+              child: CachedNetworkImage(
+                imageUrl: urlProvider
+                    .urlMap['assets/images/content/training_bg.png']!,
+                placeholder: null,
+                errorWidget: null,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+            Positioned.fill(
+                child: Container(
+              color: Color.fromARGB(191, 255, 255, 255),
+            )),
             SingleChildScrollView(
               child: Column(
                 children: [
