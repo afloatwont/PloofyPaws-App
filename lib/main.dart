@@ -12,6 +12,7 @@ import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/pages/appointment/summary.dart';
 import 'package:ploofypaws/pages/home/services/add_diet.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
+import 'package:ploofypaws/pages/payment/payment_packages.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
 import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
@@ -30,7 +31,7 @@ import 'config/theme/placebo_colors.dart';
 import 'config/theme/placebo_typography.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "assets/.env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   registerServices();
@@ -142,7 +143,7 @@ class _MyAppState extends State<MyApp> {
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
       home:
-          _authServices.user != null ? const SummaryScreen() : const InitApp(),
+          _authServices.user != null ? const PaymentPackage() : const InitApp(),
     );
   }
 }
