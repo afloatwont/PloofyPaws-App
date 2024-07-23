@@ -143,7 +143,7 @@ class _MyAppState extends State<MyApp> {
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
       home:
-          _authServices.user != null ? const AppointmentConfirmation() : const InitApp(),
+          _authServices.user != null ? const SummaryScreen() : const InitApp(),
     );
   }
 }
