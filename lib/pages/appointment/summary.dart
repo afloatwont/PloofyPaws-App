@@ -140,11 +140,12 @@ class _SummaryState extends State<SummaryScreen> {
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         children: [
-          CachedNetworkImage(
-            imageUrl: urlProvider.urlMap['assets/images/content/pug.png']!,
-            placeholder: null,
-            errorWidget: null,
-          ),
+          if (urlProvider.urlMap['assets/images/content/pug.png'] != null)
+            CachedNetworkImage(
+              imageUrl: urlProvider.urlMap['assets/images/content/pug.png']!,
+              placeholder: null,
+              errorWidget: null,
+            ),
           const SizedBox(width: 8),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -206,7 +207,7 @@ class _SummaryState extends State<SummaryScreen> {
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
             ),
-            child: const Flexible(child: Text("Schedule for later"))),
+            child: const Text("Schedule for later")),
         ElevatedButton(
             onPressed: () {
               // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AppointmentDetails()));
@@ -235,7 +236,7 @@ class _SummaryState extends State<SummaryScreen> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: const Color(0xffeF3F3F3), width: 1),
         ),
-        padding: EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.only(bottom: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
