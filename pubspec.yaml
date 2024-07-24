@@ -63,6 +63,8 @@ dependencies:
   cached_network_image: ^3.3.1
   path_provider: ^2.1.3
   sqflite: ^2.3.3+1
+  flutter_launcher_icons: ^0.13.1
+  hexcolor:
   
 
 
@@ -101,7 +103,7 @@ flutter:
     # - assets/images/content/doodle_cat.png
     # - assets/images/content/dog_with_coat.jpeg
     # - assets/images/content/ai_bg.png
-    - .env
+    - assets/.env
 
 
 
