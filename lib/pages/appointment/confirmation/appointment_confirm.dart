@@ -7,6 +7,8 @@ import 'package:ploofypaws/pages/appointment/confirmation/coupon.dart';
 import 'package:ploofypaws/pages/appointment/confirmation/order_details.dart';
 import 'package:ploofypaws/pages/appointment/confirmation/order_preview.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/expert_consultation_section.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
+import 'package:provider/provider.dart';
 
 class AppointmentConfirmation extends StatefulWidget {
   const AppointmentConfirmation({super.key});
@@ -37,6 +39,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation> {
 
   @override
   Widget build(BuildContext context) {
+    final packageProvider = context.watch<PackageProvider>();
     return Scaffold(
       backgroundColor: const Color(0xfff3f3f3),
       appBar: AppBar(
@@ -88,6 +91,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation> {
 
   Widget _buildPaymentInfoCard() {
     final mq = MediaQuery.of(context).size;
+    int price = context.read<PackageProvider>().package?.price ?? 699;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
@@ -109,7 +113,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: _buildPrice(699, 50, 30),
+              child: _buildPrice(price, 50, 30),
             ),
           ],
         ),

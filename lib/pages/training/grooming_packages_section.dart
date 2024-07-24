@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ploofypaws/pages/training/explore.dart';
+import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.dart';
 import 'package:ploofypaws/pages/training/training_details.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
 import 'package:provider/provider.dart';
 
 class GroomingPackagesSection extends StatefulWidget {
@@ -101,6 +102,11 @@ class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
                       isRecommended: selectedIndex == index,
                       headerText: packages[index]['headerText'],
                       onTap: () {
+                        Provider.of<PackageProvider>(context, listen: false)
+                            .setPackage(Package(
+                                name: packages[index]['title'],
+                                price: int.parse((packages[index]['price']).split(" ")[1]),
+                                content: [packages[index]['description']]));
                         setState(() {
                           selectedIndex = index;
                         });
@@ -113,7 +119,11 @@ class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const AppointmentConfirmation(),
+                  ));
+                },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black, // background color
                     foregroundColor: Colors.white, // text color
@@ -171,7 +181,8 @@ class GroomingPackageCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isRecommended ? Color(0xffe4a05ba) : Colors.grey.shade50,
+            color:
+                isRecommended ? const Color(0xffe4a05ba) : Colors.grey.shade50,
             width: isRecommended ? 2 : 1,
           ),
         ),
@@ -182,7 +193,8 @@ class GroomingPackageCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: isRecommended ? Color(0xffe4a05ba) : Colors.grey[200],
+                color:
+                    isRecommended ? const Color(0xff4a05ba) : Colors.grey[200],
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(18),
                   topRight: Radius.circular(18),
@@ -265,7 +277,7 @@ class GroomingPackageCard extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TrainingDetails(),
+                      builder: (context) => const TrainingDetails(),
                     ));
               },
               child: Padding(
