@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
@@ -338,7 +339,7 @@ class _AboutDoctorPageState extends State<AboutDoctorPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const RazorPayScreen()));
+                    builder: (context) => const AppointmentConfirmation()));
           },
           variant: 'filled',
           label: 'Confirm',

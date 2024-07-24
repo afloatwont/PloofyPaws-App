@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
+import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.dart';
 import 'package:ploofypaws/razorpay/payment_razorpay.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/doctor_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_provider.dart';
@@ -190,7 +191,7 @@ Widget buildbutton(BuildContext context, Size screenSize) {
         borderRadius: BorderRadius.circular(42),
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const RazorPayScreen()));
+              MaterialPageRoute(builder: (context) => const AppointmentConfirmation()));
         },
         variant: 'filled',
         label: 'Confirm',
