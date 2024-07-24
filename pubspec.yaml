@@ -66,6 +66,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   hexcolor:
   animated_switch: ^0.0.3
+  cupertino_battery_indicator: ^1.1.0
   
 
 
