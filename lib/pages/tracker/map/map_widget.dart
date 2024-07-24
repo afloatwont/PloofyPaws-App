@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -28,6 +29,7 @@ class _MyMapWidgetState extends State<MyMapWidget> {
   double bottomSheetHeightFactor = 0.27;
   String street = 'Street Name';
   String city = 'City Name';
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -82,6 +84,10 @@ class _MyMapWidgetState extends State<MyMapWidget> {
   }
 
   Future<void> _updateLocation() async {
+    setState(() {
+      isLoading = true;
+    });
+
     final response = await http.get(Uri.parse(
         'https://vahantrack.com/api/api.php?api=user&ver=1.0&key=E43FEC932566D9E32F1CD2DC3F5CAE01&cmd=OBJECT_GET_LOCATIONS,861261029438534'));
 
@@ -124,6 +130,10 @@ class _MyMapWidgetState extends State<MyMapWidget> {
     } else {
       throw Exception('Failed to load location');
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void _onUpdateLocationPressed() {
@@ -190,6 +200,19 @@ class _MyMapWidgetState extends State<MyMapWidget> {
               child: const Icon(Icons.map_outlined),
             ),
           ),
+          if (isLoading)
+            Container(
+              width: double.infinity,
+              color: Colors.white.withOpacity(0.5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset('assets/images/content/pinMap.json'),
+                  const Text("Fetching your location"),
+                ],
+              ),
+            ),
         ],
       ),
       bottomSheet: DraggableScrollableSheet(
