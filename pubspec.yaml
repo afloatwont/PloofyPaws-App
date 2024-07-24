@@ -65,6 +65,7 @@ dependencies:
   sqflite: ^2.3.3+1
   flutter_launcher_icons: ^0.13.1
   hexcolor:
+  animated_switch: ^0.0.3
   
 
 
@@ -103,7 +104,7 @@ flutter:
     # - assets/images/content/doodle_cat.png
     # - assets/images/content/dog_with_coat.jpeg
     # - assets/images/content/ai_bg.png
-    - assets/.env
+    - .env
 
 
 

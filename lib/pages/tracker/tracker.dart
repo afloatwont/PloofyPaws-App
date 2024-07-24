@@ -258,6 +258,7 @@ import 'package:ploofypaws/components/gradient_header.dart';
 import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/tracker/input_imei.dart';
 import 'package:ploofypaws/pages/tracker/pairing.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -334,7 +335,10 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
               Navigator.push(
                   context,
                   MaterialWithModalsPageRoute(
-                      builder: (context) => const TrackerPairingMode()));
+                    builder: (context) => const
+                        // TrackerPairingMode(),
+                        InputImeiScreen(),
+                  ));
             },
             label: "Add Device",
             variant: 'filled',

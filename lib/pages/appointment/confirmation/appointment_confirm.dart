@@ -6,6 +6,8 @@ import 'package:ploofypaws/pages/appointment/confirmation/coupon.dart';
 import 'package:ploofypaws/pages/appointment/confirmation/order_details.dart';
 import 'package:ploofypaws/pages/appointment/confirmation/order_preview.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/expert_consultation_section.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:ploofypaws/video_call/screens/join_screen.dart';
 
@@ -20,24 +22,24 @@ class AppointmentConfirmation extends StatefulWidget {
 class _AppointmentConfirmationState extends State<AppointmentConfirmation>
     with SingleTickerProviderStateMixin {
   Razorpay? _razorpay;
-  String _paymentStatus = "";
+  String _paymentStatus = "Idle";
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
   final List<Map<String, String>> faqs = [
     {
       "question": "What is included in the pet walking package?",
       "answer":
-      "The pet walking package includes daily walks, feeding, and playtime."
+          "The pet walking package includes daily walks, feeding, and playtime."
     },
     {
       "question": "How long are the walks?",
       "answer":
-      "Each walk lasts for about 30 minutes to an hour, depending on your pet's needs."
+          "Each walk lasts for about 30 minutes to an hour, depending on your pet's needs."
     },
     {
       "question": "Are the walkers trained and certified?",
       "answer":
-      "Yes, all our walkers are trained and certified to handle pets of all sizes and breeds."
+          "Yes, all our walkers are trained and certified to handle pets of all sizes and breeds."
     },
   ];
 
@@ -104,6 +106,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation>
 
   @override
   Widget build(BuildContext context) {
+    final packageProvider = context.watch<PackageProvider>();
     return Scaffold(
       backgroundColor: const Color(0xfff3f3f3),
       appBar: AppBar(
@@ -123,25 +126,24 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation>
                   const OrderPreview(),
                   _buildHeader("Order Details"),
                   const OrderDetails(),
-                  const AddCoupon(),
+                  SizedBox(child: const AddCoupon()),
                   _buildHeader("Billing Details"),
                   _buildPaymentInfoCard(),
-                  if (_paymentStatus.isNotEmpty)
-                    SlideTransition(
-                      position: _slideAnimation,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          _paymentStatus,
-                          style: TextStyle(
-                            color: _paymentStatus.startsWith("Payment Successful")
-                                ? Colors.green
-                                : Colors.red,
-                            fontSize: 16,
-                          ),
+                  SlideTransition(
+                    position: _slideAnimation,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        _paymentStatus,
+                        style: TextStyle(
+                          color: _paymentStatus.startsWith("Payment Successful")
+                              ? Colors.green
+                              : Colors.red,
+                          fontSize: 16,
                         ),
                       ),
                     ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: _buildHeader(
@@ -175,6 +177,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation>
     final int discount = 50;
     final int service = 30;
     final int grandTotal = total - discount + service;
+    int price = context.read<PackageProvider>().package?.price ?? 699;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
@@ -195,7 +198,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation>
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: _buildPrice(total, discount, service),
+              child: _buildPrice(price, 50, 30),
             ),
           ],
         ),
@@ -290,7 +293,8 @@ class BottomButton extends StatelessWidget {
             ),
             Text(
               "You saved Rs.69 on Arlo's healthcare",
-              style: typography(context).smallBody.copyWith(color: Colors.white),
+              style:
+                  typography(context).smallBody.copyWith(color: Colors.white),
             )
           ],
         ),

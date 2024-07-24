@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetails extends StatelessWidget {
   const OrderDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final packageProvider = context.watch<PackageProvider>();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Container(
@@ -16,16 +19,16 @@ class OrderDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Package:',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                 ),
                 Text(
-                  'Vet Video Consultation',
-                  style: TextStyle(fontSize: 16.0),
+                  packageProvider.package?.name ?? "Unknown",
+                  style: const TextStyle(fontSize: 16.0),
                 ),
               ],
             ),

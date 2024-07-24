@@ -8,8 +8,10 @@ import 'package:ploofypaws/components/other_services.dart';
 import 'package:ploofypaws/components/our_services.dart';
 import 'package:ploofypaws/components/video_box.dart';
 import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
 import 'package:ploofypaws/components/pet_list.dart';
@@ -106,13 +108,25 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                         onTap: () {
                           context.read<SelectedPlanProvider>().selectedPlan =
                               plans[index];
+                          Package selected = Package(
+                              name: plans[index].title,
+                              price:
+                                  (int.parse(plans[index].price.split(" ")[1])),
+                              content: [plans[index].description]);
+                          context.read<PackageProvider>().setPackage(selected);
                         },
                       );
                     },
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AppointmentConfirmation(),
+                        ));
+                  },
                   child: Padding(
                     padding: const EdgeInsets.only(
                         bottom: 12.0, left: 16, right: 16),

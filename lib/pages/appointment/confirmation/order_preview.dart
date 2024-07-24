@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:provider/provider.dart';
 
 class OrderPreview extends StatelessWidget {
@@ -12,6 +14,8 @@ class OrderPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final urlProvider = context.watch<UrlProvider>();
+    final packageProvider = context.watch<PackageProvider>();
+    final petProvider = context.read<PetProvider>();
     return Container(
       // height: MediaQuery.sizeOf(context).height * 0.3,
       decoration: BoxDecoration(
@@ -35,7 +39,7 @@ class OrderPreview extends StatelessWidget {
                   child: Icon(Iconsax.hospital),
                 ),
                 Text(
-                  "Dr. Samaira Sharma",
+                  packageProvider.package?.name ?? "Nothing is selected",
                   style: typography(context).strong,
                   textAlign: TextAlign.center,
                 ),
@@ -71,7 +75,7 @@ class OrderPreview extends StatelessWidget {
                       : null,
                 ),
                 Text(
-                  "Arlo",
+                  petProvider.currentPet?.name ?? "No pet selected",
                   style: typography(context).strong,
                   textAlign: TextAlign.center,
                 ),

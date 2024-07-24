@@ -12,7 +12,8 @@ class AddCoupon extends StatelessWidget {
   Widget build(BuildContext context) {
     final urlProvider = context.watch<UrlProvider>();
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
+      // width: double.maxFinite,
       child: ListTile(
         tileColor: Colors.white,
         leading: urlProvider.urlMap['assets/images/content/offer.png'] != null
