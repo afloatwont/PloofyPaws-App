@@ -113,7 +113,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                               price:
                                   (int.parse(plans[index].price.split(" ")[1])),
                               content: [plans[index].description]);
-                          context.watch<PackageProvider>().setPackage(selected);
+                          context.read<PackageProvider>().setPackage(selected);
                         },
                       );
                     },

@@ -51,6 +51,10 @@ class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _centerSelectedPackage();
     });
+    Provider.of<PackageProvider>(context, listen: false).setPackage(Package(
+        name: packages[1]['title'],
+        price: int.parse((packages[1]['price']).split(" ")[1]),
+        content: [packages[1]['description']]));
   }
 
   void _centerSelectedPackage() {
@@ -105,7 +109,8 @@ class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
                         Provider.of<PackageProvider>(context, listen: false)
                             .setPackage(Package(
                                 name: packages[index]['title'],
-                                price: int.parse((packages[index]['price']).split(" ")[1]),
+                                price: int.parse(
+                                    (packages[index]['price']).split(" ")[1]),
                                 content: [packages[index]['description']]));
                         setState(() {
                           selectedIndex = index;

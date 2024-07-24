@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
+import 'package:animated_switch/animated_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -293,16 +293,15 @@ class _MyMapWidgetState extends State<MyMapWidget> {
                                 title: const Text('Light'),
                                 subtitle: const Text(
                                     'Turn Lights on and off of the tracker'),
-                                trailing: Switch(
-                                    value: true,
-                                    focusColor: Colors.yellow,
-                                    activeColor: Colors.orangeAccent,
-                                    activeTrackColor: Colors.yellow.shade300,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        value = !value;
-                                      });
-                                    }),
+                                trailing: SizedBox(
+                                  width: 50,
+                                  child: AnimatedSwitch(
+                                    colorOff: Colors.grey,
+                                    colorOn: Colors.yellow,
+                                    height: 50,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
                               ),
                               const ListTile(
                                 leading: Icon(Icons.volume_off),

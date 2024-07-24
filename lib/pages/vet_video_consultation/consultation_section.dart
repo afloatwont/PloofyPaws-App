@@ -19,6 +19,7 @@ class _ConsultationSectionState extends State<ConsultationSection> {
   @override
   Widget build(BuildContext context) {
     final urlProvider = context.read<UrlProvider>();
+
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.53,
       padding: const EdgeInsets.all(16),
@@ -32,18 +33,15 @@ class _ConsultationSectionState extends State<ConsultationSection> {
             children: [
               Positioned(
                 bottom: MediaQuery.sizeOf(context).height *
-                    0.002, // Adjust this value as necessary to align the cat with the button
+                    0.005, // Adjust this value as necessary to align the cat with the button
                 right: MediaQuery.sizeOf(context).width * 0.2,
                 left: MediaQuery.sizeOf(context).width * 0.2,
-                child: Opacity(
-                  opacity: 1,
-                  child: CachedNetworkImage(
-                    imageUrl: urlProvider
-                        .urlMap['assets/images/content/doodle_cat.png']!,
-                    height: 500,
-                    placeholder: null,
-                    errorWidget: null,
-                  ),
+                child: CachedNetworkImage(
+                  imageUrl: urlProvider
+                      .urlMap['assets/images/content/doodle_cat.png']!,
+                  // height: 500,
+                  placeholder: null,
+                  errorWidget: null,
                 ),
               ),
               Column(

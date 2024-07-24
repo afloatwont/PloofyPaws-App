@@ -15,10 +15,12 @@ class AppointmentConfirmation extends StatefulWidget {
   const AppointmentConfirmation({super.key});
 
   @override
-  State<AppointmentConfirmation> createState() => _AppointmentConfirmationState();
+  State<AppointmentConfirmation> createState() =>
+      _AppointmentConfirmationState();
 }
 
-class _AppointmentConfirmationState extends State<AppointmentConfirmation> with SingleTickerProviderStateMixin {
+class _AppointmentConfirmationState extends State<AppointmentConfirmation>
+    with SingleTickerProviderStateMixin {
   Razorpay? _razorpay;
   String _paymentStatus = "Idle";
   late AnimationController _animationController;
@@ -26,15 +28,18 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation> with 
   final List<Map<String, String>> faqs = [
     {
       "question": "What is included in the pet walking package?",
-      "answer": "The pet walking package includes daily walks, feeding, and playtime."
+      "answer":
+          "The pet walking package includes daily walks, feeding, and playtime."
     },
     {
       "question": "How long are the walks?",
-      "answer": "Each walk lasts for about 30 minutes to an hour, depending on your pet's needs."
+      "answer":
+          "Each walk lasts for about 30 minutes to an hour, depending on your pet's needs."
     },
     {
       "question": "Are the walkers trained and certified?",
-      "answer": "Yes, all our walkers are trained and certified to handle pets of all sizes and breeds."
+      "answer":
+          "Yes, all our walkers are trained and certified to handle pets of all sizes and breeds."
     },
   ];
 
@@ -121,7 +126,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation> with 
                   const OrderPreview(),
                   _buildHeader("Order Details"),
                   const OrderDetails(),
-                  const AddCoupon(),
+                  SizedBox(child: const AddCoupon()),
                   _buildHeader("Billing Details"),
                   _buildPaymentInfoCard(),
                   SlideTransition(
@@ -141,11 +146,13 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation> with 
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
-                    child: _buildHeader("Get expert consultations on all concerns"),
+                    child: _buildHeader(
+                        "Get expert consultations on all concerns"),
                   ),
                   const ExpertConsultationsSection(showHeading: false),
                   FAQSection(faqs: faqs, showTitle: true),
-                  buildDividerWithText(context, "Ploofypaws", color: Colors.grey),
+                  buildDividerWithText(context, "Ploofypaws",
+                      color: Colors.grey),
                   const SizedBox(height: 60),
                 ],
               ),
@@ -286,7 +293,8 @@ class BottomButton extends StatelessWidget {
             ),
             Text(
               "You saved Rs.69 on Arlo's healthcare",
-              style: typography(context).smallBody.copyWith(color: Colors.white),
+              style:
+                  typography(context).smallBody.copyWith(color: Colors.white),
             )
           ],
         ),
