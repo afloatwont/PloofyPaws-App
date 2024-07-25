@@ -451,7 +451,195 @@ class _TrackerScreenState extends State<TrackerScreen> {
               errorWidget: null,
             ),
             const SizedBox(height: 50),
+            const PricingScreen(),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class PricingScreen extends StatefulWidget {
+  const PricingScreen({super.key});
+
+  @override
+  _PricingScreenState createState() => _PricingScreenState();
+}
+
+class _PricingScreenState extends State<PricingScreen> {
+  bool isMonthly = true;
+
+  final List<Map<String, dynamic>> pricingOptions = [
+    {
+      'title': 'Base',
+      'features': [
+        'Regular Location Updates Updates every 2-60 min',
+        'Unlimited LIVE Tracking Updates every 2-3 sec',
+        'Activity & Sleep Plus wellness features',
+        'Family Sharing: Let many people track at once',
+        'Worldwide Coverage*',
+        '365 Day Location History',
+        'GPS data export'
+      ],
+      'price': 800,
+      'buttonText': 'Choose',
+      'buttonColor': Colors.black,
+      'saveText': 'Save ₹129',
+      'highlightedFeatures': [0, 1, 2],
+    },
+    {
+      'title': 'Premium',
+      'features': [
+        'Regular Location Updates Updates every 2-60 min',
+        'Unlimited LIVE Tracking Updates every 2-3 sec',
+        'Activity & Sleep Plus wellness features',
+        'Family Sharing: Let many people track at once',
+        'Worldwide Coverage*',
+        '365 Day Location History',
+        'GPS data export'
+      ],
+      'price': 800,
+      'buttonText': 'Choose',
+      'buttonColor': Colors.black,
+      'saveText': '',
+      'highlightedFeatures': [0, 1, 2, 3, 4, 5, 6],
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ChoiceChip(
+              label: const Text('Monthly'),
+              selected: isMonthly,
+              onSelected: (selected) {
+                setState(() {
+                  isMonthly = true;
+                });
+              },
+              selectedColor: const Color(0xff2D2D2D),
+              backgroundColor: Colors.black,
+              labelStyle: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(width: 10),
+            ChoiceChip(
+              label: const Text('Yearly'),
+              selected: !isMonthly,
+              onSelected: (selected) {
+                setState(() {
+                  isMonthly = false;
+                });
+              },
+              selectedColor: const Color(0xff2D2D2D),
+              backgroundColor: Colors.black,
+              labelStyle: const TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        ...pricingOptions.map((option) => PricingCard(option)).toList(),
+      ],
+    );
+  }
+}
+
+class PricingCard extends StatelessWidget {
+  final Map<String, dynamic> option;
+
+  const PricingCard(this.option, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                option['title'],
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                  color: Color(0xff181059),
+                ),
+              ),
+              const SizedBox(height: 10),
+              ...option['features'].asMap().entries.map((entry) {
+                int idx = entry.key;
+                String feature = entry.value;
+                bool isHighlighted =
+                    option['highlightedFeatures'].contains(idx);
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        isHighlighted ? Icons.check : Icons.close,
+                        color: isHighlighted ? Colors.green : Colors.red,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          feature,
+                          style: TextStyle(
+                            color:
+                                isHighlighted ? Colors.black : Colors.black54,
+                            decoration: isHighlighted
+                                ? null
+                                : TextDecoration.lineThrough,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+              const SizedBox(height: 20),
+              Text(
+                '₹${option['price']} /month',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              if (option['saveText'].isNotEmpty)
+                Text(
+                  option['saveText'],
+                  style: const TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: option['buttonColor'],
+                  foregroundColor: Colors.white,
+                  fixedSize: const Size.fromWidth(double.maxFinite),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(option['buttonText']),
+              ),
+            ],
+          ),
         ),
       ),
     );
