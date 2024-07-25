@@ -67,6 +67,7 @@ dependencies:
   hexcolor:
   animated_switch: ^0.0.3
   cupertino_battery_indicator: ^1.1.0
+  flutter_swipe_button: ^2.1.3
   
 
 
