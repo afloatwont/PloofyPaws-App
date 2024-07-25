@@ -18,7 +18,7 @@ class _TrackerScreenState extends State<TrackerScreen> {
   Widget build(BuildContext context) {
     final urlProvider = context.read<UrlProvider>();
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xff141414),
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {},
@@ -513,30 +513,55 @@ class _PricingScreenState extends State<PricingScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ChoiceChip(
-              label: const Text('Monthly'),
-              selected: isMonthly,
-              onSelected: (selected) {
+            GestureDetector(
+              onTap: () {
                 setState(() {
                   isMonthly = true;
                 });
               },
-              selectedColor: const Color(0xff2D2D2D),
-              backgroundColor: Colors.black,
-              labelStyle: const TextStyle(color: Colors.white),
+              child: Container(
+                width: MediaQuery.sizeOf(context).width * 0.42,
+                decoration: BoxDecoration(
+                  color: isMonthly ? Colors.white : Colors.black,
+                  borderRadius: const BorderRadius.horizontal(
+                    left: Radius.circular(20),
+                  ),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Text(
+                  'Monthly',
+                  style: TextStyle(
+                    color: isMonthly ? Colors.black : Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(width: 10),
-            ChoiceChip(
-              label: const Text('Yearly'),
-              selected: !isMonthly,
-              onSelected: (selected) {
+            GestureDetector(
+              onTap: () {
                 setState(() {
                   isMonthly = false;
                 });
               },
-              selectedColor: const Color(0xff2D2D2D),
-              backgroundColor: Colors.black,
-              labelStyle: const TextStyle(color: Colors.white),
+              child: Container(
+                width: MediaQuery.sizeOf(context).width * 0.42,
+                decoration: BoxDecoration(
+                  color: !isMonthly ? Colors.white : Colors.black,
+                  borderRadius: const BorderRadius.horizontal(
+                    right: Radius.circular(20),
+                  ),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Text(
+                  'Yearly',
+                  style: TextStyle(
+                    color: !isMonthly ? Colors.black : Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

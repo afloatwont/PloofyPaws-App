@@ -112,18 +112,18 @@ class _RootState extends State<Root> {
       systemNavigationBarDividerColor: Colors.black,
     ));
     super.initState();
-    _authServices = _getIt.get<AuthServices>();
-    _userDatabaseService = _getIt.get<UserDatabaseService>();
-    final petProvider = context.read<PetProvider>();
-    _userDatabaseService
-        .getAllPetsForUser(_authServices.user!.uid)
-        .then((value) {
-      if (value!.isNotEmpty) {
-        setState(() {
-          petProvider.setPets(value);
-        });
-      }
-    });
+    // _authServices = _getIt.get<AuthServices>();
+    // _userDatabaseService = _getIt.get<UserDatabaseService>();
+    // final petProvider = context.read<PetProvider>();
+    // _userDatabaseService
+    //     .getAllPetsForUser(_authServices.user!.uid)
+    //     .then((value) {
+    //   if (value!.isNotEmpty) {
+    //     setState(() {
+    //       petProvider.setPets(value);
+    //     });
+    //   }
+    // });
   }
 
   @override

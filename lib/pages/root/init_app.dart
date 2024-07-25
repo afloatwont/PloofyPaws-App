@@ -25,6 +25,7 @@ class _InitAppState extends State<InitApp> {
   void initState() {
     checkFirstLaunch();
     super.initState();
+    print("init called");
   }
 
   @override

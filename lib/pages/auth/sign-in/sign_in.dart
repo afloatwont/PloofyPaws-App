@@ -18,6 +18,7 @@ import 'package:ploofypaws/pages/root/root.dart';
 import 'package:ploofypaws/services/networking/exceptions.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -97,7 +98,14 @@ class _SignInPageState extends State<SignInPage> {
 
       if (!mounted) return;
 
-      userProvider.setUser(user!);
+      final petProvider = context.read<PetProvider>();
+      userProvider.setUser(user);
+      _databaseService.getAllPetsForUser(_authServices.user!.uid).then((value) {
+        setState(() {
+          print(value?[0].name);
+          petProvider.setPets(value);
+        });
+      });
 
       Navigator.of(context).pushAndRemoveUntil(
           MaterialWithModalsPageRoute(
@@ -324,7 +332,7 @@ class _SignInPageState extends State<SignInPage> {
                     height: MediaQuery.sizeOf(context).height * 0.15,
                   );
                 } else {
-                  return const LinearProgressIndicator(color: Colors.black);
+                  return const SizedBox();
                 }
               },
             ),
