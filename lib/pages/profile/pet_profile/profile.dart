@@ -108,7 +108,7 @@ class _ProfileState extends State<Profile> {
                         width: Curves.easeInOut.transform(scale) *
                             MediaQuery.of(context).size.width *
                             0.8,
-                        child: index < (petsList?.length ?? 1)
+                        child: index < (petsList?.length ?? 0)
                             ? GestureDetector(
                                 child: PetCard(
                                   pet: petsList![index],

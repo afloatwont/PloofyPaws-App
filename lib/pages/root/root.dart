@@ -20,6 +20,7 @@ import 'package:ploofypaws/pages/root/platform_app_bar.dart';
 import 'package:ploofypaws/pages/root/sidebar.dart';
 import 'package:ploofypaws/pages/tracker/app_bar.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
+import 'package:ploofypaws/pages/tracker/tracker_screen.dart';
 import 'package:ploofypaws/pet_adoption/adoption_page.dart';
 import 'package:ploofypaws/pet_adoption/new_adoption.dart';
 import 'package:ploofypaws/services/alert/alert_service.dart';
@@ -44,7 +45,7 @@ class _RootState extends State<Root> {
     Home(),
     PetAdoptionScreen(),
     AiScreen(),
-    Tracker(),
+    TrackerScreen(),
     Profile(),
     if (kDeveloperMode) DeveloperMode(),
   ];
@@ -111,18 +112,18 @@ class _RootState extends State<Root> {
       systemNavigationBarDividerColor: Colors.black,
     ));
     super.initState();
-    _authServices = _getIt.get<AuthServices>();
-    _userDatabaseService = _getIt.get<UserDatabaseService>();
-    final petProvider = context.read<PetProvider>();
-    _userDatabaseService
-        .getAllPetsForUser(_authServices.user!.uid)
-        .then((value) {
-      if (value!.isNotEmpty) {
-        setState(() {
-          petProvider.setPets(value);
-        });
-      }
-    });
+    // _authServices = _getIt.get<AuthServices>();
+    // _userDatabaseService = _getIt.get<UserDatabaseService>();
+    // final petProvider = context.read<PetProvider>();
+    // _userDatabaseService
+    //     .getAllPetsForUser(_authServices.user!.uid)
+    //     .then((value) {
+    //   if (value!.isNotEmpty) {
+    //     setState(() {
+    //       petProvider.setPets(value);
+    //     });
+    //   }
+    // });
   }
 
   @override

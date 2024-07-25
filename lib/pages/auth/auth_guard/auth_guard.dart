@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/pages/auth/sign-in/sign_in.dart';
 import 'package:ploofypaws/pages/root/root_guard.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthGuard extends StatefulWidget {
@@ -14,10 +16,8 @@ class AuthGuard extends StatefulWidget {
 
 class _AuthGuardState extends State<AuthGuard> {
   Future<bool> checkAuth() async {
-    final storage = await SharedPreferences.getInstance();
-
-    final rawAuthData = storage.getString('auth');
-    if (rawAuthData == null) {
+    final authService = GetIt.instance.get<AuthServices>();
+    if (authService.user == null) {
       // Remove the splash screen
       return false;
     }

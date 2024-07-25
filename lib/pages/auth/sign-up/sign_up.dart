@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
@@ -86,6 +87,18 @@ class _SignUpPageState extends State<SignUpPage> {
       final storage = await SharedPreferences.getInstance();
       storage.setString('auth', jsonEncode(user));
 
+          final petProvider = context.read<PetProvider>();
+      userProvider.setUser(user);
+       databaseService
+          .getAllPetsForUser(authServices.user!.uid)
+          .then((value) {
+          setState(() {
+            print(value?[0].name);
+            petProvider.setPets(value);
+          });
+        
+      });
+
       if (!mounted) return;
 
       Navigator.of(context).pushAndRemoveUntil(
@@ -140,8 +153,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ? CachedNetworkImage(
                         imageUrl: signUpImageUrl,
                         height: 80,
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
+                        placeholder: null,
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
                       )
