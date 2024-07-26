@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/create_pet_memorial.dart';
 
 class Memories extends StatefulWidget {
-  const Memories({Key? key}) : super(key: key);
+  const Memories({super.key});
 
   @override
   State<Memories> createState() => _MemoriesState();
