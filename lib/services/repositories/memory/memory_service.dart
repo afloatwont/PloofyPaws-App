@@ -33,7 +33,7 @@ class MemoryService {
     try {
       final docRef = _memoryCollection.doc(memory.userId); // Use userId as document ID
       String url = await uploadPhoto(memory.userId!, photo);
-      memory.photoUrls?.add(url);
+      memory.photoUrls = [url];
       
       DocumentSnapshot documentSnapshot = await docRef.get();
       MemoryList memoryList;
