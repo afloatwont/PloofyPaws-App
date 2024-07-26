@@ -15,6 +15,26 @@ class UploadPhotoScreen extends StatefulWidget {
 }
 
 class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
+  List<XFile> _selectedImages = [];
+
+  Future<PermissionStatus> _checkPermission() async {
+    PermissionStatus status;
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      var version = androidInfo.version.release;
+      final int majorVersion = int.parse(version.split('.')[0]);
+      if (majorVersion < 13) {
+        status = await Permission.storage.status;
+      } else {
+        status = await Permission.photos.status;
+      }
+    } else {
+      status = await Permission.photos.status;
+    }
+    return status;
+  }
+
   Future<void> _requestPermission(BuildContext context) async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
@@ -23,14 +43,29 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       final int majorVersion = int.parse(version.split('.')[0]);
       if (majorVersion < 13) {
         PermissionStatus status = await Permission.storage.request();
-        _openImagePicker(context, status);
+        _handlePermissionStatus(context, status);
       } else {
         PermissionStatus status = await Permission.photos.request();
-        _openImagePicker(context, status);
+        _handlePermissionStatus(context, status);
       }
     } else {
       PermissionStatus status = await Permission.photos.request();
-      _openImagePicker(context, status);
+      _handlePermissionStatus(context, status);
+    }
+  }
+
+  void _handlePermissionStatus(BuildContext context, PermissionStatus status) async {
+    if (status.isGranted) {
+      _openImagePicker(context);
+    } else if (status.isDenied) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Permission Denied"),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    } else if (status.isPermanentlyDenied) {
+      _showSettingsDialog();
     }
   }
 
@@ -60,31 +95,37 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
     );
   }
 
-  void _openImagePicker(BuildContext context, PermissionStatus status) async {
-    if (status.isGranted) {
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {}
-    } else if (status.isDenied) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Permission Denied"),
-          duration: Duration(seconds: 3),
-        ),
-      );
-    } else if (status.isPermanentlyDenied) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text(
-      //         "Permission Permanently Denied. Please enable from settings."),
-      // )
-      // );
-      _showSettingsDialog();
+  void _openImagePicker(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final List<XFile>? images = await picker.pickMultiImage();
+    if (images != null && images.isNotEmpty) {
+      setState(() {
+        _selectedImages.addAll(images);
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<PermissionStatus>(
+      future: _checkPermission(),
+      builder: (BuildContext context, AsyncSnapshot<PermissionStatus> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasData) {
+          if (snapshot.data!.isGranted) {
+            return _buildImageGrid();
+          } else {
+            return _buildRequestPermissionView(context);
+          }
+        } else {
+          return const Center(child: Text('Error checking permission'));
+        }
+      },
+    );
+  }
+
+  Widget _buildRequestPermissionView(BuildContext context) {
     return AdaptivePageScaffold(
       previousPageTitle: 'create_pet_memorial',
       automaticallyImplyLeading: false,
@@ -148,6 +189,76 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
               },
               child: const Text(
                 'Cancel',
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageGrid() {
+    return AdaptivePageScaffold(
+      previousPageTitle: 'create_pet_memorial',
+      automaticallyImplyLeading: false,
+      appBarTrailing: IconButton(
+        icon: const Icon(Icons.clear_outlined),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'Selected Photos',
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: _selectedImages.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: FileImage(File(_selectedImages[index].path)),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 55,
+              width: 330,
+              child: Button(
+                onPressed: () => _openImagePicker(context),
+                variant: 'filled',
+                label: 'Add More Photos',
+                size: 16,
+                buttonColor: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                
+              },
+              child: const Text(
+                'Done',
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             ),

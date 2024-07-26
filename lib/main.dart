@@ -24,6 +24,7 @@ import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:ploofypaws/services/repositories/memory/memory_service.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'config/theme/placebo_colors.dart';
@@ -64,6 +65,7 @@ void registerServices() {
   getIt.registerLazySingleton<AuthServices>(() => AuthServices());
   getIt.registerSingleton<ChatDatabaseService>(ChatDatabaseService());
   getIt.registerSingleton<UserDatabaseService>(UserDatabaseService());
+  getIt.registerSingleton<MemoryService>(MemoryService());
 }
 
 class MyApp extends StatefulWidget {

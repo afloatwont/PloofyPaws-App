@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get_it/get_it.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/adaptive_date_picker.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
@@ -11,6 +12,9 @@ import 'package:ploofypaws/helpers/date_format.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/add_media.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/memory/memory_model.dart';
+import 'package:ploofypaws/services/repositories/memory/memory_service.dart';
 
 class PetMemorialScreen extends StatefulWidget {
   const PetMemorialScreen({super.key});
@@ -26,6 +30,17 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
   String? location;
   String? story;
   List<File> imageFileList = [];
+  late MemoryService memoryService;
+  late AuthServices authServices;
+  final getIt = GetIt.instance;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    memoryService = getIt.get<MemoryService>();
+    authServices = getIt.get<AuthServices>();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isFormFilled = _formKey.currentState?.isValid ?? false;
@@ -134,9 +149,17 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
   }
 
   Future<void> _checkPermissionAndOpenPicker(BuildContext context) async {
-    PermissionStatus status = await Permission.photos.status;
+    PermissionStatus status = await Permission.mediaLibrary.status;
     if (status.isGranted) {
-      _openImagePicker(context);
+      await _openImagePicker(context);
+      MemoryModel memory = MemoryModel(
+        userId: authServices.user!.uid,
+        date: date,
+        location: location,
+        story: story,
+        title: title,
+      );
+      await memoryService.createMemory(memory, imageFileList[0]);
     } else {
       Navigator.push(
         context,
@@ -147,7 +170,7 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
     }
   }
 
-  void _openImagePicker(BuildContext context) async {
+  Future<void> _openImagePicker(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {

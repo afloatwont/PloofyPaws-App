@@ -2,7 +2,7 @@
   <!-- Required for accessing photos from gallery -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />\
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
      <!-- Permissions for camera and microphone -->
     <uses-permission android:name="android.permission.CAMERA"/>
