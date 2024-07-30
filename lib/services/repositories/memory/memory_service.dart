@@ -21,30 +21,37 @@ class MemoryService {
   }
 
   void setupCollectionReferences() {
-    _memoryCollection =
-        _firebaseFirestore.collection('memories').withConverter<MemoryList>(
-              fromFirestore: (snapshot, _) =>
-                  MemoryList.fromJson(snapshot.data()!),
-              toFirestore: (memoryList, _) => memoryList.toJson(),
-            );
+    _memoryCollection = _firebaseFirestore
+        .collection('memories')
+        .withConverter<MemoryList>(
+          fromFirestore: (snapshot, _) => MemoryList.fromJson(snapshot.data()!),
+          toFirestore: (memoryList, _) => memoryList.toJson(),
+        );
   }
 
   Future<void> createMemory(MemoryModel memory, File photo) async {
     try {
-      final docRef = _memoryCollection.doc(memory.userId); // Use userId as document ID
+      final docRef =
+          _memoryCollection.doc(memory.userId); // Use userId as document ID
       String url = await uploadPhoto(memory.userId!, photo);
       memory.photoUrls = [url];
-      
+
       DocumentSnapshot documentSnapshot = await docRef.get();
-      MemoryList memoryList;
+
       if (documentSnapshot.exists) {
-        memoryList = documentSnapshot.data() as MemoryList;
-        memoryList.memories?.add(memory);
-        await docRef.update(memoryList.toJson());
+        // final data = documentSnapshot.data() as Map<String, dynamic>;
+        // MemoryList memoryList = MemoryList.fromJson(data);
+
+        // Add the new memory to the existing memories list
+        await docRef.update({
+          'memories': FieldValue.arrayUnion([memory.toJson()])
+        });
       } else {
-        memoryList = MemoryList(memories: [memory]);
+        // Create a new MemoryList with the new memory and set it
+        MemoryList memoryList = MemoryList(memories: [memory]);
         await docRef.set(memoryList);
       }
+
       print("Memory Created");
     } catch (e) {
       if (kDebugMode) {
@@ -84,7 +91,8 @@ class MemoryService {
         }
 
         // Remove the memory from the list
-        memoryList.memories?.removeWhere((m) => m.title == memory.title && m.date == memory.date);
+        memoryList.memories?.removeWhere(
+            (m) => m.title == memory.title && m.date == memory.date);
 
         // Update the document or delete it if no memories are left
         if (memoryList.memories?.isEmpty ?? true) {
@@ -106,15 +114,17 @@ class MemoryService {
     try {
       DocumentSnapshot docSnapshot = await _memoryCollection.doc(userId).get();
       if (docSnapshot.exists) {
-        MemoryList memoryList = docSnapshot.data() as MemoryList;
-        return memoryList.memories ?? [];
+        // Convert the document data into a MemoryList object
+        final data = docSnapshot.data() as MemoryList;
+        // MemoryList memoryList = MemoryList.fromJson(data);
+
+        return data.memories ?? [];
       } else {
         return [];
       }
     } catch (e) {
       if (kDebugMode) {
         print(e);
-        return [];
       }
       return Future.error('Error retrieving memories');
     }

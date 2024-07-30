@@ -13,8 +13,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/add_media.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:ploofypaws/services/repositories/memory/memory_model.dart';
+import 'package:ploofypaws/services/repositories/memory/memory_provider.dart';
 import 'package:ploofypaws/services/repositories/memory/memory_service.dart';
+import 'package:provider/provider.dart';
 
 class PetMemorialScreen extends StatefulWidget {
   const PetMemorialScreen({super.key});
@@ -160,6 +163,10 @@ class _PetMemorialScreenState extends State<PetMemorialScreen> {
         title: title,
       );
       await memoryService.createMemory(memory, imageFileList[0]);
+      final memoryProvider = Provider.of<MemoryProvider>(context);
+      final userProvider = context.read<UserProvider>();
+      await memoryProvider.loadMemories(userProvider.user!.id!);
+      Navigator.pop(context);
     } else {
       Navigator.push(
         context,

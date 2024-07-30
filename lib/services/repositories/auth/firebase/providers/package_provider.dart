@@ -4,11 +4,13 @@ class Package {
   String name;
   int price;
   List<String> content;
+  DateTime? time;
 
   Package({
     required this.name,
     required this.price,
     required this.content,
+     this.time,
   });
 }
 

@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ploofypaws/pages/profile/pet_life_event/photos_section.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:ploofypaws/services/repositories/memory/memory_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/create_pet_memorial.dart';
 
@@ -32,6 +34,10 @@ class _MemoriesState extends State<Memories> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final displayName = userProvider.user?.displayName ?? "User";
+
+    final memoryProvider = Provider.of<MemoryProvider>(context);
+    // final userProvider = context.read<UserProvider>();
+    memoryProvider.loadMemories(userProvider.user!.id!);
 
     return DefaultTabController(
       length: 2,
@@ -139,7 +145,8 @@ class _MemoriesState extends State<Memories> {
               const Expanded(
                 child: TabBarView(
                   children: [
-                    Center(child: Text("Photos Content")),
+                    // Center(child: Text("Photos Content")),
+                    PhotosSection(),
                     Center(child: Text("Videos Content")),
                   ],
                 ),

@@ -3,6 +3,7 @@ import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/pages/home/core/data/services_data.dart';
 import 'package:ploofypaws/pages/home/services/pet_diet.dart';
 import 'package:ploofypaws/pages/tracker/tracker.dart';
+import 'package:ploofypaws/pages/training/grooming.dart';
 import 'package:ploofypaws/pages/training/training.dart';
 import 'package:ploofypaws/pages/vet_video_consultation/vet_video_consultation.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/pet_walking.dart';
@@ -21,7 +22,7 @@ class _PetServicesState extends State<PetServices> {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       const PetWalkingScreen(),
-      const TrainingScreen(),
+      const GroomingScreen(),
       const VetVideoConsultationScreen(),
       const DietPage(),
       const Tracker(),
@@ -41,10 +42,13 @@ class _PetServicesState extends State<PetServices> {
       itemBuilder: (context, index) {
         final data = petServices[index];
         return GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => screens[index]),
-          ),
+          onTap: () {
+            print(index);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => screens[index]),
+            );
+          },
           child: Container(
             padding: const EdgeInsets.fromLTRB(14, 0, 8, 0),
             height: 120,
@@ -52,7 +56,7 @@ class _PetServicesState extends State<PetServices> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: const Color(
-                  0xffee3e4f3), // Assuming a background color from theme
+                  0xffe3e4f3), // Assuming a background color from theme
               // boxShadow: [
               //   BoxShadow(
               //     color: Colors.grey.withOpacity(0.2),

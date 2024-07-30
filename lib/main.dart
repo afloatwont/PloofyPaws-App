@@ -24,6 +24,7 @@ import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/pet_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:ploofypaws/services/repositories/memory/memory_provider.dart';
 import 'package:ploofypaws/services/repositories/memory/memory_service.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -53,6 +54,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => VeterinaryDoctorProvider()),
       ChangeNotifierProvider(create: (_) => TimeProvider()),
       ChangeNotifierProvider(create: (_) => PackageProvider()),
+      ChangeNotifierProvider(create: (_) => MemoryProvider()),
     ],
     child: const MyApp(),
   ));

@@ -18,8 +18,6 @@ class ConsultationSection extends StatefulWidget {
 class _ConsultationSectionState extends State<ConsultationSection> {
   @override
   Widget build(BuildContext context) {
-    final urlProvider = context.read<UrlProvider>();
-
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.53,
       padding: const EdgeInsets.all(16),
@@ -27,69 +25,84 @@ class _ConsultationSectionState extends State<ConsultationSection> {
         color: const Color.fromARGB(150, 238, 242, 251),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
+      child: Stack(
         children: [
-          Stack(
+          _buildButton(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Positioned(
-                bottom: MediaQuery.sizeOf(context).height *
-                    0.005, // Adjust this value as necessary to align the cat with the button
-                right: MediaQuery.sizeOf(context).width * 0.2,
-                left: MediaQuery.sizeOf(context).width * 0.2,
-                child: CachedNetworkImage(
-                  imageUrl: urlProvider
-                      .urlMap['assets/images/content/doodle_cat.png']!,
-                  // height: 500,
-                  placeholder: null,
-                  errorWidget: null,
-                ),
+              _buildHeader(),
+              const SizedBox(height: 16),
+              _buildBulletPoint(
+                text: '30 minutes dedicated session',
+                boldText: '30 minutes',
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: 16),
-                  _buildBulletPoint(
-                    text: '30 minutes dedicated session',
-                    boldText: '30 minutes',
-                  ),
-                  const SizedBox(height: 8),
-                  _buildBulletPoint(
-                    text: 'Vets with 4+ years of experience',
-                    boldText: '4+',
-                  ),
-                  const SizedBox(height: 8),
-                  _buildBulletPoint(
-                    text: 'Free follow-up chat',
-                    boldText: 'Free',
-                  ),
-                  const SizedBox(height: 8),
-                  _buildBulletPoint(
-                    text: 'Digital medical prescription',
-                  ),
-                  const SizedBox(height: 8),
-                  _buildBulletPoint(
-                    text:
-                        'Resolve all your concerns with expert\'s consultations effectively',
-                    boldText: 'Resolve',
-                  ),
-                  const SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showScrollableBottomSheet(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 30, 69, 160),
-                        foregroundColor: Colors.white,
-                        fixedSize: const Size(double.maxFinite, 50)),
-                    child: const Text("Make Appointment"),
-                  ),
-                ],
+              const SizedBox(height: 8),
+              _buildBulletPoint(
+                text: 'Vets with 4+ years of experience',
+                boldText: '4+',
               ),
+              const SizedBox(height: 8),
+              _buildBulletPoint(
+                text: 'Free follow-up chat',
+                boldText: 'Free',
+              ),
+              const SizedBox(height: 8),
+              _buildBulletPoint(
+                text: 'Digital medical prescription',
+              ),
+              const SizedBox(height: 8),
+              _buildBulletPoint(
+                text:
+                    'Resolve all your concerns with expert\'s consultations effectively',
+                boldText: 'Resolve',
+              ),
+              const SizedBox(height: 32),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildButton() {
+    final urlProvider = context.read<UrlProvider>();
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double gap = constraints.maxHeight * 0.01;
+
+        return Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: ElevatedButton(
+                onPressed: () {
+                  _showScrollableBottomSheet(context);
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 30, 69, 160),
+                    foregroundColor: Colors.white,
+                    fixedSize: const Size.fromWidth(double.maxFinite)),
+                child: const Text("Make Appointment"),
+              ),
+            ),
+            Positioned(
+              bottom: gap,
+              right: constraints.maxWidth * 0.15,
+              left: constraints.maxWidth * 0.15,
+              child: CachedNetworkImage(
+                imageUrl:
+                    urlProvider.urlMap['assets/images/content/doodle_cat.png']!,
+                // height: imageHeight,
+                placeholder: null,
+                errorWidget: null,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -112,7 +125,7 @@ class _ConsultationSectionState extends State<ConsultationSection> {
           ),
         ),
         const SizedBox(width: 16),
-        const Text('video call',
+        const Text('Video call',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const Text('Rs. 299/-',
             style: TextStyle(color: Colors.green, fontSize: 16)),

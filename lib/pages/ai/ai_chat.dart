@@ -1,12 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/chat/models/message.dart';
 import 'package:ploofypaws/pages/ai/ai_appbar.dart';
 import 'package:ploofypaws/pages/ai/gemini.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class AiScreen extends StatefulWidget {
   const AiScreen({super.key});
@@ -17,7 +21,7 @@ class AiScreen extends StatefulWidget {
 
 class _AiScreenState extends State<AiScreen> {
   final TextEditingController _controller = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey();
+  // final GlobalKey<FormState> formKey = GlobalKey();
   final _getIt = GetIt.instance;
   late AuthServices _authServices;
   late UserDatabaseService _userDatabaseService;
@@ -97,30 +101,61 @@ class _AiScreenState extends State<AiScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                AiAppBar(appBarHeight: appBarHeight),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return _buildMessageBubble(index);
-                    },
-                    childCount: messages.length,
-                  ),
-                ),
-              ],
-            ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AiAppBar(appBarHeight: appBarHeight),
           ),
-          _buildMessageInput(),
+          DraggableScrollableSheet(
+            initialChildSize: 0.66,
+            minChildSize: 0.66,
+            maxChildSize: 1.0,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 8.0,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                          children: List.generate(
+                              messages.length, _buildMessageBubble),
+                        ),
+                      ),
+                    ),
+                    _buildMessageInput(),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
   }
 
   Widget _buildMessageBubble(int index) {
+    final urlProvider = context.read<UrlProvider>();
+    final avatarUrl =
+        urlProvider.urlMap['assets/images/content/dog_with_coat.jpeg'];
+    final userProvider = context.read<UserProvider>();
+    final userAvatar = userProvider.user!.photoUrl;
     bool isCurrentUser = messages[index].id == currUser.id;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -131,10 +166,10 @@ class _AiScreenState extends State<AiScreen> {
               isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             if (!isCurrentUser)
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundColor: Colors.grey,
                 foregroundColor: Colors.black,
-                child: Icon(Icons.smart_toy),
+                backgroundImage: CachedNetworkImageProvider(avatarUrl!),
               ),
             if (!isCurrentUser) const SizedBox(width: 8),
             Flexible(
@@ -158,10 +193,13 @@ class _AiScreenState extends State<AiScreen> {
             ),
             if (isCurrentUser) const SizedBox(width: 8),
             if (isCurrentUser)
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
-                child: Icon(Icons.person),
+                backgroundImage: userAvatar != null
+                    ? CachedNetworkImageProvider(userAvatar)
+                    : null,
+                child: userAvatar == null ? const Icon(Icons.person) : null,
                 // child: Image.network(),
               ),
           ],
@@ -183,18 +221,14 @@ class _AiScreenState extends State<AiScreen> {
         child: Row(
           children: [
             Expanded(
-              child: Form(
-                key: formKey,
-                onChanged: formKey.currentState?.save,
-                child: TextFormField(
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    hintText: 'Write your message...',
-                    border: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                  ),
+              child: TextFormField(
+                controller: _controller,
+                decoration: const InputDecoration(
+                  hintText: 'Write your message...',
+                  border: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
                 ),
               ),
             ),

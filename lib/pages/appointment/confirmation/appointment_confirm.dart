@@ -126,7 +126,12 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation>
                   const OrderPreview(),
                   _buildHeader("Order Details"),
                   const OrderDetails(),
-                  SizedBox(child: const AddCoupon()),
+                  Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const AddCoupon()),
                   _buildHeader("Billing Details"),
                   _buildPaymentInfoCard(),
                   SlideTransition(
@@ -153,7 +158,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation>
                   FAQSection(faqs: faqs, showTitle: true),
                   buildDividerWithText(context, "Ploofypaws",
                       color: Colors.grey),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
@@ -277,7 +282,7 @@ class BottomButton extends StatelessWidget {
             backgroundColor: Colors.black,
             foregroundColor: Colors.white,
             shape: const ContinuousRectangleBorder(),
-            padding: EdgeInsets.symmetric(vertical: 16.0)),
+            padding: const EdgeInsets.symmetric(vertical: 16.0)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

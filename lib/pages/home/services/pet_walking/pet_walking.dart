@@ -109,7 +109,7 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                           context.read<SelectedPlanProvider>().selectedPlan =
                               plans[index];
                           Package selected = Package(
-                              name: plans[index].title,
+                              name: "Walking: ${plans[index].title}",
                               price:
                                   (int.parse(plans[index].price.split(" ")[1])),
                               content: [plans[index].description]);

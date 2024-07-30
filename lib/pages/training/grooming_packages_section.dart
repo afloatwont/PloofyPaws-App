@@ -7,8 +7,8 @@ import 'package:ploofypaws/services/repositories/auth/firebase/providers/package
 import 'package:provider/provider.dart';
 
 class GroomingPackagesSection extends StatefulWidget {
-  const GroomingPackagesSection({super.key});
-
+  const GroomingPackagesSection({super.key, required this.type});
+  final String type;
   @override
   _GroomingPackagesSectionState createState() =>
       _GroomingPackagesSectionState();
@@ -18,48 +18,47 @@ class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
   int selectedIndex = 1; // Initially select the recommended package
   final ScrollController _scrollController = ScrollController();
 
-  final List<Map<String, dynamic>> packages = [
-    {
-      'title': 'Grooming',
-      'description': 'Save 45%',
-      'price': 'Rs. 1899',
-      'originalPrice': 'Rs. 2299',
-      'isRecommended': false,
-      'headerText': 'Best Value',
-    },
-    {
-      'title': 'Training',
-      'description': 'Save 30%',
-      'price': 'Rs. 1399',
-      'originalPrice': 'Rs. 1999',
-      'isRecommended': true,
-      'headerText': 'Recommended',
-    },
-    {
-      'title': 'Grooming',
-      'description': 'Save 25%',
-      'price': 'Rs. 1129',
-      'originalPrice': 'Rs. 1499',
-      'isRecommended': false,
-      'headerText': 'Best Value',
-    },
-  ];
+  late final List<Map<String, dynamic>> packages;
 
   @override
   void initState() {
     super.initState();
+
+    packages = [
+      {
+        'title': widget.type,
+        'description': 'Save 45%',
+        'price': 'Rs. 1899',
+        'originalPrice': 'Rs. 2299',
+        'isRecommended': false,
+        'headerText': 'Best Value',
+      },
+      {
+        'title': widget.type,
+        'description': 'Save 30%',
+        'price': 'Rs. 1399',
+        'originalPrice': 'Rs. 1999',
+        'isRecommended': true,
+        'headerText': 'Recommended',
+      },
+      {
+        'title': widget.type,
+        'description': 'Save 25%',
+        'price': 'Rs. 1129',
+        'originalPrice': 'Rs. 1499',
+        'isRecommended': false,
+        'headerText': 'Best Value',
+      },
+    ];
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _centerSelectedPackage();
     });
-    Provider.of<PackageProvider>(context, listen: false).setPackage(Package(
-        name: packages[1]['title'],
-        price: int.parse((packages[1]['price']).split(" ")[1]),
-        content: [packages[1]['description']]));
   }
 
   void _centerSelectedPackage() {
     double screenWidth = MediaQuery.of(context).size.width;
-    double itemWidth = screenWidth * 0.40; // Increased the item width
+    double itemWidth = screenWidth * 0.36; // Increased the item width
     double scrollPosition =
         (itemWidth + 34) * selectedIndex - (screenWidth / 2 - itemWidth / 2);
     _scrollController.animateTo(
@@ -71,12 +70,18 @@ class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PackageProvider>().setPackage(Package(
+          name: packages[1]['title'],
+          price: int.parse((packages[1]['price']).split(" ")[1]),
+          content: [packages[1]['description']]));
+    });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Grooming Packages',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        Text(
+          '${widget.type} Packages',
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
         Container(
@@ -177,17 +182,17 @@ class GroomingPackageCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 8),
         width: isSelected
             ? MediaQuery.sizeOf(context).width *
-                0.48 // Increased selected width
-            : MediaQuery.sizeOf(context).width * 0.36,
+                0.41 // Increased selected width
+            : MediaQuery.sizeOf(context).width * 0.33,
         height: isSelected
             ? MediaQuery.sizeOf(context).height *
-                0.42 // Increased selected height
+                0.4 // Increased selected height
             : MediaQuery.sizeOf(context).height * 0.36,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color:
-                isRecommended ? const Color(0xffe4a05ba) : Colors.grey.shade50,
+                isRecommended ? const Color(0xff4a05ba) : Colors.grey.shade50,
             width: isRecommended ? 2 : 1,
           ),
         ),
@@ -223,10 +228,11 @@ class GroomingPackageCard extends StatelessWidget {
                       child: CachedNetworkImage(
                         imageUrl: urlProvider.urlMap[
                             'assets/images/placeholders/ai_pets_card.png']!,
-                        height: 80,
+                        // height: 80,
                         placeholder: null,
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
+                        fit: BoxFit.contain,
                       )),
                   const SizedBox(height: 8),
                   SizedBox(

@@ -13,14 +13,14 @@ import 'grooming_packages_section.dart';
 import 'package:ploofypaws/components/pet_list.dart';
 import 'reviews_section.dart';
 
-class TrainingScreen extends StatefulWidget {
-  const TrainingScreen({super.key});
+class GroomingScreen extends StatefulWidget {
+  const GroomingScreen({super.key});
 
   @override
-  State<TrainingScreen> createState() => _TrainingScreenState();
+  State<GroomingScreen> createState() => _GroomingScreenState();
 }
 
-class _TrainingScreenState extends State<TrainingScreen>
+class _GroomingScreenState extends State<GroomingScreen>
     with WidgetsBindingObserver {
   @override
   void initState() {
@@ -91,7 +91,7 @@ class _TrainingScreenState extends State<TrainingScreen>
               Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back_ios)),
-        title: const Text('Training'),
+        title: const Text('Grooming'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -112,7 +112,7 @@ class _TrainingScreenState extends State<TrainingScreen>
             const SizedBox(height: 8),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: GroomingPackagesSection(type: "Training",),
+              child: GroomingPackagesSection(type: "Grooming",),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),

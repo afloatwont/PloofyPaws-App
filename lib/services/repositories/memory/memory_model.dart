@@ -28,16 +28,17 @@ class MemoryModel {
   }
 
   // Create a MemoryModel instance from a JSON map
-  factory MemoryModel.fromJson(Map<String, dynamic> json) {
-    return MemoryModel(
-      userId: json['userId'],
-      title: json['title'],
-      date: DateTime.parse(json['date']),
-      location: json['location'],
-      story: json['story'],
-      photoUrls: json['photoUrls'] as List<String>?,
-    );
-  }
+factory MemoryModel.fromJson(Map<String, dynamic> json) {
+  return MemoryModel(
+    userId: json['userId'],
+    title: json['title'],
+    date: DateTime.parse(json['date']),
+    location: json['location'],
+    story: json['story'],
+    photoUrls: (json['photoUrls'] as List<dynamic>?)?.map((url) => url as String).toList(),
+  );
+}
+
 }
 
 class MemoryList {
