@@ -45,7 +45,7 @@ class _RootState extends State<Root> {
     Home(),
     PetAdoptionScreen(),
     AiScreen(),
-    TrackerScreen(),
+    Tracker(),
     Profile(),
     if (kDeveloperMode) DeveloperMode(),
   ];

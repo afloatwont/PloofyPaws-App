@@ -106,7 +106,7 @@ flutter:
     # - assets/images/content/doodle_cat.png
     # - assets/images/content/dog_with_coat.jpeg
     # - assets/images/content/ai_bg.png
-    - .env
+    - assets/.env
 
 
 

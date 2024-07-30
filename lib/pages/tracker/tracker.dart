@@ -260,6 +260,7 @@ import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/tracker/input_imei.dart';
 import 'package:ploofypaws/pages/tracker/pairing.dart';
+import 'package:ploofypaws/pages/tracker/tracker_screen.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -303,30 +304,35 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
     return AdaptivePageScaffold(
         appBarBottom: PreferredSize(
           preferredSize: const Size.fromHeight(0),
-          child: GradientHeader(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Get your",
-                      style: typography(context)
-                          .smallBody
-                          .copyWith(color: Colors.white)),
-                  const SizedBox(width: 8),
-                  GradientText(
-                      text: "Toe Tracker",
-                      gradient: LinearGradient(colors: [
-                        colors(context).primary.s400,
-                        colors(context).warning.s500
-                      ])),
-                  const SizedBox(width: 8),
-                  Text("Here",
-                      style: typography(context)
-                          .smallBody
-                          .copyWith(color: Colors.white))
-                ],
-              ),
-              trailing:
-                  const Icon(Icons.keyboard_arrow_right, color: Colors.white)),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>const TrackerScreen()));
+            },
+            child: GradientHeader(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Get your",
+                        style: typography(context)
+                            .smallBody
+                            .copyWith(color: Colors.white)),
+                    const SizedBox(width: 8),
+                    GradientText(
+                        text: "Toe Tracker",
+                        gradient: LinearGradient(colors: [
+                          colors(context).primary.s400,
+                          colors(context).warning.s500
+                        ])),
+                    const SizedBox(width: 8),
+                    Text("Here",
+                        style: typography(context)
+                            .smallBody
+                            .copyWith(color: Colors.white))
+                  ],
+                ),
+                trailing:
+                    const Icon(Icons.keyboard_arrow_right, color: Colors.white)),
+          ),
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16.0),
