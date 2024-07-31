@@ -125,10 +125,10 @@ class _ConsultationSectionState extends State<ConsultationSection> {
           ),
         ),
         const SizedBox(width: 16),
-        const Text('Video call',
+        const Text('Vet Video Call',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const Text('Rs. 299/-',
-            style: TextStyle(color: Colors.green, fontSize: 16)),
+            style: TextStyle(color: Color(0xff1F6C12), fontSize: 16)),
       ],
     );
   }

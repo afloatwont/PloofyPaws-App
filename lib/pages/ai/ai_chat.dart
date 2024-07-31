@@ -101,51 +101,30 @@ class _AiScreenState extends State<AiScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: AiAppBar(appBarHeight: appBarHeight),
-          ),
-          DraggableScrollableSheet(
-            initialChildSize: 0.66,
-            minChildSize: 0.66,
-            maxChildSize: 1.0,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16.0),
-                    topRight: Radius.circular(16.0),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 8.0,
-                    ),
-                  ],
-                ),
+      body: Container(
+        height: MediaQuery.sizeOf(context).height,
+        decoration: const BoxDecoration(
+            // color: Colors.white,
+            ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              // Ensure the scrollable area is constrained in height
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        child: Column(
-                          children: List.generate(
-                              messages.length, _buildMessageBubble),
-                        ),
-                      ),
-                    ),
-                    _buildMessageInput(),
+                    AiAppBar(appBarHeight: appBarHeight),
+                    Column(
+                        children: List.generate(
+                            messages.length, _buildMessageBubble)),
                   ],
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+            ),
+            _buildMessageInput(),
+          ],
+        ),
       ),
     );
   }
@@ -210,11 +189,12 @@ class _AiScreenState extends State<AiScreen> {
 
   Widget _buildMessageInput() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding:
+          const EdgeInsets.only(left: 16.0, bottom: 16, right: 16, top: 16),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.transparent,
           border: Border.all(color: Colors.black, width: 1),
           borderRadius: BorderRadius.circular(32),
         ),

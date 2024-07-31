@@ -73,7 +73,8 @@ class _UpcomingAppointmentsState extends State<UpcomingAppointments> {
             child: const Text("Reschedule")),
         ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AppointmentDetails()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AppointmentDetails()));
             },
             style: ElevatedButton.styleFrom(
               fixedSize: Size.fromWidth(MediaQuery.sizeOf(context).width * 0.4),
@@ -114,7 +115,7 @@ class _UpcomingAppointmentsState extends State<UpcomingAppointments> {
   Widget _buildDate(DateTime date) {
     return Container(
       padding: const EdgeInsets.all(8),
-      width: MediaQuery.sizeOf(context).width * 0.3,
+      width: MediaQuery.sizeOf(context).width * 0.33,
       child: Column(children: [
         Text(
           formatDate(date),

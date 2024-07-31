@@ -39,17 +39,17 @@ class _TrainingDetailsState extends State<TrainingDetails> {
     },
   ];
 
-  final Map<String, IconData> properties = {
-    "Professional Expertise": Icons.pets,
-    "Clean as before": Icons.cleaning_services,
-    "Hygiene": Icons.local_hospital,
-    "Authentic Products": Icons.restaurant,
+  final Map<String, String> properties = {
+    "Behavorial Training": "assets/images/content/behavorial_training.png",
+    "Obedience Training": "assets/images/content/obedience_training.png",
+    "Personalised Sessions": "assets/images/content/personalised_sessions.png",
+    "Experienced Trainers": "assets/images/content/experienced_trainers.png",
   };
 
-  final Map<String, Widget> whyPloofy = {
-    'Affordable Packages': const Icon(Iconsax.money),
-    'Pet-Friendly Products': const Icon(Iconsax.pet),
-    'Pet Pampering': const Icon(Icons.spa_outlined),
+  final Map<String, String> whyPloofy = {
+    'Flexible Scheduling': "assets/images/content/flexible_scheduling2.png",
+    'Interactive Sessions': "assets/images/content/interactive_sessions.png",
+    'Continuous Support': "assets/images/content/continuous_support.png",
   };
 
   @override
@@ -108,7 +108,7 @@ class _TrainingDetailsState extends State<TrainingDetails> {
                             url: 'assets/images/content/CREATE_YOUR.mp4'),
                         const SizedBox(height: 40), // Increased spacing
                         const Text(
-                          "Why Ploofy Nutrition?",
+                          "Why Ploofy Training?",
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,

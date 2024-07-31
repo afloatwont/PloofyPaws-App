@@ -40,17 +40,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
     },
   ];
 
-  final Map<String, IconData> properties = {
-    "Professional Expertise": Icons.pets,
-    "Clean as before": Icons.cleaning_services,
-    "Hygiene": Icons.local_hospital,
-    "Authentic Products": Icons.restaurant,
+  final Map<String, String> properties = {
+    "Professional Grooming": "assets/images/content/professional_grooming.png",
+    "Luxury Spa Treatments": "assets/images/content/luxury_spa_treatments.png",
+    "Flexible Scheduling": "assets/images/content/flexible_scheduling.png",
+    "At-Home Grooming": "assets/images/content/at_home_grooming.png",
   };
 
-  final Map<String, Widget> whyPloofy = {
-    'Affordable Packages': const Icon(Iconsax.money),
-    'Pet-Friendly Products': const Icon(Iconsax.pet),
-    'Pet Pampering': const Icon(Icons.spa_outlined),
+  final Map<String, String> whyPloofy = {
+    'Affordable Packages': "assets/images/content/affordable_packages.png",
+    'Pet-Friendly Products': "assets/images/content/pet_friendly_products.png",
+    'Pet Pampering': "assets/images/content/pet_pampering.png",
   };
 
   @override
@@ -109,7 +109,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             url: 'assets/images/content/CREATE_YOUR.mp4'),
                         const SizedBox(height: 40), // Increased spacing
                         const Text(
-                          "Why Ploofy Nutrition?",
+                          "ADDITIONAL FEATURES",
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,

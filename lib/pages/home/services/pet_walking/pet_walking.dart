@@ -58,6 +58,13 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
     final selectedPlan = context.watch<SelectedPlanProvider>().selectedPlan;
     final plans = context.watch<SelectedPlanProvider>().plans;
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PackageProvider>().setPackage(Package(
+          name: "Walking: ${plans[0].title}",
+          price: (int.parse(plans[0].price.split(" ")[1])),
+          content: [plans[0].description]));
+    });
+
     return Scaffold(
       body: AdaptivePageScaffold(
         centertitle: true,

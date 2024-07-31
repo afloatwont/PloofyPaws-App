@@ -128,7 +128,7 @@ class _GroomingPackagesSectionState extends State<GroomingPackagesSection> {
                 ),
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const AppointmentConfirmation(),

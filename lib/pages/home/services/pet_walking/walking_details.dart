@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/divider_with_text.dart';
 import 'package:ploofypaws/components/feature_container.dart';
 import 'package:ploofypaws/components/property_row.dart';
@@ -10,22 +11,15 @@ import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart'
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-class NutritionScreen extends StatefulWidget {
-  const NutritionScreen({super.key});
+class WalkingDetails extends StatefulWidget {
+  const WalkingDetails({super.key});
 
   @override
-  State<NutritionScreen> createState() => _NutritionScreenState();
+  State<WalkingDetails> createState() => _WalkingDetailsState();
 }
 
-class _NutritionScreenState extends State<NutritionScreen> {
-  final Map<String, String> properties = {
-    "Balanced Diet": "assets/images/content/balanced_diet.png",
-    "Weight management": "assets/images/content/weight_management.png",
-    "Small paws diet": "assets/images/content/small_paws_diet.png",
-    "Customised products": "assets/images/content/customised_products.png",
-  };
-
-  final List<Map<String, String>> features = const [
+class _WalkingDetailsState extends State<WalkingDetails> {
+  final List<Map<String, String>> features = [
     {
       'imagePath': 'assets/images/content/pt1.png',
       'title': "Weight Tracking:",
@@ -46,10 +40,17 @@ class _NutritionScreenState extends State<NutritionScreen> {
     },
   ];
 
+  final Map<String, String> properties = {
+    "Fixed Walker": "assets/images/content/fixed_walker.png",
+    "Daily Walks": "assets/images/content/daily_walks.png",
+    "Custom Exercise Plans": "assets/images/content/custom_exercise_plans.png",
+    "Flexible Time": "assets/images/content/flexible_time.png",
+  };
+
   final Map<String, String> whyPloofy = {
-    "Expert Guidance": "assets/images/content/expert_guidance.png",
-    "Health Benefits": "assets/images/content/health_benefits.png",
-    "Dietary Insights": "assets/images/content/dietar_insights.png",
+    'Affordable rates': "assets/images/content/affordable_rates.png",
+    'Personalised Attention': "assets/images/content/personalised_attention.png",
+    'Experienced Walkers': "assets/images/content/experienced_walkers.png",
   };
 
   @override
@@ -59,13 +60,12 @@ class _NutritionScreenState extends State<NutritionScreen> {
     return SafeArea(
       top: false,
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Stack(
           children: [
             Positioned.fill(
               child: CachedNetworkImage(
                 imageUrl: urlProvider
-                    .urlMap['assets/images/content/nutrition_bg.png']!,
+                    .urlMap['assets/images/content/grooming_bg.png']!,
                 placeholder: null,
                 errorWidget: null,
                 fit: BoxFit.fitHeight,
@@ -80,11 +80,11 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 children: [
                   TopBar(
                     appBarHeight: appBarHeight,
-                    gradient: const Color(0xfff5b96e),
-                    textColor: const Color(0xffbc6a03),
-                    image: 'assets/images/content/logo_yellow.png',
-                    title: "Ploofy Nutrition",
-                    subtitle: "your pets' health companions",
+                    gradient: const Color(0xffE3C7B1),
+                    textColor: const Color(0xff805736),
+                    image: 'assets/images/content/logo_grey.png',
+                    title: "Ploofy Walking",
+                    subtitle: "your pets' walking companion",
                   ),
                   buildDividerWithText(context, "For your companion!"),
                   Padding(
@@ -95,26 +95,27 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         const Padding(
                           padding: EdgeInsets.only(top: 16.0, bottom: 8),
                           child: Text(
-                            "Why Ploofy Grooming?",
+                            "Why Ploofy Walking?",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
                         FeatureContainer(
-                            color: const Color(0xfff5b96e), features: features),
+                            color: const Color(0xff805736),
+                            features: features,
+                            textColor: Colors.white),
                         const SizedBox(height: 40), // Increased spacing
                         const VideoWidget(
                             url: 'assets/images/content/CREATE_YOUR.mp4'),
                         const SizedBox(height: 40), // Increased spacing
                         const Text(
-                          "Why Ploofy Nutrition?",
+                          "ADDITIONAL FEATURES",
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 40), // Increased spacing
-                        // buildIconRow2(context),
                         PropertyRow2(properties: whyPloofy),
                         SizedBox(
                             height: MediaQuery.sizeOf(context).height * 0.1),
