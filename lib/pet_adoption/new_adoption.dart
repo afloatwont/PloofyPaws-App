@@ -87,27 +87,33 @@ class _PetAdoptionScreenState extends State<PetAdoptionScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: CarouselSlider(
-                items: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 12.0, top: 30, right: 12, bottom: 20),
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: CachedNetworkImageProvider(urlProvider
-                              .urlMap["assets/images/content/adopt.png"]!),
-                          fit: BoxFit.fill,
+              items: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
+                  child: Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                          urlProvider
+                              .urlMap["assets/images/content/adopt.png"]!,
                         ),
-                        borderRadius: BorderRadius.circular(20),
+                        fit: BoxFit.contain,
                       ),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                ],
-                options: CarouselOptions(
-                  autoPlay: true,
-                  initialPage: 0,
-                )),
+                ),
+                // Add other images as needed
+              ],
+              options: CarouselOptions(
+                autoPlay: true,
+                initialPage: 0,
+                viewportFraction:
+                    1.0, // Ensures only one image is displayed at a time
+              ),
+            ),
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,

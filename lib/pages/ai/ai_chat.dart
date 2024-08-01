@@ -39,7 +39,7 @@ class _AiScreenState extends State<AiScreen> {
     _initializeServices();
     _initializeBot();
     _loadInitialMessages();
-    _setSystemUIOverlayStyle();
+    // _setSystemUIOverlayStyle();
   }
 
   void _initializeServices() {
@@ -71,14 +71,14 @@ class _AiScreenState extends State<AiScreen> {
     });
   }
 
-  void _setSystemUIOverlayStyle() {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      systemNavigationBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.light,
-    ));
-  }
+  // void _setSystemUIOverlayStyle() {
+  //   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //     statusBarColor: Colors.white,
+  //     systemNavigationBarColor: Colors.white,
+  //     statusBarIconBrightness: Brightness.light,
+  //     statusBarBrightness: Brightness.light,
+  //   ));
+  // }
 
   Future<void> _sendMessage(String text) async {
     if (text.isNotEmpty) {
@@ -99,31 +99,35 @@ class _AiScreenState extends State<AiScreen> {
   Widget build(BuildContext context) {
     final appBarHeight = MediaQuery.of(context).size.height * 0.34;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Container(
-        height: MediaQuery.sizeOf(context).height,
-        decoration: const BoxDecoration(
-            // color: Colors.white,
-            ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              // Ensure the scrollable area is constrained in height
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    AiAppBar(appBarHeight: appBarHeight),
-                    Column(
-                        children: List.generate(
-                            messages.length, _buildMessageBubble)),
-                  ],
+    return SafeArea(
+      bottom: false,
+      top: true,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: Container(
+          height: MediaQuery.sizeOf(context).height,
+          decoration: const BoxDecoration(
+              // color: Colors.white,
+              ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                // Ensure the scrollable area is constrained in height
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      AiAppBar(appBarHeight: appBarHeight),
+                      Column(
+                          children: List.generate(
+                              messages.length, _buildMessageBubble)),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            _buildMessageInput(),
-          ],
+              _buildMessageInput(),
+            ],
+          ),
         ),
       ),
     );

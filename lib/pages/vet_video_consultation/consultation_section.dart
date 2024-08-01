@@ -79,6 +79,7 @@ class _ConsultationSectionState extends State<ConsultationSection> {
               right: 0,
               child: ElevatedButton(
                 onPressed: () {
+                  print("pressed make appointment");
                   _showScrollableBottomSheet(context);
                 },
                 style: ElevatedButton.styleFrom(

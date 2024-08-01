@@ -36,12 +36,7 @@ class AiAppBar extends StatelessWidget {
               errorWidget: (context, url, error) => const Icon(Icons.error),
               fit: BoxFit.cover,
             ),
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 25, sigmaY: 15),
-            child: Container(
-              color: Colors.black.withOpacity(0),
-            ),
-          ),
+          
           Padding(
             padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
             child: Column(
