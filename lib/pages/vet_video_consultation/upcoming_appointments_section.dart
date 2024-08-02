@@ -28,91 +28,117 @@ class UpcomingAppointmentsSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: Colors.grey.shade400,
-            ),
-          ),
-          child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        // const SizedBox(height: 8),
+        Stack(
+          children: [
+            Positioned(
+                top: 0,
+                right: -MediaQuery.sizeOf(context).width * 0.1,
+                bottom: 0,
+                child: CachedNetworkImage(
+                  imageUrl: urlProvider
+                      .urlMap['assets/images/content/Ellipse_253.png']!,
+                  placeholder: null,
+                  errorWidget: null,
+                  fit: BoxFit.cover,
+                )),
+            Positioned(
+                top: 0,
+                left: MediaQuery.sizeOf(context).width * 0.4,
+                child: CachedNetworkImage(
+                  imageUrl: urlProvider
+                      .urlMap['assets/images/content/Ellipse_254.png']!,
+                  placeholder: null,
+                  errorWidget: null,
+                )),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Colors.grey.shade400,
+                ),
+              ),
+              child: Row(
                 children: [
-                  Row(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircleAvatar(
-                          radius: 24,
-                          backgroundColor: Colors.blueGrey[50],
-                          backgroundImage: CachedNetworkImageProvider(
-                              urlProvider.urlMap[
-                                  'assets/images/services/cardimg.png']!)),
-                      const SizedBox(width: 16),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text('Dr. Samira Sharma', style: TextStyle()),
-                          Text('Veterinarian (Animal welfare)',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          Row(
+                          CircleAvatar(
+                              radius: 16,
+                              backgroundColor: Colors.blueGrey[50],
+                              backgroundImage: CachedNetworkImageProvider(
+                                  urlProvider.urlMap[
+                                      'assets/images/services/cardimg.png']!)),
+                          const SizedBox(width: 7),
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(Icons.star, color: Colors.yellow, size: 16),
-                              Text('4.8'),
+                              Text('Dr. Samira Sharma', style: TextStyle()),
+                              Text('Veterinarian (Animal welfare)',
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold)),
+                              Row(
+                                children: [
+                                  Icon(Icons.star,
+                                      color: Colors.yellow, size: 16),
+                                  Text('4.8'),
+                                ],
+                              ),
+                              SizedBox(height: 4),
                             ],
                           ),
-                          SizedBox(height: 4),
                         ],
+                      ),
+                      Container(
+                        // width: double.maxFinite,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 0, 137, 249),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: IntrinsicWidth(
+                          stepWidth: 2,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.calendar_today_outlined,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                date,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  Container(
-                    // width: double.maxFinite,
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 0, 137, 249),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: IntrinsicWidth(
-                      stepWidth: 2,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.calendar_today_outlined,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            date,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  Expanded(
+                      child: CachedNetworkImage(
+                    imageUrl: urlProvider
+                        .urlMap["assets/images/content/doctor_and_dog.png"]!,
+                    placeholder: null,
+                    errorWidget: null,
+                    height: 70,
+                    fit: BoxFit.fitHeight,
+                  )),
                 ],
               ),
-              Expanded(
-                  child: CachedNetworkImage(
-                imageUrl: urlProvider
-                    .urlMap["assets/images/content/doctor_and_dog.png"]!,
-                placeholder: null,
-                errorWidget: null,
-                fit: BoxFit.fitHeight,
-              )),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

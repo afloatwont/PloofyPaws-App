@@ -31,47 +31,62 @@ class _ConsultationSectionState extends State<ConsultationSection> {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.53,
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color.fromARGB(150, 238, 242, 251),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Stack(
         children: [
-          _buildButton(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 16),
-              _buildBulletPoint(
-                text: '30 minutes dedicated session',
-                boldText: '30 minutes',
-              ),
-              const SizedBox(height: 8),
-              _buildBulletPoint(
-                text: 'Vets with 4+ years of experience',
-                boldText: '4+',
-              ),
-              const SizedBox(height: 8),
-              _buildBulletPoint(
-                text: 'Free follow-up chat',
-                boldText: 'Free',
-              ),
-              const SizedBox(height: 8),
-              _buildBulletPoint(
-                text: 'Digital medical prescription',
-              ),
-              const SizedBox(height: 8),
-              _buildBulletPoint(
-                text:
-                    'Resolve all your concerns with expert\'s consultations effectively',
-                boldText: 'Resolve',
-              ),
-              const SizedBox(height: 32),
-            ],
+          Positioned(
+              right: 0,
+              top: 0,
+              child: CachedNetworkImage(
+                imageUrl: urlProvider
+                    .urlMap['assets/images/content/Ellipse_1299.png']!,
+                placeholder: null,
+                errorWidget: null,
+              )),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: _buildButton(),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildHeader(),
+                const SizedBox(height: 16),
+                _buildBulletPoint(
+                  text: '30 minutes dedicated session',
+                  boldText: '30 minutes',
+                ),
+                const SizedBox(height: 8),
+                _buildBulletPoint(
+                  text: 'Vets with 4+ years of experience',
+                  boldText: '4+',
+                ),
+                const SizedBox(height: 8),
+                _buildBulletPoint(
+                  text: 'Free follow-up chat',
+                  boldText: 'Free',
+                ),
+                const SizedBox(height: 8),
+                _buildBulletPoint(
+                  text: 'Digital medical prescription',
+                ),
+                const SizedBox(height: 8),
+                _buildBulletPoint(
+                  text:
+                      'Resolve all your concerns with expert\'s consultations effectively',
+                  boldText: 'Resolve',
+                ),
+                const SizedBox(height: 32),
+              ],
+            ),
           ),
         ],
       ),
