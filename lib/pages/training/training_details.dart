@@ -19,25 +19,23 @@ class TrainingDetails extends StatefulWidget {
 
 class _TrainingDetailsState extends State<TrainingDetails> {
   final List<Map<String, String>> features = [
-    {
-      'imagePath': 'assets/images/content/pt1.png',
-      'title': "Weight Tracking:",
-      'description':
-          "Allows you to track your pet's weight over time to monitor progress and make adjustments to the diet plan as needed.",
-    },
-    {
-      'imagePath': 'assets/images/content/pt2.png',
-      'title': "Food Recommendations:",
-      'description':
-          "Provide a list of recommended pet foods or recipes tailored to the pet's nutritional needs.",
-    },
-    {
-      'imagePath': 'assets/images/content/pt3.png',
-      'title': "Reminders and Notifications:",
-      'description':
-          "You can set up a feeding schedule with reminders to ensure regular and timely meals.",
-    },
-  ];
+  {
+    'imagePath': 'assets/images/content/pt1.png',
+    'title': "Tailored Training Plans",
+    'description': "Our expert trainers create customized training programs that address your pet’s specific behavior issues and learning pace, ensuring effective results.",
+  },
+  {
+    'imagePath': 'assets/images/content/pt2.png',
+    'title': "Progress Tracking",
+    'description': "Detailed progress reports and regular updates, allowing you to monitor your pet’s improvement and adjust training strategies.",
+  },
+  {
+    'imagePath': 'assets/images/content/pt3.png',
+    'title': "Supportive Environment",
+    'description': "Our training sessions are conducted in a positive environment, fostering a bond of trust and cooperation between you and your pet.",
+  },
+];
+
 
   final Map<String, String> properties = {
     "Behavorial Training": "assets/images/content/behavorial_training.png",

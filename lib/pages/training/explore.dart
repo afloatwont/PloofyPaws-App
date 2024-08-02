@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/divider_with_text.dart';
 import 'package:ploofypaws/components/feature_container.dart';
 import 'package:ploofypaws/components/property_row.dart';
@@ -9,7 +8,6 @@ import 'package:ploofypaws/components/top_bar.dart';
 import 'package:ploofypaws/components/video_box.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -22,21 +20,21 @@ class _ExploreScreenState extends State<ExploreScreen> {
   final List<Map<String, String>> features = [
     {
       'imagePath': 'assets/images/content/pt1.png',
-      'title': "Weight Tracking:",
+      'title': "Breed-Specific Grooming",
       'description':
-          "Allows you to track your pet's weight over time to monitor progress and make adjustments to the diet plan as needed.",
+          "We provide specialized grooming techniques according to breed standards of your pets.",
     },
     {
       'imagePath': 'assets/images/content/pt2.png',
-      'title': "Food Recommendations:",
+      'title': "Experienced Groomers",
       'description':
-          "Provide a list of recommended pet foods or recipes tailored to the pet's nutritional needs.",
+          "Our team consists of trained and certified groomers who understand your pet’s unique grooming needs and ensure a stress-free experience.",
     },
     {
       'imagePath': 'assets/images/content/pt3.png',
-      'title': "Reminders and Notifications:",
+      'title': "Safety and Hygiene",
       'description':
-          "You can set up a feeding schedule with reminders to ensure regular and timely meals.",
+          "We adhere to strict hygiene protocols and use high-quality, pet-safe products to ensure the safety and well-being of your pet during every grooming session.",
     },
   ];
 
@@ -73,7 +71,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
             Positioned.fill(
                 child: Container(
-              color: Color.fromARGB(191, 255, 255, 255),
+              color: const Color.fromARGB(191, 255, 255, 255),
             )),
             SingleChildScrollView(
               child: Column(

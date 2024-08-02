@@ -20,25 +20,23 @@ class WalkingDetails extends StatefulWidget {
 
 class _WalkingDetailsState extends State<WalkingDetails> {
   final List<Map<String, String>> features = [
-    {
-      'imagePath': 'assets/images/content/pt1.png',
-      'title': "Weight Tracking:",
-      'description':
-          "Allows you to track your pet's weight over time to monitor progress and make adjustments to the diet plan as needed.",
-    },
-    {
-      'imagePath': 'assets/images/content/pt2.png',
-      'title': "Food Recommendations:",
-      'description':
-          "Provide a list of recommended pet foods or recipes tailored to the pet's nutritional needs.",
-    },
-    {
-      'imagePath': 'assets/images/content/pt3.png',
-      'title': "Reminders and Notifications:",
-      'description':
-          "You can set up a feeding schedule with reminders to ensure regular and timely meals.",
-    },
-  ];
+  {
+    'imagePath': 'assets/images/content/pt1.png',
+    'title': "Real-time GPS Tracking",
+    'description': "Stay connected with real-time tracking of your pet’s walks, ensuring peace of mind.",
+  },
+  {
+    'imagePath': 'assets/images/content/pt2.png',
+    'title': "Health Monitoring",
+    'description': "Our walkers keep an eye on your pet’s physical activity and well-being, providing feedback and suggestions for maintaining optimal health.",
+  },
+  {
+    'imagePath': 'assets/images/content/pt3.png',
+    'title': "Safety Assurance",
+    'description': "Our walkers are trained to handle various situations, ensuring your pet’s safety and security during every walk.",
+  },
+];
+
 
   final Map<String, String> properties = {
     "Fixed Walker": "assets/images/content/fixed_walker.png",

@@ -41,7 +41,7 @@ class _DeviceFoundState extends State<DeviceFound> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+
   }
 
   @override
@@ -75,7 +75,7 @@ class _DeviceFoundState extends State<DeviceFound> {
                         height: MediaQuery.sizeOf(context).height * 0.28,
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                              colors: [Color(0xff1A1A1A), Color(0xffB8E8E8E)],
+                              colors: [Color(0xff1A1A1A), Color(0xffb8e8e8e)],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight),
                           borderRadius: BorderRadius.circular(20),
