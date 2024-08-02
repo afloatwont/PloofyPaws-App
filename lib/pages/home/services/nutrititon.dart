@@ -22,7 +22,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
     "Balanced Diet": "assets/images/content/balanced_diet.png",
     "Weight management": "assets/images/content/weight_management.png",
     "Small paws diet": "assets/images/content/small_paws_diet.png",
-    "Customised products": "assets/images/content/customised_products.png",
+    "Customised recipies": "assets/images/content/customised_recipies.png",
   };
 
   final List<Map<String, String>> features = const [
@@ -49,7 +49,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
   final Map<String, String> whyPloofy = {
     "Expert Guidance": "assets/images/content/expert_guidance.png",
     "Health Benefits": "assets/images/content/health_benefits.png",
-    "Dietary Insights": "assets/images/content/dietar_insights.png",
+    "Dietary Insights": "assets/images/content/dietary_insights.png",
   };
 
   @override

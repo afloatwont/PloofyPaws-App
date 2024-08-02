@@ -19,7 +19,8 @@ class PropertyRow extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              CachedNetworkImage(
+             if(urlMap[entry.value] != null) 
+             CachedNetworkImage(
                 imageUrl: urlMap[entry.value]!,
                 placeholder: null,
                 errorWidget: null,

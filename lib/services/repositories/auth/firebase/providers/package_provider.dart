@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Package {
-  String name;
-  int price;
-  List<String> content;
+  String? name;
+  int? price;
+  List<String>? content;
   DateTime? time;
 
   Package({
     required this.name,
     required this.price,
     required this.content,
-     this.time,
+    this.time,
   });
 }
 
@@ -22,6 +22,26 @@ class PackageProvider with ChangeNotifier {
 
   void setPackage(Package? package) {
     _package = package;
+    notifyListeners();
+  }
+
+  void setName(String name) {
+    _package?.name = name;
+    notifyListeners();
+  }
+
+  void setPrice(int price) {
+    _package?.price = price;
+    notifyListeners();
+  }
+
+  void setContent(List<String> content) {
+    _package?.content = content;
+    notifyListeners();
+  }
+
+  void setTime(DateTime time) {
+    _package?.time = time;
     notifyListeners();
   }
 

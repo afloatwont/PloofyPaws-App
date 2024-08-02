@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/components/walker_modal_sheet.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
-import 'package:ploofypaws/pages/vet_video_consultation/bottom_sheet.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
 import 'package:provider/provider.dart';
 import 'Veternian.dart';
 
@@ -16,6 +16,19 @@ class ConsultationSection extends StatefulWidget {
 }
 
 class _ConsultationSectionState extends State<ConsultationSection> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    context.read<PackageProvider>().removePackage();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -166,6 +179,11 @@ class _ConsultationSectionState extends State<ConsultationSection> {
 void _showScrollableBottomSheet(BuildContext context) {
   final screenSize = MediaQuery.of(context).size;
   final docProvider = context.read<VeterinaryDoctorProvider>();
+  final packageProvider = context.read<PackageProvider>();
+  packageProvider.setPackage(Package(
+      name: docProvider.doctor?.name ?? docProvider.docs![0].name,
+      price: 299,
+      content: ["Vet Video Consultation"]));
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -239,7 +257,13 @@ void _showScrollableBottomSheet(BuildContext context) {
                   ),
                   buildCalenderPart(screenSize),
                   buildtime(screenSize),
-                  buildbutton(context, screenSize)
+                  buildbutton(context, screenSize, () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => const AppointmentConfirmation(),
+                    //     ));
+                  }),
                 ],
               ),
             ),

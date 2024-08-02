@@ -5,6 +5,7 @@ import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.da
 import 'package:ploofypaws/razorpay/payment_razorpay.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/doctor_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/doctor_provider.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/components/adaptive_modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/button.dart';
@@ -86,7 +87,7 @@ class _ModalSheetState extends State<ModalSheet> {
                     ),
                     buildCalenderPart(screenSize),
                     buildtime(screenSize),
-                    buildbutton(context, screenSize)
+                    buildbutton(context, screenSize, () {}),
                   ],
                 ),
               ),
@@ -112,17 +113,34 @@ class _ModalSheetState extends State<ModalSheet> {
   }
 }
 
-class VetOption extends StatelessWidget {
+class VetOption extends StatefulWidget {
   final VeterinaryDoctor doctor;
 
   const VetOption({super.key, required this.doctor});
 
   @override
+  State<VetOption> createState() => _VetOptionState();
+}
+
+class _VetOptionState extends State<VetOption> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    final packageProvider = context.read<PackageProvider>();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) => packageProvider
+          .setName(widget.doctor.name ?? "Vet Video Consultation"),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final docProvider = context.watch<VeterinaryDoctorProvider>();
+    final docProvider = context.read<VeterinaryDoctorProvider>();
     return GestureDetector(
       onTap: () {
-        docProvider.setDoctor(doctor);
+        docProvider.setDoctor(widget.doctor);
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -134,7 +152,7 @@ class VetOption extends StatelessWidget {
                 height: 60,
                 width: 60,
                 decoration: BoxDecoration(
-                  color: doctor == docProvider.doctor
+                  color: widget.doctor == docProvider.doctor
                       ? Colors.grey
                       : Colors.grey[300],
                   borderRadius: BorderRadius.circular(20),
@@ -145,13 +163,13 @@ class VetOption extends StatelessWidget {
                     height: 20,
                     width: 20,
                     decoration: BoxDecoration(
-                      color: doctor == docProvider.doctor
+                      color: widget.doctor == docProvider.doctor
                           ? Colors.black
                           : Colors.grey,
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.white, width: 4),
                     ),
-                    child: doctor == docProvider.doctor
+                    child: widget.doctor == docProvider.doctor
                         ? const Center(
                             child: Icon(
                               Icons.check,
@@ -167,7 +185,7 @@ class VetOption extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                doctor.name!,
+                widget.doctor.name!,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 10,
@@ -181,7 +199,7 @@ class VetOption extends StatelessWidget {
   }
 }
 
-Widget buildbutton(BuildContext context, Size screenSize) {
+Widget buildbutton(BuildContext context, Size screenSize, VoidCallback onTap) {
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 20),
     child: SizedBox(
@@ -190,8 +208,11 @@ Widget buildbutton(BuildContext context, Size screenSize) {
       child: Button(
         borderRadius: BorderRadius.circular(42),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AppointmentConfirmation()));
+          onTap();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AppointmentConfirmation()));
         },
         variant: 'filled',
         label: 'Confirm',
@@ -235,13 +256,13 @@ Widget buildtime(Size screenSize) {
       DateTime(2024, 7, 23, 6, 30); // Example start time: 6:30 AM
 
   return Consumer<TimeProvider>(builder: (context, timeProvider, child) {
-    List<String> times = generateTimes(9, startTime);
+    List<String> times = generateTimes(12, startTime);
 
     return Padding(
       padding: EdgeInsets.all(screenSize.width * 0.03),
       child: Column(
         children: List.generate(
-          3,
+          4,
           (rowIndex) {
             return Column(
               children: [

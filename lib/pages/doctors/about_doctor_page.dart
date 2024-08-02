@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:ploofypaws/controllers/calender_provider.dart';
 import 'package:ploofypaws/controllers/time_provider.dart';
 import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ploofypaws/components/button.dart';
@@ -359,9 +362,23 @@ class TimeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeProvider = context.watch<TimeProvider>();
+    final packageProvider = context.watch<PackageProvider>();
+    final calendarProvider = context.watch<CalendarProvider>();
+
     return GestureDetector(
       onTap: () {
         timeProvider.setTime(time);
+
+        // Get the original DateTime and print it
+        DateTime originalTime = getOriginalTime();
+        print("Original time: $originalTime");
+
+        DateTime combinedDateTime = getCombinedDateTime(
+          calendarProvider.selectedDate ?? DateTime.now(),
+          originalTime,
+        );
+
+        packageProvider.setTime(combinedDateTime);
       },
       child: Container(
         alignment: Alignment.center,
@@ -380,6 +397,32 @@ class TimeTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  // Method to convert the time string back to a DateTime object
+  DateTime getOriginalTime() {
+    final DateFormat formatter = DateFormat.jm();
+    DateTime dateTime = formatter.parse(time);
+
+    // Combine the parsed time with the current date
+    return DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      dateTime.hour,
+      dateTime.minute,
+    );
+  }
+
+  // Method to combine the selected date with the original time
+  DateTime getCombinedDateTime(DateTime selectedDate, DateTime originalTime) {
+    return DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      originalTime.hour,
+      originalTime.minute,
     );
   }
 }

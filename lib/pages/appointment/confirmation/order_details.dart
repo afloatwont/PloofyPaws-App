@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetails extends StatelessWidget {
   const OrderDetails({super.key});
+
+  String formatDateTime(DateTime dateTime) {
+    // Format the date part
+    String datePart = DateFormat('dd MMM yy').format(dateTime);
+
+    // Format the time part
+    String timePart = DateFormat('h:mm a').format(dateTime);
+
+    // Combine date and time parts
+    return '$datePart – $timePart';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +31,7 @@ class OrderDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
@@ -33,16 +45,17 @@ class OrderDetails extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16.0),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Time Slot:',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                 ),
                 Text(
-                  '19 Jul 24 – 12:55 pm',
-                  style: TextStyle(fontSize: 16.0),
+                  formatDateTime(
+                      packageProvider.package?.time ?? DateTime.now()),
+                  style: const TextStyle(fontSize: 16.0),
                 ),
               ],
             ),
