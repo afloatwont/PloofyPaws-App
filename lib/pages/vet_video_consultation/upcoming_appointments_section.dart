@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class UpcomingAppointmentsSection extends StatelessWidget {
                 )),
             Positioned(
                 top: 0,
-                left: MediaQuery.sizeOf(context).width * 0.4,
+                left: MediaQuery.sizeOf(context).width * 0.45,
                 child: CachedNetworkImage(
                   imageUrl: urlProvider
                       .urlMap['assets/images/content/Ellipse_254.png']!,
@@ -75,23 +76,24 @@ class UpcomingAppointmentsSection extends StatelessWidget {
                                   urlProvider.urlMap[
                                       'assets/images/services/cardimg.png']!)),
                           const SizedBox(width: 7),
-                          const Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Dr. Samira Sharma', style: TextStyle()),
-                              Text('Veterinarian (Animal welfare)',
+                              Text('Dr. Samira Sharma',
+                                  style: typography(context).strongSmallBody),
+                              const Text('Veterinarian (Animal welfare)',
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 11,
                                       fontWeight: FontWeight.bold)),
-                              Row(
+                              const Row(
                                 children: [
                                   Icon(Icons.star,
                                       color: Colors.yellow, size: 16),
                                   Text('4.8'),
                                 ],
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                             ],
                           ),
                         ],
