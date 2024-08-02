@@ -23,6 +23,7 @@ class DeviceFound extends StatefulWidget {
 }
 
 class _DeviceFoundState extends State<DeviceFound> {
+
   Future<void> fetchData(String imei) async {
     final response = await http.get(Uri.parse(
         'https://vahantrack.com/api/api.php?api=user&ver=1.0&key=E43FEC932566D9E32F1CD2DC3F5CAE01&cmd=OBJECT_GET_LOCATIONS,$imei'));
@@ -34,6 +35,13 @@ class _DeviceFoundState extends State<DeviceFound> {
       final battery = double.parse(data['params']['bats']);
       final trackerDateTime = DateTime.parse(data['dt_tracker']);
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
   }
 
   @override

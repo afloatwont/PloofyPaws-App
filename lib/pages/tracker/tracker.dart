@@ -250,6 +250,7 @@
 //   }
 // }
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ploofypaws/components/adaptive_page_scaffold.dart';
@@ -258,11 +259,16 @@ import 'package:ploofypaws/components/gradient_header.dart';
 import 'package:ploofypaws/components/gradient_text_icon.dart';
 import 'package:ploofypaws/config/theme/theme.dart';
 import 'package:ploofypaws/location/map_location.dart';
+import 'package:ploofypaws/pages/tracker/device_card.dart';
 import 'package:ploofypaws/pages/tracker/input_imei.dart';
+import 'package:ploofypaws/pages/tracker/map/map_widget.dart';
 import 'package:ploofypaws/pages/tracker/pairing.dart';
 import 'package:ploofypaws/pages/tracker/tracker_screen.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:cupertino_battery_indicator/cupertino_battery_indicator.dart'
+    as cbi;
 
 class Tracker extends StatefulWidget {
   const Tracker({super.key});
@@ -301,12 +307,17 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final urlProvider = context.read<UrlProvider>();
+    final mq = MediaQuery.sizeOf(context);
     return AdaptivePageScaffold(
         appBarBottom: PreferredSize(
           preferredSize: const Size.fromHeight(0),
           child: GestureDetector(
-            onTap: (){
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>const TrackerScreen()));
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const TrackerScreen()));
             },
             child: GradientHeader(
                 title: Row(
@@ -330,8 +341,8 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
                             .copyWith(color: Colors.white))
                   ],
                 ),
-                trailing:
-                    const Icon(Icons.keyboard_arrow_right, color: Colors.white)),
+                trailing: const Icon(Icons.keyboard_arrow_right,
+                    color: Colors.white)),
           ),
         ),
         bottomNavigationBar: Padding(
@@ -351,8 +362,23 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
             buttonIcon: const Icon(Icons.add, color: Colors.white),
           ),
         ),
-        body: const Column(
-          children: [],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: ListView.separated(
+                    itemCount: 3,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 16),
+                    itemBuilder: (context, index) {
+                      return const DeviceCard();
+                    }),
+              ),
+            ],
+          ),
         ));
   }
 }

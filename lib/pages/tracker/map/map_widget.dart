@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 import 'package:http/http.dart' as http;
+import 'package:ploofypaws/location/map_animation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyMapWidget extends StatefulWidget {
@@ -200,19 +201,7 @@ class _MyMapWidgetState extends State<MyMapWidget> {
               child: const Icon(Icons.map_outlined),
             ),
           ),
-          if (isLoading)
-            Container(
-              width: double.infinity,
-              color: Colors.white.withOpacity(0.5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Lottie.asset('assets/images/content/pinMap.json'),
-                  const Text("Fetching your location"),
-                ],
-              ),
-            ),
+          if (isLoading) const MapAnimation(),
         ],
       ),
       bottomSheet: DraggableScrollableSheet(
