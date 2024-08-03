@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get_it/get_it.dart';
@@ -77,6 +79,7 @@ class AddressFormScreen extends StatefulWidget {
 class AddressFormScreenState extends State<AddressFormScreen> {
   LatLng? currentLocation;
   mb.MapboxMap? mapboxMap;
+  mb.PointAnnotationManager? pointAnnotationManager;
 
   @override
   void initState() {
@@ -131,7 +134,35 @@ class AddressFormScreenState extends State<AddressFormScreen> {
         ),
         mb.MapAnimationOptions(duration: 1),
       );
+      addMarker(LatLng(currentLocation!.latitude, currentLocation!.longitude));
     });
+  }
+
+  void addMarker(LatLng location) async {
+    if (pointAnnotationManager != null) {
+      final ByteData bytes =
+          await rootBundle.load('assets/images/content/marker.png');
+      final Uint8List list = bytes.buffer.asUint8List();
+
+      // Decode the image from the bytes
+      ui.Codec codec = await ui.instantiateImageCodec(list,
+          targetWidth: 120, targetHeight: 60, ); // resize to 50x50
+      ui.FrameInfo frameInfo = await codec.getNextFrame();
+      ui.Image resizedImage = frameInfo.image;
+
+      // Convert the resized image back to bytes
+      ByteData? resizedBytes =
+          await resizedImage.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List resizedList = resizedBytes!.buffer.asUint8List();
+
+      pointAnnotationManager!.create(
+        mb.PointAnnotationOptions(
+          geometry: mb.Point(
+              coordinates: mb.Position(location.longitude, location.latitude)),
+          image: resizedList,
+        ),
+      );
+    }
   }
 
   Future<String> getPlace(LatLng location) async {
@@ -153,6 +184,9 @@ class AddressFormScreenState extends State<AddressFormScreen> {
   void _onMapCreated(mb.MapboxMap map) {
     setState(() {
       mapboxMap = map;
+    });
+    map.annotations.createPointAnnotationManager().then((manager) {
+      pointAnnotationManager = manager;
     });
   }
 
@@ -577,7 +611,7 @@ class _AddressFormContentState extends State<AddressFormContent> {
         ),
         onPressed: () async {
           try {
-            userProvier.updateAddress(address);
+            // userProvier.updateAddress(address);
             await _userDatabaseService.updateAddress(
                 _authServices.user!.uid, address);
             final user = await _userDatabaseService

@@ -118,13 +118,13 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
               children: [
                 const Icon(Iconsax.home),
                 const SizedBox(width: 12),
-                _buildHeader(userProvider.user!.address?.saveAs ?? ""),
+                _buildHeader(userProvider.user!.address?[0].saveAs ?? ""),
               ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
-                  userProvider.user!.address?.getAddress().toUpperCase() ?? ""),
+                  userProvider.user!.address?[0].getAddress().toUpperCase() ?? ""),
             ),
             Row(
               children: [

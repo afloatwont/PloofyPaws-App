@@ -1,12 +1,11 @@
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/models/pet_model.dart';
 
 class UserModel {
   final String? id;
   final String? displayName;
   final String? email;
   final String? photoUrl;
-  final AddressModel? address;
+  final List<AddressModel>? address;
 
   UserModel({
     required this.id,
@@ -23,9 +22,9 @@ class UserModel {
       displayName: json['displayName'] as String?,
       email: json['email'] as String?,
       photoUrl: json['photoUrl'] as String?,
-      address: json['address'] != null
-          ? AddressModel.fromJson(json['address'] as Map<String, dynamic>)
-          : null,
+      address: (json['address'] as List<dynamic>?)
+          ?.map((e) => AddressModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 
@@ -36,7 +35,7 @@ class UserModel {
       'displayName': displayName,
       'email': email,
       'photoUrl': photoUrl,
-      'address': address?.toJson(),
+      'address': address?.map((e) => e.toJson()).toList(),
     };
   }
 }

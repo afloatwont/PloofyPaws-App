@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/address_model.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
@@ -16,18 +15,12 @@ class UserProvider with ChangeNotifier {
 
   void updateAddress(AddressModel address) {
     if (_user != null) {
-      _user = UserModel(
-        id: _user!.id,
-        displayName: _user!.displayName,
-        email: _user!.email,
-        photoUrl: _user!.photoUrl,
-        address: address,
-      );
+      _user!.address!.add(address);
       notifyListeners();
     }
   }
 
   bool hasAddress() {
-    return _user?.address != null;
+    return _user?.address?.isNotEmpty ?? false;
   }
 }

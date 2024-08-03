@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/pages/appointment/appointment.dart';
+import 'package:ploofypaws/pages/profile/app_settings/app_settings.dart';
 import 'package:ploofypaws/pages/profile/pet_life_event/memories.dart';
 import 'package:ploofypaws/pages/root/init_app.dart';
+import 'package:ploofypaws/pages/root/saved_address_page.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
@@ -19,18 +21,33 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   final List<Map<String, dynamic>> sidebarItems = [
-    {'title': 'My Orders', 'icon': Icons.shopping_bag_outlined},
-    {'title': 'Appointments', 'icon': Icons.calendar_today_outlined},
-    {'title': 'Cart', 'icon': Icons.shopping_cart_outlined},
-    {'title': 'Addresses', 'icon': Icons.location_on_outlined},
-    {'title': 'Rewards and Wallets', 'icon': Icons.card_giftcard_outlined},
-    {'title': 'Settings and Privacy', 'icon': Icons.settings_outlined},
-    {'title': 'About Us', 'icon': Icons.info_outline},
+    {'title': 'My Orders', 'icon': Icons.shopping_bag_outlined, 'pushTo': null},
+    {
+      'title': 'Appointments',
+      'icon': Icons.calendar_today_outlined,
+      'pushTo': const Appointment()
+    },
+    {'title': 'Cart', 'icon': Icons.shopping_cart_outlined, 'pushTo': null},
+    {
+      'title': 'Addresses',
+      'icon': Icons.location_on_outlined,
+      'pushTo': const SavedAddressPage()
+    },
+    {
+      'title': 'Rewards and Wallets',
+      'icon': Icons.card_giftcard_outlined,
+      'pushTo': null
+    },
+    {
+      'title': 'Settings and Privacy',
+      'icon': Icons.settings_outlined,
+      'pushTo': const AppSettings()
+    },
+    {'title': 'About Us', 'icon': Icons.info_outline, 'pushTo': null},
   ];
 
   final List<Widget> pages = [
     const Memories(),
-    const Appointment(),
   ];
 
   final GetIt _getIt = GetIt.instance;
@@ -147,11 +164,13 @@ class _SidebarState extends State<Sidebar> {
           ),
           onTap: () {
             // Handle item tap
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => pages[1],
-                ));
+            if (sidebarItems[index]['pushTo'] != null) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => sidebarItems[index]['pushTo'],
+                  ));
+            }
           },
         ),
       ),

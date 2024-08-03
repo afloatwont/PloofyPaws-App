@@ -114,7 +114,8 @@ class UserDatabaseService {
     print(address.toJson());
     final userDoc = _usersCollection!.doc(uid);
     await userDoc.update({
-      'address': address.toJson(), // Nesting the address fields under 'address'
+      'address': FieldValue.arrayUnion(
+          [address.toJson()]), // Nesting the address fields under 'address'
     });
     print("Address saved to cloud");
   }
