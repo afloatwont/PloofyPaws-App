@@ -137,7 +137,7 @@ class _VetOptionState extends State<VetOption> {
 
   @override
   Widget build(BuildContext context) {
-    final docProvider = context.read<VeterinaryDoctorProvider>();
+    final docProvider = context.watch<VeterinaryDoctorProvider>();
     return GestureDetector(
       onTap: () {
         docProvider.setDoctor(widget.doctor);
