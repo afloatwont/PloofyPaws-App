@@ -98,7 +98,7 @@ class _SignInPageState extends State<SignInPage> {
 
       if (!mounted) return;
 
-      final petProvider = context.read<PetProvider>();
+      final petProvider = context.watch<PetProvider>();
       userProvider.setUser(user);
       _databaseService.getAllPetsForUser(_authServices.user!.uid).then((value) {
         setState(() {
@@ -246,6 +246,8 @@ class _SignInPageState extends State<SignInPage> {
                             final user = await _databaseService
                                 .getUserProfileByUID(userAuth.id!);
                             userProvider.setUser(user);
+                            final petProvider = context.read<PetProvider>();
+                            await petProvider.update(user!.id!);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

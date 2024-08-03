@@ -112,9 +112,10 @@ class _RootState extends State<Root> {
       systemNavigationBarDividerColor: Colors.black,
     ));
     super.initState();
-    // _authServices = _getIt.get<AuthServices>();
+    _authServices = _getIt.get<AuthServices>();
     // _userDatabaseService = _getIt.get<UserDatabaseService>();
-    // final petProvider = context.read<PetProvider>();
+    final petProvider = context.read<PetProvider>();
+    petProvider.update(_authServices.user!.uid);
     // _userDatabaseService
     //     .getAllPetsForUser(_authServices.user!.uid)
     //     .then((value) {
