@@ -88,6 +88,22 @@ class _ConsultationSectionState extends State<ConsultationSection> {
               ],
             ),
           ),
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: ElevatedButton(
+                onPressed: () {
+                  print("pressed make appointment");
+                  _showScrollableBottomSheet(context);
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.transparent,
+                    fixedSize: const Size.fromWidth(double.maxFinite)),
+                child: const Text("Make Appointment"),
+              ),
+            ),
         ],
       ),
     );
@@ -107,8 +123,8 @@ class _ConsultationSectionState extends State<ConsultationSection> {
               right: 0,
               child: ElevatedButton(
                 onPressed: () {
-                  print("pressed make appointment");
-                  _showScrollableBottomSheet(context);
+                  // print("pressed make appointment");
+                  // _showScrollableBottomSheet(context);
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 30, 69, 160),
