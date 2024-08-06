@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/pages/tracker/input_imei.dart';
+import 'package:ploofypaws/razorpay/payment_razorpay.dart';
 import 'package:provider/provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 
@@ -131,33 +132,26 @@ class _TrackerScreenState extends State<TrackerScreen> {
                   const SizedBox(height: 30),
                   SwipeButton(
                     width: MediaQuery.sizeOf(context).width * 0.8,
-                    height: MediaQuery.sizeOf(context).height * 0.08,
+                    height: MediaQuery.sizeOf(context).height * 0.07,
                     thumb: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 162, 162, 162),
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(
-                                    3, 3), // Shadow position to the right
-                                blurRadius:
-                                    6, // Optional: adjust for softer shadow edges
-                              ),
-                            ],
-                          ),
-                        )),
-                    activeThumbColor: const Color.fromARGB(255, 255, 255, 255),
-                    activeTrackColor: const Color(0xff888888),
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(204, 255, 255, 255),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                    activeThumbColor: Colors.transparent,
+                    activeTrackColor: const Color(0xFF888888),
+                    elevationThumb: 5,
                     onSwipe: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const
                                 // TrackerPairingMode(),
-                                InputImeiScreen(),
+                                RazorPayScreen(),
                           ));
                     },
                     child: const Row(
@@ -378,19 +372,19 @@ class _TrackerScreenState extends State<TrackerScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
             CachedNetworkImage(
               width: MediaQuery.sizeOf(context).width,
               imageUrl:
-                  urlProvider.urlMap['assets/images/content/tracker_dog.png']!,
+                  urlProvider.urlMap['assets/images/content/connectivity.png']!,
               height: MediaQuery.sizeOf(context).height * 0.4,
               placeholder: null,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               errorWidget: null,
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.transparent,
@@ -408,19 +402,54 @@ class _TrackerScreenState extends State<TrackerScreen> {
                     mainAxisSpacing: 10,
                     childAspectRatio: 1,
                   ),
-                  itemCount: 4,
+                  itemCount: 2,
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(urlProvider.urlMap[
+                              'assets/images/content/grid_${index + 1}.png']!),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     );
                   },
                 ),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 10),
+            CachedNetworkImage(
+              width: MediaQuery.sizeOf(context).width,
+              imageUrl:
+                  urlProvider.urlMap['assets/images/content/tracker_4.png']!,
+              height: MediaQuery.sizeOf(context).height * 0.4,
+              placeholder: null,
+              fit: BoxFit.contain,
+              errorWidget: null,
+            ),
+            const SizedBox(height: 30),
+            CachedNetworkImage(
+              width: MediaQuery.sizeOf(context).width,
+              imageUrl:
+                  urlProvider.urlMap['assets/images/content/tracker_5.png']!,
+              height: MediaQuery.sizeOf(context).height * 0.4,
+              placeholder: null,
+              fit: BoxFit.cover,
+              errorWidget: null,
+            ),
+            const SizedBox(height: 30),
+            CachedNetworkImage(
+              width: MediaQuery.sizeOf(context).width,
+              imageUrl:
+                  urlProvider.urlMap['assets/images/content/tracker_dog.png']!,
+              height: MediaQuery.sizeOf(context).height * 0.4,
+              placeholder: null,
+              fit: BoxFit.cover,
+              errorWidget: null,
+            ),
+            const SizedBox(height: 30),
             CachedNetworkImage(
               width: MediaQuery.sizeOf(context).width,
               imageUrl: urlProvider

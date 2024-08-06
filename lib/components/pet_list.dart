@@ -16,6 +16,7 @@ class PetsList extends StatefulWidget {
 
 class _PetsListState extends State<PetsList> {
   List<String> petNames = [];
+  late PetProvider petProvider;
 
   void addPet() {
     Navigator.push(
@@ -24,6 +25,16 @@ class _PetsListState extends State<PetsList> {
         builder: (context) => const PetOnboarding(),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    petProvider = context.read<PetProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    petProvider.setCurrentPet(petProvider.pets?[0]);
+    });
   }
 
   @override

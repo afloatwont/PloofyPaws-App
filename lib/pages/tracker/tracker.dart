@@ -368,7 +368,7 @@ class _TrackerState extends State<Tracker> with SingleTickerProviderStateMixin {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: ListView.separated(
-                    itemCount: 3,
+                    itemCount: 1,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     separatorBuilder: (context, index) =>

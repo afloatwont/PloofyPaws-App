@@ -126,7 +126,7 @@ class _TrainingScreenState extends State<TrainingScreen>
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-              child: VideoWidget(url: 'assets/images/content/CREATE_YOUR.mp4'),
+              child: VideoWidget(url: 'assets/images/content/training.mp4'),
             ),
             Padding(
               padding:

@@ -86,9 +86,9 @@ class AddressModel with ChangeNotifier {
     if (location != null && location!.isNotEmpty) {
       addressParts.add(location!);
     }
-    if (isForMyself != null) {
-      addressParts.add(isForMyself! ? "For Myself" : "For Someone Else");
-    }
+    // if (isForMyself != null) {
+    //   addressParts.add(isForMyself! ? "For Myself" : "For Someone Else");
+    // }
     return addressParts.join(', ');
   }
 }

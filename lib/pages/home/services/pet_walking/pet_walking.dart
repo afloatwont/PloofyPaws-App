@@ -169,7 +169,11 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: SectionHeader(title: 'Our Walking Specialists'),
                 ),
-                const VideoWidget(url: 'assets/images/content/CREATE_YOUR.mp4'),
+                const Padding(
+                  padding: EdgeInsets.only(left: 8.0, right: 8),
+                  child: VideoWidget(
+                      url: 'assets/images/content/walking.mp4'),
+                ),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),

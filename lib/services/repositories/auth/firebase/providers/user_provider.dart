@@ -6,12 +6,21 @@ import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model
 
 class UserProvider with ChangeNotifier {
   UserModel? _user;
-
   UserModel? get user => _user;
+  AddressModel? selectedAddress;
+  UserProvider() {
+    selectedAddress = user?.address?.first;
+  }
 
   void setUser(UserModel? user) {
     _user = user;
     print("user updated");
+    notifyListeners();
+  }
+
+  void selectAddress(AddressModel? address) {
+    selectedAddress = address;
+    print("selected address: ${address?.flatNo}");
     notifyListeners();
   }
 

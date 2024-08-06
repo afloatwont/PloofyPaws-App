@@ -4,6 +4,7 @@ import 'package:video_player/video_player.dart';
 class VideoWidget extends StatefulWidget {
   const VideoWidget({super.key, required this.url});
   final String url;
+
   @override
   State<VideoWidget> createState() => _VideoWidgetState();
 }
@@ -41,12 +42,21 @@ class _VideoWidgetState extends State<VideoWidget> {
             return AspectRatio(
               aspectRatio: 16 / 9,
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: VideoPlayer(_controller)),
+                borderRadius: BorderRadius.circular(16),
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    width: _controller.value.size.width,
+                    height: _controller.value.size.height,
+                    child: VideoPlayer(_controller),
+                  ),
+                ),
+              ),
             );
           } else {
             return const Center(
-                child: CircularProgressIndicator(color: Colors.black));
+              child: CircularProgressIndicator(color: Colors.black),
+            );
           }
         },
       ),

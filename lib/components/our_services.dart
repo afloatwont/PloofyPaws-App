@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 
 class ServicesGrid extends StatelessWidget {
   const ServicesGrid({super.key, required this.titles});
-    // List of titles
+  // List of titles
   final List<String> titles;
 
   @override
@@ -20,11 +19,11 @@ class ServicesGrid extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: 6,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 12.0,
-              mainAxisSpacing: 10.0,
-              childAspectRatio: itemWidth / itemHeight,
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 1.0,
+              childAspectRatio: 1,
             ),
             itemBuilder: (context, index) {
               return _buildServiceItem(titles[index], itemWidth, itemHeight);
@@ -35,11 +34,9 @@ class ServicesGrid extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildServiceItem(String title, double width, double height) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           height: height * 0.5,

@@ -111,10 +111,11 @@ class _MyAppState extends State<MyApp> {
       _userDatabaseService
           .getAllPetsForUser(_authServices.user!.uid)
           .then((value) {
-        if (value!.isNotEmpty) {
+        if (value != null && value.isNotEmpty) {
           setState(() {
             print(value[0].name);
             petProvider.setPets(value);
+            petProvider.setCurrentPet(value[0]);
           });
         }
       });

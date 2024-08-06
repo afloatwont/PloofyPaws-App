@@ -126,7 +126,7 @@ class _GroomingScreenState extends State<GroomingScreen>
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-              child: VideoWidget(url: 'assets/images/content/CREATE_YOUR.mp4'),
+              child: VideoWidget(url: 'assets/images/content/grooming.mp4'),
             ),
             Padding(
               padding:

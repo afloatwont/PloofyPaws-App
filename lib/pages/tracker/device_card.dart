@@ -27,7 +27,7 @@ class _DeviceCardState extends State<DeviceCard> {
       },
       child: Container(
         // padding: const EdgeInsets.all(16),
-        height: MediaQuery.sizeOf(context).height * 0.28,
+        height: MediaQuery.sizeOf(context).height * 0.24,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
               colors: [Color(0xff1A1A1A), Color(0xffB8E8E8E)],
@@ -85,7 +85,7 @@ class _DeviceCardState extends State<DeviceCard> {
                           Text("2g", style: TextStyle(color: Colors.grey[50])),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -104,7 +104,7 @@ class _DeviceCardState extends State<DeviceCard> {
                 ),
               ),
               Positioned(
-                  bottom: mq.height * 0.06,
+                  bottom: mq.height * 0.0425,
                   left: mq.width * 0.18,
                   child: IconButton(
                       onPressed: () {},
@@ -121,7 +121,7 @@ class _DeviceCardState extends State<DeviceCard> {
                         ),
                       ))),
               Positioned(
-                  bottom: mq.height * 0.06,
+                  bottom: mq.height * 0.0425,
                   left: mq.width * 0.04,
                   child: IconButton(
                       onPressed: () {},
@@ -161,13 +161,13 @@ class _DeviceCardState extends State<DeviceCard> {
                     value: 0.6,
                     trackHeight: 10,
                     barColor: Colors.white,
-                    trackColor: Colors.black,
+                    trackColor: Colors.transparent,
                     trackBorderColor: Colors.white,
                   ),
                 ),
               ),
               Positioned(
-                  bottom: mq.height * 0.02,
+                  bottom: mq.height * 0.008,
                   left: mq.width * 0.06,
                   child: Container(
                     padding:

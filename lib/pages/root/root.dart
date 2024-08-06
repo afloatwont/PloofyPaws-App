@@ -114,6 +114,9 @@ class _RootState extends State<Root> {
     _authServices = _getIt.get<AuthServices>();
     final petProvider = context.read<PetProvider>();
     petProvider.update(_authServices.user!.uid);
+    if (petProvider.pets?.isNotEmpty ?? false) {
+      petProvider.setCurrentPet(petProvider.pets?[0]);
+    }
   }
 
   @override
