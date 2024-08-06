@@ -26,10 +26,10 @@ class _PhotosSectionState extends State<PhotosSection> {
           mainAxisSpacing: 4.0, // Spacing between rows
           childAspectRatio: 1.0, // Aspect ratio of each item (1:1 for square)
         ),
-        itemCount: memories.length,
+        itemCount: memories?.length ?? 0,
         itemBuilder: (context, index) {
-          final memory = memories[index];
-          final photoUrls = memory.photoUrls;
+          final memory = memories?[index];
+          final photoUrls = memory?.photoUrls;
 
           if (photoUrls == null || photoUrls.isEmpty) {
             return const Center(

@@ -237,17 +237,19 @@ class _SignInPageState extends State<SignInPage> {
                     Button(
                       loading: _loading,
                       onPressed: () async {
+                        final petProvider = context.read<PetProvider>();
                         if (_formKey.currentState!.saveAndValidate()) {
                           final userAuth = await _authServices.login(
                             email: _emailController.text,
                             password: _passwordController.text,
                           );
                           if (userAuth != null) {
+                            print(userAuth.toJson());
                             final user = await _databaseService
                                 .getUserProfileByUID(userAuth.id!);
                             userProvider.setUser(user);
-                            final petProvider = context.read<PetProvider>();
-                            await petProvider.update(user!.id!);
+
+                            await petProvider.update(userAuth.id!);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

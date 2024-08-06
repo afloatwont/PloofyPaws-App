@@ -105,7 +105,6 @@ class _RootState extends State<Root> {
 
   @override
   void initState() {
-    Provider.of<UserProvider>(context, listen: false);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.black,
       systemNavigationBarColor: Colors.black,
@@ -113,18 +112,8 @@ class _RootState extends State<Root> {
     ));
     super.initState();
     _authServices = _getIt.get<AuthServices>();
-    // _userDatabaseService = _getIt.get<UserDatabaseService>();
     final petProvider = context.read<PetProvider>();
     petProvider.update(_authServices.user!.uid);
-    // _userDatabaseService
-    //     .getAllPetsForUser(_authServices.user!.uid)
-    //     .then((value) {
-    //   if (value!.isNotEmpty) {
-    //     setState(() {
-    //       petProvider.setPets(value);
-    //     });
-    //   }
-    // });
   }
 
   @override

@@ -57,23 +57,29 @@ class _PetEventsState extends State<PetEvents> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: citiesItems.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 16),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 16),
                         itemBuilder: (context, index) {
                           final data = citiesItems[index];
                           return ListTile(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   side: BorderSide(
-                                      color: selectedCity == data ? colors(context).primary.s600 : Colors.grey,
+                                      color: selectedCity == data
+                                          ? colors(context).primary.s600
+                                          : Colors.grey,
                                       width: selectedCity == data ? 2 : 1)),
-                              tileColor: selectedCity == data ? colors(context).primary.s50 : Colors.white,
+                              tileColor: selectedCity == data
+                                  ? colors(context).primary.s50
+                                  : Colors.white,
                               onTap: () {
                                 setState(() {
                                   selectedCity = data;
                                 });
                                 Navigator.pop(context);
                               },
-                              title: Text(data.cityName ?? "", style: typography(context).smallBody),
+                              title: Text(data.cityName ?? "",
+                                  style: typography(context).smallBody),
                               trailing: data.cityyIcon);
                         },
                       )
@@ -87,14 +93,16 @@ class _PetEventsState extends State<PetEvents> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Iconsax.location, size: 16, color: colors(context).primary.s800),
+              Icon(Iconsax.location,
+                  size: 16, color: colors(context).primary.s800),
               const SizedBox(width: 8),
               Text(selectedCity?.cityName ?? "New Delhi",
                   style: typography(context).smallBody.copyWith(
                         color: colors(context).primary.s800,
                       )),
               const SizedBox(width: 8),
-              const Icon(Icons.arrow_drop_down_circle, size: 16, color: Colors.black),
+              const Icon(Icons.arrow_drop_down_circle,
+                  size: 16, color: Colors.black),
             ],
           ),
         ),
@@ -116,24 +124,32 @@ class _PetEventsState extends State<PetEvents> {
             child: Column(
               children: [
                 Text('PloofyPaws',
-                    style: typography(context)
-                        .ploofypawsTitle
-                        .copyWith(color: Colors.grey, fontSize: 26, fontWeight: FontWeight.bold)),
+                    style: typography(context).ploofypawsTitle.copyWith(
+                        color: Colors.grey,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold)),
                 Row(
                   children: [
-                    const Expanded(child: Divider(thickness: 1, color: Colors.grey)),
+                    const Expanded(
+                        child: Divider(thickness: 1, color: Colors.grey)),
                     const SizedBox(width: 16),
                     Text('Pet Events',
                         style: typography(context).title2.copyWith(
-                            color: Colors.grey, fontSize: 26, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                            color: Colors.grey,
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2)),
                     const SizedBox(width: 16),
-                    const Expanded(child: Divider(thickness: 1, color: Colors.grey)),
+                    const Expanded(
+                        child: Divider(thickness: 1, color: Colors.grey)),
                   ],
                 ),
                 Text(
                   'Happening in your city! ',
-                  style:
-                      typography(context).body.copyWith(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w800),
+                  style: typography(context).body.copyWith(
+                      color: Colors.grey,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800),
                 ),
               ],
             ),
@@ -157,7 +173,10 @@ class _PetEventsState extends State<PetEvents> {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const PetEventDetails()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PetEventDetails()));
                   },
                   child: PetEventsCard(eventItem: _items[index]));
             },

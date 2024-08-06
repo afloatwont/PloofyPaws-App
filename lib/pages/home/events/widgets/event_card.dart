@@ -50,10 +50,12 @@ class PetEventsCard extends StatelessWidget {
             ),
             height: 400,
             child: CachedNetworkImage(
-              imageUrl: eventItem.imageAsset, // Use the URL directly
+              imageUrl: urlProvider.urlMap[eventItem.imageAsset]!,
+              // Use the URL directly
               fit: BoxFit.cover,
               placeholder: null,
-              errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
+              errorWidget: (context, url, error) =>
+                  const Center(child: Icon(Icons.error)),
             ),
           ),
           Container(

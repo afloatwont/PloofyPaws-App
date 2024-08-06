@@ -82,8 +82,6 @@ class _MyAppState extends State<MyApp> {
   late AuthServices _authServices;
   late AlertService _alertService;
   late UserDatabaseService _userDatabaseService;
-  UserModel currUser = UserModel(
-      id: "", displayName: "", email: "", photoUrl: "", address: null);
 
   @override
   void initState() {
@@ -99,8 +97,10 @@ class _MyAppState extends State<MyApp> {
           .then((value) {
         if (value != null) {
           setState(() {
-            currUser = value;
+            UserModel currUser = value;
             userProvider.setUser(currUser);
+            print(userProvider.user!.toJson());
+            print(currUser.toJson());
           });
         }
       }).catchError(
@@ -135,9 +135,7 @@ class _MyAppState extends State<MyApp> {
         textTheme:
             GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.black),
       ),
-      home: _authServices.user != null
-          ? const Root()
-          : const InitApp(),
+      home: _authServices.user != null ? const Root() : const InitApp(),
     );
   }
 }

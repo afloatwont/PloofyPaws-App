@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -15,6 +14,8 @@ import 'package:get_it/get_it.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_auth.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_store.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/models/user_model.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPassword extends StatefulWidget {
   final String displayName;
@@ -34,12 +35,14 @@ class _SignUpPasswordState extends State<SignUpPassword> {
 
   late AuthServices _authServices;
   late UserDatabaseService _userDatabaseService;
+  late UserProvider userProvider;
 
   @override
   void initState() {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _userDatabaseService = _getIt.get<UserDatabaseService>();
+    userProvider = context.read<UserProvider>();
   }
 
   _signup() async {
@@ -56,17 +59,14 @@ class _SignUpPasswordState extends State<SignUpPassword> {
         _userDatabaseService.createUserProfile(
           userProfile: UserModel(
             id: user.id,
-            displayName: widget.displayName!,
+            displayName: widget.displayName,
             email: email,
             photoUrl: user.photoUrl,
           ),
         );
+        userProvider.update(user.id!);
       }
 
-      // Navigate to the root page or any other page
-      // final storage = await SharedPreferences.getInstance();
-      // storage.setString('auth', jsonEncode(signupResponse));
-      // if (!mounted) return;
       if (user != null) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const Root()),

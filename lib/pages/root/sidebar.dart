@@ -53,21 +53,12 @@ class _SidebarState extends State<Sidebar> {
   final GetIt _getIt = GetIt.instance;
   late AuthServices _authServices;
   late UserDatabaseService _userDatabaseService;
-  UserModel user = UserModel(id: "", displayName: "", email: "", photoUrl: "");
 
   @override
   void initState() {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _userDatabaseService = _getIt.get<UserDatabaseService>();
-    _userDatabaseService.getUserProfileByUID(_authServices.user!.uid).then(
-      (value) {
-        setState(() {
-          user = value ??
-              UserModel(id: "", displayName: "", email: "", photoUrl: "");
-        });
-      },
-    );
   }
 
   @override
@@ -91,15 +82,14 @@ class _SidebarState extends State<Sidebar> {
               },
             ),
           ),
-          _buildSignOutButton(context, () {
-            userProvider.setUser(null);
-          }),
+          _buildSignOutButton(context),
         ],
       ),
     );
   }
 
   Widget _buildUserHeader(BuildContext context) {
+    final user = context.read<UserProvider>().user;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: GestureDetector(
@@ -124,15 +114,16 @@ class _SidebarState extends State<Sidebar> {
               CircleAvatar(
                 radius: 24,
                 backgroundColor: Colors.black,
-                backgroundImage: (user.photoUrl?.isNotEmpty ?? false)
-                    ? NetworkImage(user.photoUrl!)
-                    : null,
-                child: (user.photoUrl?.isEmpty ?? true)
+                backgroundImage:
+                    (user?.photoUrl != null && user?.photoUrl != "")
+                        ? NetworkImage((user?.photoUrl)!)
+                        : null,
+                child: (user?.photoUrl?.isEmpty ?? true)
                     ? const Icon(Icons.person, size: 32)
                     : null,
               ),
               Text(
-                user.displayName ?? "",
+                user?.displayName ?? "User",
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
@@ -177,14 +168,16 @@ class _SidebarState extends State<Sidebar> {
     );
   }
 
-  Widget _buildSignOutButton(BuildContext context, VoidCallback setUser) {
+  Widget _buildSignOutButton(BuildContext context) {
+    final userProvider = context.read<UserProvider>();
     final petProvider = context.read<PetProvider>();
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: ElevatedButton(
         onPressed: () async {
           bool res = await _authServices.signOut();
-          setUser();
+
+          userProvider.removeUser();
           petProvider.setPets(null);
           if (res) {
             Navigator.pushReplacement(

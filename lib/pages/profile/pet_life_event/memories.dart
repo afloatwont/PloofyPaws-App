@@ -23,21 +23,25 @@ class _MemoriesState extends State<Memories> {
   late UserDatabaseService userDatabaseService;
   String? pfp;
   bool isUploading = false; // Track whether an image upload is in progress
+  late MemoryProvider memoryProvider;
+  late UserProvider userProvider;
 
   @override
   void initState() {
     super.initState();
     userDatabaseService = getIt.get<UserDatabaseService>();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        memoryProvider = context.read<MemoryProvider>();
+        userProvider = context.read<UserProvider>();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+    final userProvider = context.watch<UserProvider>();
     final displayName = userProvider.user?.displayName ?? "User";
-
-    final memoryProvider = Provider.of<MemoryProvider>(context);
-    // final userProvider = context.read<UserProvider>();
-    memoryProvider.loadMemories(userProvider.user!.id!);
 
     return DefaultTabController(
       length: 2,
