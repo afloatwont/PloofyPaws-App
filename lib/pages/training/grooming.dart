@@ -81,7 +81,14 @@ class _GroomingScreenState extends State<GroomingScreen>
     "Fixed Walker",
     "Pet Exercised",
   ];
-
+  final List<String> images = [
+    "assets/svg/proffesional.png",
+    "assets/svg/emergency.png",
+    "assets/svg/prescription.png",
+    "assets/svg/tele.png",
+    "assets/svg/best.png",
+    "assets/svg/health.png",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,13 +119,18 @@ class _GroomingScreenState extends State<GroomingScreen>
             const SizedBox(height: 8),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: GroomingPackagesSection(type: "Grooming",),
+              child: GroomingPackagesSection(
+                type: "Grooming",
+              ),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: SectionHeader(title: 'What we Provide'),
             ),
-            ServicesGrid(titles: ourServices),
+            ServicesGrid(
+              titles: ourServices,
+              images: images,
+            ),
             const SizedBox(height: 16),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),

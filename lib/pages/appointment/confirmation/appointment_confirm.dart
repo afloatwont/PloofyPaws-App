@@ -154,7 +154,7 @@ class _AppointmentConfirmationState extends State<AppointmentConfirmation>
                     child: _buildHeader(
                         "Get expert consultations on all concerns"),
                   ),
-                  const ExpertConsultationsSection(showHeading: false),
+                  ExpertConsultationsSection(showHeading: false),
                   FAQSection(faqs: faqs, showTitle: true),
                   buildDividerWithText(context, "Ploofypaws",
                       color: Colors.grey),

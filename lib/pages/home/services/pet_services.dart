@@ -23,7 +23,7 @@ class _PetServicesState extends State<PetServices> {
     final List<Widget> screens = [
       const PetWalkingScreen(),
       const GroomingScreen(),
-      const VetVideoConsultationScreen(),
+      VetVideoConsultationScreen(),
       const DietPage(),
       const Tracker(),
       const TrainingScreen(),

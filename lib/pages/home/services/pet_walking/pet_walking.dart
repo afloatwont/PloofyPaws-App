@@ -53,6 +53,15 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
     );
   }
 
+  final List<String> images = [
+    "assets/svg/proffesional.png",
+    "assets/svg/emergency.png",
+    "assets/svg/prescription.png",
+    "assets/svg/tele.png",
+    "assets/svg/best.png",
+    "assets/svg/health.png",
+  ];
+
   @override
   Widget build(BuildContext context) {
     final selectedPlan = context.watch<SelectedPlanProvider>().selectedPlan;
@@ -164,15 +173,17 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: SectionHeader(title: 'What we Provide'),
                 ),
-                ServicesGrid(titles: ourServices),
+                ServicesGrid(
+                  titles: ourServices,
+                  images: images,
+                ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: SectionHeader(title: 'Our Walking Specialists'),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: 8.0, right: 8),
-                  child: VideoWidget(
-                      url: 'assets/images/content/walking.mp4'),
+                  child: VideoWidget(url: 'assets/images/content/walking.mp4'),
                 ),
                 const SizedBox(height: 10),
                 Padding(
