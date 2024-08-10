@@ -90,6 +90,12 @@ class _TrainingScreenState extends State<TrainingScreen>
     "assets/svg/best.png",
     "assets/svg/health.png",
   ];
+  final List<String> otherimages = [
+    "assets/other_services/groom.png",
+    "assets/other_services/diet.png",
+    "assets/other_services/dog.png",
+    "assets/other_services/vc.png",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,25 +153,20 @@ class _TrainingScreenState extends State<TrainingScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: ServiceCard(
                       title: 'Dog',
-                      image: SvgPicture.asset(
-                        'assets/svg/dog1.svg',
-                        width: 45,
-                        height: 50,
-                      ),
+                      image: 'assets/svg/dog.png',
                       color: Colors.brown,
                     ),
+                  ),
+                  SizedBox(
+                    width: 5,
                   ),
                   Expanded(
                     child: ServiceCard(
                       title: 'Cat',
-                      image: SvgPicture.asset(
-                        'assets/svg/cat 1.svg',
-                        height: 50,
-                        width: 45,
-                      ),
+                      image: 'assets/svg/cat.png',
                       color: Colors.brown.shade200,
                     ),
                   ),
@@ -176,7 +177,10 @@ class _TrainingScreenState extends State<TrainingScreen>
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: SectionHeader(title: 'Other Services'),
             ),
-            OtherServices(titles: otherServices),
+            OtherServices(
+              titles: otherServices,
+              otherimages: otherimages,
+            ),
             const Icon(Icons.lightbulb_outline_rounded, size: 100),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -205,41 +209,89 @@ class _TrainingScreenState extends State<TrainingScreen>
 
 class ServiceCard extends StatelessWidget {
   final String title;
-  final Widget image;
+  final String image;
   final Color color;
 
   const ServiceCard({
-    super.key,
+    Key? key,
     required this.title,
     required this.image,
     required this.color,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+    // return Card(
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.circular(8),
+    //   ),
+    //   color: color,
+    //   child: Padding(
+    //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       children: [
+    //         const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+    //         Text(
+    //           title,
+    //           style: Theme.of(context).textTheme.titleMedium?.copyWith(
+    //                 color: Colors.white,
+    //                 fontWeight: FontWeight.w800,
+    //                 fontSize: 16,
+    //               ),
+    //         ),
+    //         const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+    //         Image(
+    //           image: image,
+    //           width: 45, // Adjust width as needed
+    //           height: 50, // Adjust height as needed
+    //           fit: BoxFit.cover,
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+
+    return Container(
+      width: 172,
+      height: 58,
+      clipBehavior: Clip.antiAlias,
+      decoration: ShapeDecoration(
+        color: const Color(0xFFB78F6F),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      color: color,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(
+      child: Stack(
+        children: [
+          Positioned(
+            left: 20,
+            top: 20,
+            child: Text(
               title,
-              style: typography(context).title1.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
-                  ),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w500,
+                height: 1, // Adjust height as needed
+                letterSpacing: -0.32,
+              ),
             ),
-            const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-            image,
-          ],
-        ),
+          ),
+          Positioned(
+            left: 106,
+            top: -4,
+            child: Container(
+              width: 66,
+              height: 66,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(image), // Local image path
+                  fit: BoxFit.cover, // Adjust fit as needed
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

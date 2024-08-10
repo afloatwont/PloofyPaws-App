@@ -1,16 +1,36 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:provider/provider.dart';
+import 'package:ploofypaws/pages/home/services/pet_diet.dart';
+import 'package:ploofypaws/pages/home/services/pet_walking/pet_walking.dart';
+import 'package:ploofypaws/pages/training/grooming.dart';
+import 'package:ploofypaws/pages/training/training.dart';
+import 'package:ploofypaws/pages/vet_video_consultation/vet_video_consultation.dart';
+import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 
 class OtherServices extends StatefulWidget {
-  const OtherServices({super.key, required this.titles});
+  const OtherServices({
+    super.key,
+    required this.titles,
+    required this.otherimages,
+  });
+
   final List<String> titles;
+  final List<String> otherimages;
+
   @override
   State<OtherServices> createState() => _OtherServicesState();
 }
 
 class _OtherServicesState extends State<OtherServices> {
+  final Map<String, Widget> _titleToScreenMap = {
+    'Pet Walking': PetWalkingScreen(),
+    'Pet Grooming': GroomingScreen(),
+    'Ploofy-Diet': DietPage(),
+    'Behaviourist': TrainingScreen(),
+    'Vet Video Call': VetVideoConsultationScreen(),
+    // Add other mappings here
+  };
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,7 +44,7 @@ class _OtherServicesState extends State<OtherServices> {
           return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 4,
+            itemCount: widget.titles.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 8.0, // Adjust spacing as needed
@@ -32,7 +52,12 @@ class _OtherServicesState extends State<OtherServices> {
               childAspectRatio: itemWidth / itemHeight,
             ),
             itemBuilder: (context, index) {
-              return _buildServiceItem(widget.titles[index], itemWidth, itemHeight);
+              return _buildServiceItem(
+                widget.titles[index],
+                itemWidth,
+                itemHeight,
+                widget.otherimages[index],
+              );
             },
           );
         },
@@ -40,10 +65,12 @@ class _OtherServicesState extends State<OtherServices> {
     );
   }
 
-  // List of titles
-
-  Widget _buildServiceItem(String title, double width, double height) {
-    final urlProvider = context.read<UrlProvider>();
+  Widget _buildServiceItem(
+    String title,
+    double width,
+    double height,
+    String image,
+  ) {
     return Container(
       height: height * 0.6,
       width: width * 0.8,
@@ -51,8 +78,7 @@ class _OtherServicesState extends State<OtherServices> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         image: DecorationImage(
-          image: CachedNetworkImageProvider(
-              urlProvider.urlMap['assets/images/content/memories_bg.png']!),
+          image: AssetImage(image),
           fit: BoxFit.cover,
         ),
       ),
@@ -63,16 +89,34 @@ class _OtherServicesState extends State<OtherServices> {
             title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 16,
+            ),
           ),
+          const SizedBox(height: 8.0),
           OutlinedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      _titleToScreenMap[title] ??
+                      const Scaffold(
+                        body: Center(
+                          child: Text('Screen not found'),
+                        ),
+                      ),
+                ),
+              );
+            },
             style: OutlinedButton.styleFrom(
               fixedSize: Size(width * 0.8, height * 0.2),
               foregroundColor: Colors.white,
               backgroundColor: Colors.transparent,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)),
+                borderRadius: BorderRadius.circular(50),
+              ),
             ),
             child: const Text(
               'Explore services',

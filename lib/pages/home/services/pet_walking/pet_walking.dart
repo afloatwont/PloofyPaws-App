@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ploofypaws/components/adaptive_app_bar.dart';
 import 'package:ploofypaws/components/faq_section.dart';
@@ -9,6 +8,7 @@ import 'package:ploofypaws/components/our_services.dart';
 import 'package:ploofypaws/components/video_box.dart';
 import 'package:ploofypaws/location/map_location.dart';
 import 'package:ploofypaws/pages/appointment/confirmation/appointment_confirm.dart';
+import 'package:ploofypaws/pages/care/app_bar.dart';
 import 'package:ploofypaws/pages/home/services/pet_walking/selected_plan_provider.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/fire_assets.dart';
 import 'package:ploofypaws/services/repositories/auth/firebase/providers/package_provider.dart';
@@ -54,14 +54,19 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
   }
 
   final List<String> images = [
-    "assets/svg/proffesional.png",
-    "assets/svg/emergency.png",
-    "assets/svg/prescription.png",
-    "assets/svg/tele.png",
-    "assets/svg/best.png",
-    "assets/svg/health.png",
+    "assets/svg/real-time.png",
+    "assets/svg/paw-cleaning.png",
+    "assets/svg/poop-scooping.png",
+    "assets/svg/flexible.png",
+    "assets/svg/fixed-walker.png",
+    "assets/svg/pet-exercise.png",
   ];
-
+  final List<String> otherimages = [
+    "assets/other_services/groom.png",
+    "assets/other_services/diet.png",
+    "assets/other_services/dog.png",
+    "assets/other_services/vc.png",
+  ];
   @override
   Widget build(BuildContext context) {
     final selectedPlan = context.watch<SelectedPlanProvider>().selectedPlan;
@@ -199,25 +204,20 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: ServiceCard(
                           title: 'Dog',
-                          image: SvgPicture.asset(
-                            'assets/svg/dog1.svg',
-                            width: 45,
-                            height: 50,
-                          ),
+                          image: 'assets/svg/dog.png',
                           color: Colors.brown,
                         ),
+                      ),
+                      SizedBox(
+                        width: 5,
                       ),
                       Expanded(
                         child: ServiceCard(
                           title: 'Cat',
-                          image: SvgPicture.asset(
-                            'assets/svg/cat 1.svg',
-                            height: 50,
-                            width: 45,
-                          ),
+                          image: 'assets/svg/cat.png',
                           color: Colors.brown.shade200,
                         ),
                       ),
@@ -228,7 +228,10 @@ class _PetWalkingScreenState extends State<PetWalkingScreen>
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: SectionHeader(title: 'Other Services'),
                 ),
-                OtherServices(titles: otherServices),
+                OtherServices(
+                  titles: otherServices,
+                  otherimages: otherimages,
+                ),
                 const Icon(Icons.lightbulb_outline_rounded, size: 100),
                 Padding(
                   padding:
@@ -512,41 +515,89 @@ class PlanCard extends StatelessWidget {
 
 class ServiceCard extends StatelessWidget {
   final String title;
-  final Widget image;
+  final String image;
   final Color color;
 
   const ServiceCard({
-    super.key,
+    Key? key,
     required this.title,
     required this.image,
     required this.color,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+    // return Card(
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.circular(8),
+    //   ),
+    //   color: color,
+    //   child: Padding(
+    //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       children: [
+    //         const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+    //         Text(
+    //           title,
+    //           style: Theme.of(context).textTheme.titleMedium?.copyWith(
+    //                 color: Colors.white,
+    //                 fontWeight: FontWeight.w800,
+    //                 fontSize: 16,
+    //               ),
+    //         ),
+    //         const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+    //         Image(
+    //           image: image,
+    //           width: 45, // Adjust width as needed
+    //           height: 50, // Adjust height as needed
+    //           fit: BoxFit.cover,
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+
+    return Container(
+      width: 172,
+      height: 58,
+      clipBehavior: Clip.antiAlias,
+      decoration: ShapeDecoration(
+        color: const Color(0xFFB78F6F),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      color: color,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(
+      child: Stack(
+        children: [
+          Positioned(
+            left: 20,
+            top: 20,
+            child: Text(
               title,
-              style: typography(context).title1.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
-                  ),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w500,
+                height: 1, // Adjust height as needed
+                letterSpacing: -0.32,
+              ),
             ),
-            const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-            image,
-          ],
-        ),
+          ),
+          Positioned(
+            left: 106,
+            top: -4,
+            child: Container(
+              width: 66,
+              height: 66,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(image), // Local image path
+                  fit: BoxFit.cover, // Adjust fit as needed
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

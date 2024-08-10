@@ -25,7 +25,7 @@
          <meta-data
             android:name="com.mapbox.token"
             android:value="sk.eyJ1IjoiYW5nYWRzaW5naDIxIiwiYSI6ImNseWZ2cGIwajA0M2kyaXBvd3Rtd21zcDUifQ.ks1YRQZC9JizO-vqhoHmYA"/>
-            
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

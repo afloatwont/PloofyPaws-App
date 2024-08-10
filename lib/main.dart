@@ -86,6 +86,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     _authServices = _getIt.get<AuthServices>();
     _userDatabaseService = _getIt.get<UserDatabaseService>();
     _alertService = _getIt.get<AlertService>();
